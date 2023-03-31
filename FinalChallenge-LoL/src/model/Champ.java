@@ -11,7 +11,7 @@ public class Champ {
 	private String r;
 	private String e;
 	private String position;
-	final String[] positions= {"TOP","JNG","MID","ADC","SUP"};
+	private final String[] positions= {"TOP","JNG","MID","ADC","SUP"};
 	public String getName() {
 		return name;
 	}

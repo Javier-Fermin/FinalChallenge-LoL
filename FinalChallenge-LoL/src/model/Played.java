@@ -3,7 +3,7 @@ package model;
 public class Played {
 	private boolean win;
 	private String position;
-	final String[] postions = {"TOP","JNG","MID","ADC","SUP"}; 
+	private final String[] postions = {"TOP","JNG","MID","ADC","SUP"}; 
 	
 	public boolean isWin() {
 		return win;
