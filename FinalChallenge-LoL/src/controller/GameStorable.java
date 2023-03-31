@@ -1,5 +1,7 @@
 package controller;
 
-public interface GameStorable {
+import model.Game;
 
+public interface GameStorable {
+	public void addGame(Game game);
 }

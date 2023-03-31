@@ -1,5 +1,9 @@
 package controller;
 
-public interface Statable {
+import java.util.Set;
 
+import model.Played;
+
+public interface Statable {
+	public Set <Played> stadistics (String nickname);
 }
