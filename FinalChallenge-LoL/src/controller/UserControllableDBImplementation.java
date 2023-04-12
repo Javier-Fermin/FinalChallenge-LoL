@@ -1,6 +1,7 @@
 package controller;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -113,14 +114,101 @@ public class UserControllableDBImplementation implements UserControllable {
 
 	@Override
 	public void addAdmin(Administrator admin) {
-		// TODO Auto-generated method stub
+		//Two statements. One for insert user and other for Administrator
+		final String INSERTUser = "INSERT INTO User (Id, Mail, Name, BirthDate, Phone, Nationality, Password) VALUES(?,?,?,?,?,?,?)";
+		final String INSERTAdmin = "INSERT INTO Administrator (StartDate, Id, Additions) VALUES( ?,?,?)";
+		openConnection();
+		try {
+			//Prepare the first Statement
+			stmt= con.prepareStatement(INSERTUser);
+			
+			//Establish the parameters for the first statement --> User
+			stmt.setString(1, admin.getId());
+			stmt.setString(2, admin.getEmail());
+			stmt.setString(3, admin.getName());
+			stmt.setDate(4, Date.valueOf(admin.getBirthDate()));
+			stmt.setString(5, admin.getPhone());
+			stmt.setString(6, admin.getNationality());
+			stmt.setString(7, admin.getPassword());
+			
+			//Execute the first statement
+			stmt.executeUpdate();
+			
+			//Prepare the second statement
+			stmt = con.prepareStatement(INSERTAdmin);
+			
+			//Establish the parameters for the second statement --> Admin
+			stmt.setDate(1, Date.valueOf(admin.getStartDate()));
+			stmt.setString(2, admin.getId());
+			stmt.setInt(3, admin.getAddtions());
+			
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			closeConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
 	}
 
 	@Override
 	public boolean modifyPlayer(Player player) {
-		// TODO Auto-generated method stub
-		return false;
+		//Creation of the three statements needed to make the modification
+				final String UPDATEUser = "UPDATE User SET Mail = ?, Name= ?, BirthDate= ?, Phone= ?, Nationality= ?, Password= ? WHERE id= ? ";
+				final String UPDATEPlayer= "UPDATE Player SET nickname = ? WHERE id= ?";
+				
+				//To check that the modification has been carried out correctly
+				boolean correct = false;
+				
+				openConnection();
+				try {
+					//Prepare the first statement
+					stmt = con.prepareStatement(UPDATEUser);
+					
+					//Establish the parameters for the first statement --> UPDATEUser
+					stmt.setString(1, player.getEmail());
+					stmt.setString(2, player.getName());
+					stmt.setDate(3, Date.valueOf(player.getBirthDate()));
+					stmt.setString(4, player.getPhone());
+					stmt.setString(5, player.getNationality());
+					stmt.setString(6, player.getPassword());
+					stmt.setString(7, player.getId());
+					
+					//Execute the first statement and check it
+					if(stmt.executeUpdate()== 1) {
+						correct = true;
+					}
+					
+					//Set the boolean to its initial value
+					correct = false;
+					
+					//Prepare the second statement
+					stmt= con.prepareStatement(UPDATEPlayer);
+					
+					//Establish the parameters for the second statement --> UPDATEPlayer
+					stmt.setString(1, player.getNickname());
+					stmt.setString(2, player.getId());
+					
+					//Execute the second statement and check it
+					if(stmt.executeUpdate()== 1) {
+						correct = true;
+					}
+					
+				
+					
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				try {
+					closeConnection();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				return correct;
 	}
 
 }
