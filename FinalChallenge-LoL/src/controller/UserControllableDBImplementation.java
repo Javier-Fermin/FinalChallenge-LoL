@@ -102,7 +102,8 @@ public class UserControllableDBImplementation implements UserControllable {
 
 	@Override
 	public boolean delete(User user) {
-		boolean correct = false;
+		// To check that the modification has been carried out correctly
+				boolean correct= false;
 		// Sentence to delete user.
 		final String DELETEusr = "delete from user where id=?";
 
@@ -115,9 +116,9 @@ public class UserControllableDBImplementation implements UserControllable {
 			stmt.setString(1, user.getId());
 
 			// Execute query
-			stmt.executeUpdate(); // REVIEW HOW TO MANAGE RESULT SET
-
-			// FINISH
+			if(stmt.executeUpdate() != 0){
+				correct= true;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -298,7 +299,7 @@ public class UserControllableDBImplementation implements UserControllable {
 		final String UPDATEPlayer = "UPDATE Player SET nickname = ? WHERE id= ?";
 
 		// To check that the modification has been carried out correctly
-		boolean correct = false;
+		boolean correct1= false, correct2 = false;
 
 		openConnection();
 		try {
@@ -315,12 +316,9 @@ public class UserControllableDBImplementation implements UserControllable {
 			stmt.setString(7, player.getId());
 
 			// Execute the first statement and check it
-			if (stmt.executeUpdate() == 1) {
-				correct = true;
+			if (stmt.executeUpdate() != 0) {
+				correct1 = true;
 			}
-
-			// Set the boolean to its initial value
-			correct = false;
 
 			// Prepare the second statement
 			stmt = con.prepareStatement(UPDATEPlayer);
@@ -330,8 +328,8 @@ public class UserControllableDBImplementation implements UserControllable {
 			stmt.setString(2, player.getId());
 
 			// Execute the second statement and check it
-			if (stmt.executeUpdate() == 1) {
-				correct = true;
+			if (stmt.executeUpdate() != 0 && correct1==true) {
+				correct2 = true;
 			}
 
 		} catch (SQLException e) {
@@ -342,7 +340,7 @@ public class UserControllableDBImplementation implements UserControllable {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return correct;
+		return correct2;
 	}
 
 }
