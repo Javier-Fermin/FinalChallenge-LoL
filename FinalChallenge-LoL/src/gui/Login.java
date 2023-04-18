@@ -2,7 +2,7 @@ package gui;
 
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
@@ -10,13 +10,15 @@ import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
+
+
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 
-public class login extends JFrame {
+public class Login extends JDialog {
 
 	private JPanel contentPane;
 	private JTextField textUser;
@@ -29,7 +31,7 @@ public class login extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					login frame = new login();
+					Login frame = new Login();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -41,10 +43,10 @@ public class login extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public login() {
+	public Login() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\alexs\\OneDrive\\Documents\\FP\\Reto\\Workspace\\FinalChallenge-LoL\\FinalChallenge-LoL\\images\\icon\\LoL_icon.svg.png"));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setDefaultCloseOperation(JDialog.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 330);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(36, 57, 117));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -77,12 +79,16 @@ public class login extends JFrame {
 		JLabel lblNoAccount = new JLabel("No account?");
 		lblNoAccount.setForeground(new Color(255, 255, 255));
 		lblNoAccount.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNoAccount.setBounds(95, 184, 91, 14);
+		lblNoAccount.setBounds(98, 171, 91, 14);
 		contentPane.add(lblNoAccount);
 		
 		JButton btnSignIn = new JButton("Sign in");
+		btnSignIn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		btnSignIn.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnSignIn.setBounds(213, 182, 89, 23);
+		btnSignIn.setBounds(216, 169, 89, 23);
 		contentPane.add(btnSignIn);
 		
 		JButton btnCancel = new JButton("Cancel");
@@ -91,12 +97,12 @@ public class login extends JFrame {
 			}
 		});
 		btnCancel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnCancel.setBounds(335, 227, 89, 23);
+		btnCancel.setBounds(335, 255, 89, 23);
 		contentPane.add(btnCancel);
 		
 		JButton btnLogIn = new JButton("Log in");
 		btnLogIn.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnLogIn.setBounds(233, 229, 89, 23);
+		btnLogIn.setBounds(233, 257, 89, 23);
 		contentPane.add(btnLogIn);
 		
 		JLabel lblLogo = new JLabel("");
