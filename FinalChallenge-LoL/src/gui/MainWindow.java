@@ -8,7 +8,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.GraphicsEnvironment;
+
 import javax.swing.JTextField;
+import java.awt.Dialog.ModalExclusionType;
+import java.awt.GridLayout;
 
 public class MainWindow extends JFrame {
 
@@ -31,6 +35,7 @@ public class MainWindow extends JFrame {
 				try {
 					MainWindow frame = new MainWindow();
 					frame.setVisible(true);
+					frame.setExtendedState(frame.getExtendedState()|JFrame.MAXIMIZED_BOTH);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -46,12 +51,16 @@ public class MainWindow extends JFrame {
 		setBounds(100, 100, 1210, 703);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setMaximumSize(getMaximumSize());
+		contentPane.setMinimumSize(getMinimumSize());
 
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		contentPane.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(0, 0, 1196, 656);
+		//tabbedPane.setBounds(0, 0, 1196, 656);
+		tabbedPane.setMaximumSize(getMaximumSize());
+		tabbedPane.setMinimumSize(getMinimumSize());
 		contentPane.add(tabbedPane);
 		
 		JPanel profile = new JPanel();
