@@ -10,42 +10,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Champ;
+import model.ConnectionOpenClose;
 
 public class ChampEditableDBImplementation implements ChampEditable {
 
 	private Connection	con;
 	private	PreparedStatement	stmt;
+	private ConnectionOpenClose connection = new ConnectionOpenClose();
 	private ResultSet	rs;
-
-	//	Metodo que nos permite conectarnos a la base de datos
-	private void openConnection() {
-		try {
-			// URL of the connection
-			String url = "jdbc:mysql://localhost:3306/LoL?serverTimezone=Europe/Madrid&useSSL=false";
-			con = DriverManager.getConnection(url, "root", "abcd*1234");
-
-		} catch (SQLException e) {
-			// Include exception
-		}
-	}
-
-	//	Metodo que nos permite desconectarnos de la base de datos
-	private void closeConnection() throws SQLException {
-		if (stmt != null)
-			stmt.close();
-		if (con != null)
-			con.close();
-		if (rs != null)
-			rs.close();
-	}
-
 
 	@Override
 	public void addChamp(Champ champ) {
 		// SQL query
 		final String INSERTchamp = "INSERT INTO Champ (Name, Position, Region, Passive, Q, W, E, R) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 		
-		openConnection();
+		try {
+			con = connection.openConnection();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
 
 		try {
 			//	Prepare the query
@@ -68,7 +51,7 @@ public class ChampEditableDBImplementation implements ChampEditable {
 		}
 
 		try {
-			closeConnection();
+			connection.closeConnection(stmt, con);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -82,7 +65,11 @@ public class ChampEditableDBImplementation implements ChampEditable {
 		
 		boolean modified = false;
 
-		openConnection();
+		try {
+			con = connection.openConnection();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
 
 		try {
 			//	Prepare the query
@@ -107,7 +94,7 @@ public class ChampEditableDBImplementation implements ChampEditable {
 			e.printStackTrace();
 		} finally{
 			try {
-				closeConnection();
+				connection.closeConnection(stmt, con);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -122,7 +109,11 @@ public class ChampEditableDBImplementation implements ChampEditable {
 		// SQL query
 		final String SELECTchamp = "SELECT * FROM Champ";
 
-		openConnection();
+		try {
+			con = connection.openConnection();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
 
 		try {
 			//	Prepare the query
@@ -149,7 +140,7 @@ public class ChampEditableDBImplementation implements ChampEditable {
 			e.printStackTrace();
 		} 
 		try {
-				closeConnection();
+				connection.closeConnection(stmt, con);
 		} catch (SQLException e) {
 				e.printStackTrace();
 		}
@@ -163,7 +154,11 @@ public class ChampEditableDBImplementation implements ChampEditable {
 		// SQL query
 		String SELECTchampFiltered = "SELECT * FROM Champ";
 
-		openConnection();
+		try {
+			con = connection.openConnection();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
 
 		try {
 			//	Prepare the query
@@ -198,7 +193,7 @@ public class ChampEditableDBImplementation implements ChampEditable {
 			e.printStackTrace();
 		} 
 		try {
-				closeConnection();
+				connection.closeConnection(stmt, con);
 		} catch (SQLException e) {
 				e.printStackTrace();
 		}
