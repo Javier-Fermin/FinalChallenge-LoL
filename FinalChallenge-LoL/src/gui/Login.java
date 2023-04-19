@@ -16,14 +16,16 @@ import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
 import java.awt.Color;
 
-public class Login extends JDialog implements ActionListener {
+public class Login extends JDialog implements ActionListener, MouseListener{
 	private final JPanel contentPanel = new JPanel();
 	private JPasswordField passwordField;
-	private JTextField Username_1;
+	private JTextField username_1;
+	private JLabel signIn, acceder;
 
 	/**
 	 * Launch the application.
@@ -59,17 +61,19 @@ public class Login extends JDialog implements ActionListener {
 		JLabel Username = new JLabel("USERNAME");
 		
 		
-		JLabel SALIR = new JLabel("");
+		acceder = new JLabel("");
+		acceder.addMouseListener(this);
 		
-		JLabel SignIn = new JLabel("SIGN IN");
+		signIn = new JLabel("SIGN IN");
+		signIn.addMouseListener(this);
 		
-		SignIn.setBounds(174, 293, 85, 28);
-		panel.add(SignIn);
-		SignIn.setFont(new Font("Bahnschrift", Font.BOLD, 13));
-		SignIn.setForeground(Color.BLACK);
-		SALIR.setBounds(126, 337, 55, 50);
-		panel.add(SALIR);
-		SALIR.setIcon(new ImageIcon(Login.class.getResource("/img/salir.png")));
+		signIn.setBounds(174, 293, 85, 28);
+		panel.add(signIn);
+		signIn.setFont(new Font("Bahnschrift", Font.BOLD, 13));
+		signIn.setForeground(Color.BLACK);
+		acceder.setBounds(126, 337, 55, 50);
+		panel.add(acceder);
+		acceder.setIcon(new ImageIcon(Login.class.getResource("/img/salir.png")));
 		Username.setForeground(new Color(0, 0, 0));
 		Username.setFont(new Font("Bahnschrift", Font.BOLD, 17));
 		Username.setBounds(43, 99, 178, 41);
@@ -82,13 +86,13 @@ public class Login extends JDialog implements ActionListener {
 		panel.add(PanelTransparente);
 		PanelTransparente.setLayout(null);
 		
-		JLabel lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.addMouseListener(new MouseAdapter() {
+		JLabel lblLogo = new JLabel("");
+		lblLogo.addMouseListener(new MouseAdapter() {
 			
 		});
-		lblNewLabel_1.setIcon(new ImageIcon(Login.class.getResource("/img/lolLogo (2).png")));
-		lblNewLabel_1.setBounds(126, 25, 64, 64);
-		PanelTransparente.add(lblNewLabel_1);
+		lblLogo.setIcon(new ImageIcon(Login.class.getResource("/img/lolLogo (2).png")));
+		lblLogo.setBounds(126, 25, 64, 64);
+		PanelTransparente.add(lblLogo);
 		
 		JLabel lblPassword = new JLabel("PASSWORD");
 		lblPassword.setBounds(43, 191, 178, 41);
@@ -101,17 +105,17 @@ public class Login extends JDialog implements ActionListener {
 		PanelTransparente.add(passwordField);
 		passwordField.addActionListener(this);
 		
-		Username_1 = new JTextField();
-		Username_1.setBounds(43, 144, 203, 20);
-		PanelTransparente.add(Username_1);
-		Username_1.setColumns(10);
+		username_1 = new JTextField();
+		username_1.setBounds(43, 144, 203, 20);
+		PanelTransparente.add(username_1);
+		username_1.setColumns(10);
 		
-		JLabel lblNewLabel_3 = new JLabel("No account?");
-		lblNewLabel_3.setForeground(Color.BLACK);
-		lblNewLabel_3.setFont(new Font("Bahnschrift", Font.BOLD, 13));
-		lblNewLabel_3.setBounds(54, 298, 92, 17);
-		PanelTransparente.add(lblNewLabel_3);
-		Username_1.addActionListener(this);
+		JLabel lblNoAccount = new JLabel("No account?");
+		lblNoAccount.setForeground(Color.BLACK);
+		lblNoAccount.setFont(new Font("Bahnschrift", Font.BOLD, 13));
+		lblNoAccount.setBounds(54, 298, 92, 17);
+		PanelTransparente.add(lblNoAccount);
+		username_1.addActionListener(this);
 		
 		
 		
@@ -126,5 +130,45 @@ public class Login extends JDialog implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if(e.getSource().equals(signIn)) {
+			//SignIn dialogSign = new SignIn();
+			//dialogSign.setVisible(true);
+			this.dispose();
+		}
+		if(e.getSource().equals(acceder)) {
+			//MainWindow main = new MainWindow();
+			//main.setVisible(true);
+			this.dispose();
+		}
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		if(e.getSource().equals(signIn)){
+			signIn.setFont(new Font("Bahnschrift", Font.BOLD, 16));
+		}
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		if(e.getSource().equals(signIn)) {
+			signIn.setFont(new Font("Bahnschrift", Font.BOLD, 13));
+		}
 	}
 }
