@@ -116,8 +116,8 @@ public class Login extends JDialog implements ActionListener {
 		
 		
 		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\irati\\Desktop\\RETOFINAL\\FinalChallenge-LoL\\FinalChallenge-LoL\\images\\fondo.jpg"));
-		lblNewLabel.setBounds(-57, -38, 924, 477);
+		lblNewLabel.setIcon(new ImageIcon(Login.class.getResource("/img/fondo.jpg")));
+		lblNewLabel.setBounds(-57, -38, 759, 435);
 		panel.add(lblNewLabel);
 		
 		
