@@ -140,6 +140,7 @@ public class Login extends JDialog implements ActionListener, MouseListener{
 			this.dispose();
 		}
 		if(e.getSource().equals(acceder)) {
+			
 			//MainWindow main = new MainWindow();
 			//main.setVisible(true);
 			this.dispose();
@@ -148,13 +149,11 @@ public class Login extends JDialog implements ActionListener, MouseListener{
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
