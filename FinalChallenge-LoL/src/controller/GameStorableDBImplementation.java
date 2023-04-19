@@ -49,4 +49,27 @@ public class GameStorableDBImplementation implements GameStorable {
 		}
 	}
 
+	@Override
+	public Game searchGame(int id) {
+		// TODO Auto-generated method stub
+		Game game=null;
+		try {
+			openConnection();
+			stmt = con.prepareStatement("SELECT FROM Game WHERE id = ?");
+			stmt.setInt(1,id);
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				game=new Game();
+				game.setId(rs.getInt("id"));
+				game.setDateGame(rs.getDate("DateGame").toLocalDate());
+				game.setDuration(rs.getFloat("Duration"));
+			}
+			closeConnection();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return game;
+	}
+
 }
