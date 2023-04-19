@@ -69,7 +69,7 @@ public class Login extends JDialog implements ActionListener {
 		SignIn.setForeground(Color.BLACK);
 		SALIR.setBounds(126, 337, 55, 50);
 		panel.add(SALIR);
-		SALIR.setIcon(new ImageIcon("C:\\Users\\irati\\Desktop\\RETOFINAL\\FinalChallenge-LoL\\FinalChallenge-LoL\\images\\salir.png"));
+		SALIR.setIcon(new ImageIcon(Login.class.getResource("/img/salir.png")));
 		Username.setForeground(new Color(0, 0, 0));
 		Username.setFont(new Font("Bahnschrift", Font.BOLD, 17));
 		Username.setBounds(43, 99, 178, 41);
@@ -86,7 +86,7 @@ public class Login extends JDialog implements ActionListener {
 		lblNewLabel_1.addMouseListener(new MouseAdapter() {
 			
 		});
-		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\irati\\Desktop\\RETOFINAL\\FinalChallenge-LoL\\FinalChallenge-LoL\\images\\lolLogo (2).png"));
+		lblNewLabel_1.setIcon(new ImageIcon(Login.class.getResource("/img/lolLogo (2).png")));
 		lblNewLabel_1.setBounds(126, 25, 64, 64);
 		PanelTransparente.add(lblNewLabel_1);
 		
@@ -115,10 +115,10 @@ public class Login extends JDialog implements ActionListener {
 		
 		
 		
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\irati\\Desktop\\RETOFINAL\\FinalChallenge-LoL\\FinalChallenge-LoL\\images\\fondo.jpg"));
-		lblNewLabel.setBounds(-57, -38, 924, 477);
-		panel.add(lblNewLabel);
+		JLabel lblFondo = new JLabel("");
+		lblFondo.setIcon(new ImageIcon(Login.class.getResource("/img/fondo.jpg")));
+		lblFondo.setBounds(-57, -38, 759, 435);
+		panel.add(lblFondo);
 		
 		
 		
