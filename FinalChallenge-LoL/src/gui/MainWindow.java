@@ -13,6 +13,7 @@ import java.awt.GraphicsEnvironment;
 import javax.swing.JTextField;
 import java.awt.Dialog.ModalExclusionType;
 import java.awt.GridLayout;
+import java.awt.FlowLayout;
 
 public class MainWindow extends JFrame {
 
@@ -58,6 +59,7 @@ public class MainWindow extends JFrame {
 		contentPane.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setFont(new Font("Calibri", Font.PLAIN, 20));
 		//tabbedPane.setBounds(0, 0, 1196, 656);
 		tabbedPane.setMaximumSize(getMaximumSize());
 		tabbedPane.setMinimumSize(getMinimumSize());
@@ -165,6 +167,9 @@ public class MainWindow extends JFrame {
 		tabbedPane.addTab("STADISTICS", null, stadistics, null);
 		
 		JPanel management = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) management.getLayout();
+		flowLayout.setVgap(10);
+		flowLayout.setHgap(10);
 		tabbedPane.addTab("MANAGEMENT", null, management, null);
 	}
 }
