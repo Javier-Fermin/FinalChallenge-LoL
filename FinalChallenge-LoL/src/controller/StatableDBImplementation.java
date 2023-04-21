@@ -8,30 +8,14 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
+import model.ConnectionOpenClose;
 import model.Played;
 
 public class StatableDBImplementation implements Statable {
 	private Connection con;
 	private PreparedStatement stmt;
 	private ResultSet rs;
-
-	private void openConnection() throws SQLException {
-		// String url = "jdbc:mysql://localhost/nombreBaseDatos";
-		String url = "jdbc:mysql://localhost:6026/LoL?serverTimezone=Europe/Madrid&useSSL=false";
-		// con = DriverManager.getConnection(url+"?" +"user=____&password=_____");
-		con = DriverManager.getConnection(url, "root", "abcd*1234");
-	}
-
-	private void closeConnection() throws SQLException {
-		if (stmt != null) {
-		stmt.close();
-		}
-		if (rs != null) {
-			rs.close();
-		}
-		if(con != null)
-		con.close();
-		}
+	private ConnectionOpenClose connection = new ConnectionOpenClose();
 
 	@Override
 	//RECORDAR CAMBIAR LUEGO A THROWS
@@ -39,7 +23,7 @@ public class StatableDBImplementation implements Statable {
 		// TODO Auto-generated method stub
 		Set <Played> stats = null;
 		try {
-			openConnection();
+			connection.openConnection();
 			stmt = con.prepareStatement("SELECT * FROM Play WHERE Nickname = ?");
 			stmt.setString(1, nickname);
 			rs = stmt.executeQuery();
@@ -50,7 +34,8 @@ public class StatableDBImplementation implements Statable {
 				aux.setPosition(rs.getString("Position"));
 				stats.add(aux);
 			}
-			closeConnection();
+			rs.close();
+			connection.closeConnection(stmt, con);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
