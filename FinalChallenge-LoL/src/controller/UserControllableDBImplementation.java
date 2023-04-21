@@ -11,7 +11,7 @@ import model.ConnectionOpenClose;
 import model.Player;
 import model.User;
 
-public class UserControllableDBImplementationCambio implements UserControllable {
+public class UserControllableDBImplementation implements UserControllable {
 	/**
 	 * @author Irati Garzón
 	 * @author Alex Salinero
