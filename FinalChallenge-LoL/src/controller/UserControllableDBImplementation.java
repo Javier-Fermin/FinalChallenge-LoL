@@ -2,7 +2,6 @@ package controller;
 
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,12 +11,23 @@ import model.ConnectionOpenClose;
 import model.Player;
 import model.User;
 
-public class UserControllableDBImplementation implements UserControllable {
+public class UserControllableDBImplementationCambio implements UserControllable {
+	/**
+	 * @author Irati Garzón
+	 * @author Alex Salinero
+	 * @version 4 - 20/04/2023
+	 */
 	private Connection con;
 	private PreparedStatement stmt;
 	private ConnectionOpenClose conection = new ConnectionOpenClose();
 
 	@Override
+	/**
+	 * Method use to check if the information related to the logIn is correct
+	 * @param usr
+	 * @param passwd
+	 * @return correct
+	 */
 	public boolean logIn(String usr, String passwd) {
 		User user = null;
 		boolean correct = false;
@@ -31,7 +41,7 @@ public class UserControllableDBImplementation implements UserControllable {
 		try {
 			con = conection.openConnection();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+			// 
 			e1.printStackTrace();
 		}
 
@@ -77,6 +87,8 @@ public class UserControllableDBImplementation implements UserControllable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		//Close ResultSet
 
 		if (rs != null) {
 			try {
@@ -222,13 +234,20 @@ public class UserControllableDBImplementation implements UserControllable {
 		// null means there was no user in DB with received usr String.
 		return user;
 	}
-
 	@Override
-	public void addPlayer(Player player) {
-		// First query for user table.
-		final String INSERTuser = "INSERT INTO user (Id, Mail, Name, BirthDate, Phone, Nationality, Password) VALUES (?, ?, ?, ?, ?, ?)";
-		// Second query for player table.
+	public void addUser(User user) {
+		ResultSet rs = null;
+		String id = null;
+		//Find how many administrators are to generate the id
+		final String COUNTAdministrator = "SELECT COUNT(*) FROM Administrator";
+		//Find how many players are to generate the id
+		final String COUNTPlayer = "SELECT COUNT(*) FROM Player";
+		// First query to insert the user
+		final String INSERTuser = "INSERT INTO user (Id, Mail, Name, BirthDate, Phone, Nationality, Password) VALUES (?, ?, ?, ?, ?, ?, ?)";
+		// Second query to insert the information just related to player or admin
 		final String INSERTplayer = "INSERT INTO player (Nickname, Id) VALUES (?, ?)";
+		final String INSERTAdmin = "INSERT INTO Administrator (StartDate, Id, Additions) VALUES( ?,?,?)";
+		
 		// Open connection with DB.
 		try {
 			con= conection.openConnection();
@@ -238,27 +257,59 @@ public class UserControllableDBImplementation implements UserControllable {
 		}
 
 		try {
+			//Check the instance to establish the id code
+			if(user instanceof Player) {
+				stmt= con.prepareStatement(COUNTPlayer);
+				rs= stmt.executeQuery();
+				if(rs.next()) {
+				 id= "P" + rs.getInt(1);
+				}
+				
+			}else {
+				stmt= con.prepareStatement(COUNTAdministrator);
+				rs= stmt.executeQuery();
+				if(rs.next()) {
+					 id= "A" + rs.getInt(1);
+					}
+				
+			}
+			
+			//Close the ResultSet
+			
+			if(rs!= null) {
+				try {
+					rs.close();
+				} catch (SQLException ex) {
+				}
+			}
+			
 			// Prepare sentence for query adding all the items to the stmt.
 			stmt = con.prepareStatement(INSERTuser);
 
-			stmt.setString(1, player.getId());
-			stmt.setString(2, player.getEmail());
-			stmt.setString(3, player.getName());
-			stmt.setDate(4, Date.valueOf(player.getBirthDate()));
-			stmt.setString(5, player.getPhone());
-			stmt.setString(6, player.getNationality());
-			stmt.setString(7, player.getPassword());
+			stmt.setString(1, id);
+			stmt.setString(2, user.getEmail());
+			stmt.setString(3, user.getName());
+			stmt.setDate(4, Date.valueOf(user.getBirthDate()));
+			stmt.setString(5, user.getPhone());
+			stmt.setString(6, user.getNationality());
+			stmt.setString(7, user.getPassword());
 
 			// Execute query.
 			stmt.executeUpdate();
+			
+			//Check the instance to make the second insert
+			if(user instanceof Player) {
+				stmt = con.prepareStatement(INSERTplayer);
+				stmt.setString(1, ((Player) user).getNickname());
+				stmt.setString(2, id);
+			}else {
+				stmt = con.prepareStatement(INSERTAdmin);
+				stmt.setDate(1, Date.valueOf(((Administrator) user).getStartDate()));
+				stmt.setString(2, id);
+				stmt.setInt(3, ((Administrator) user).getAddtions());
+			}
 
-			// Prepare sentence for second query, with nickname and id.
-			stmt = con.prepareStatement(INSERTplayer);
-
-			stmt.setString(1, player.getNickname());
-			stmt.setString(2, player.getId());
-
-			// Eecute second query.
+			// Execute second query.
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -273,60 +324,7 @@ public class UserControllableDBImplementation implements UserControllable {
 	}
 
 	@Override
-	public void addAdmin(Administrator admin) {
-		// Two statements. One for insert user and other for Administrator
-		final String INSERTUser = "INSERT INTO User (Id, Mail, Name, BirthDate, Phone, Nationality, Password) VALUES(?,?,?,?,?,?,?)";
-		final String INSERTAdmin = "INSERT INTO Administrator (StartDate, Id, Additions) VALUES( ?,?,?)";
-		
-		// Open connection with DB.
-				try {
-					con= conection.openConnection();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-		
-		try {
-			// Prepare the first Statement
-			stmt = con.prepareStatement(INSERTUser);
-
-			// Establish the parameters for the first statement --> User
-			stmt.setString(1, admin.getId());
-			stmt.setString(2, admin.getEmail());
-			stmt.setString(3, admin.getName());
-			stmt.setDate(4, Date.valueOf(admin.getBirthDate()));
-			stmt.setString(5, admin.getPhone());
-			stmt.setString(6, admin.getNationality());
-			stmt.setString(7, admin.getPassword());
-
-			// Execute the first statement
-			stmt.executeUpdate();
-
-			// Prepare the second statement
-			stmt = con.prepareStatement(INSERTAdmin);
-
-			// Establish the parameters for the second statement --> Admin
-			stmt.setDate(1, Date.valueOf(admin.getStartDate()));
-			stmt.setString(2, admin.getId());
-			stmt.setInt(3, admin.getAddtions());
-
-			stmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		//Close the connection
-
-				try {
-					conection.closeConnection(stmt, con);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	}
-
-	@Override
-	public boolean modifyPlayer(Player player) {
+	public boolean modifyPlayer(User user) {
 		// Creation of the three statements needed to make the modification
 		final String UPDATEUser = "UPDATE User SET Mail = ?, Name= ?, BirthDate= ?, Phone= ?, Nationality= ?, Password= ? WHERE id= ? ";
 		final String UPDATEPlayer = "UPDATE Player SET nickname = ? WHERE id= ?";
@@ -346,13 +344,13 @@ public class UserControllableDBImplementation implements UserControllable {
 			stmt = con.prepareStatement(UPDATEUser);
 
 			// Establish the parameters for the first statement --> UPDATEUser
-			stmt.setString(1, player.getEmail());
-			stmt.setString(2, player.getName());
-			stmt.setDate(3, Date.valueOf(player.getBirthDate()));
-			stmt.setString(4, player.getPhone());
-			stmt.setString(5, player.getNationality());
-			stmt.setString(6, player.getPassword());
-			stmt.setString(7, player.getId());
+			stmt.setString(1, user.getEmail());
+			stmt.setString(2, user.getName());
+			stmt.setDate(3, Date.valueOf(user.getBirthDate()));
+			stmt.setString(4, user.getPhone());
+			stmt.setString(5, user.getNationality());
+			stmt.setString(6, user.getPassword());
+			stmt.setString(7, user.getId());
 
 			// Execute the first statement and check it
 			if (stmt.executeUpdate() != 0) {
@@ -363,8 +361,8 @@ public class UserControllableDBImplementation implements UserControllable {
 			stmt = con.prepareStatement(UPDATEPlayer);
 
 			// Establish the parameters for the second statement --> UPDATEPlayer
-			stmt.setString(1, player.getNickname());
-			stmt.setString(2, player.getId());
+			stmt.setString(1, ((Player) user).getNickname());
+			stmt.setString(2, user.getId());
 
 			// Execute the second statement and check it
 			if (stmt.executeUpdate() != 0 && correct1 == true) {
