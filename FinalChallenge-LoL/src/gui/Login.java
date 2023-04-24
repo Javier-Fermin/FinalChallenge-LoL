@@ -31,7 +31,6 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 	private JLabel signIn, acceder;
 	private User user;
 	private UserControllable controller;
-	private MainWindow parent;
 
 	/**
 	 * Launch the application.
@@ -49,10 +48,10 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 	/**
 	 * Create the dialog.
 	 */
-	public Login(UserControllable control, User userReceived, MainWindow main) {
+	public Login(UserControllable control) {
 		controller = control;
-		user = userReceived;
-		parent = main;
+		// user = userReceived;
+		// parent = main;
 		setIconImage(Toolkit.getDefaultToolkit().getImage(
 				"C:\\Users\\Aussar\\eclipse-workspace1\\pruebaVentanas\\Resources\\LoL_icon.svg (1) (1).png"));
 		setResizable(false);
@@ -74,7 +73,11 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 		acceder.addMouseListener(this);
 
 		signIn = new JLabel("SIGN IN");
-		signIn.addMouseListener(this);
+		signIn.addMouseListener(this /*new MouseAdapter() {
+			public void ActionPerformed() {
+
+			}
+		}*/);
 
 		signIn.setBounds(174, 293, 85, 28);
 		panel.add(signIn);
@@ -130,7 +133,7 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 		lblFondo.setIcon(new ImageIcon(Login.class.getResource("/img/fondo.jpg")));
 		lblFondo.setBounds(-57, -38, 759, 435);
 		panel.add(lblFondo);
-
+		// userReceived = user;
 	}
 
 	@Override
@@ -149,19 +152,30 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 			String passString = new String(pass);
 			if (!username_1.getText().isBlank() && passString != null) {
 				if (controller.logIn(username_1.getText(), passString)) {
-					parent.setVisible(true);
+					String username = username_1.getText();
+					user = controller.findUser(username);
+					//parent.setVisible(true);
+					//correctoTodo = true;
+					MainWindow main = new MainWindow(controller, user);
+					main.setVisible(true);
 					this.dispose();
 				}
 
 				else {
 					JOptionPane.showMessageDialog(this, "Usuario o clave de acceso erronea.");
-				}
 
+				}
 			} else {
 				JOptionPane.showMessageDialog(this, "ERROR. Rellene todos los campos.");
 			}
-			
 		}
+
+		/*
+		 * if(correctoTodo) { this.dispose(); } if(correctoVacio) {
+		 * JOptionPane.showMessageDialog(this, "Usuario o clave de acceso erronea."); }
+		 * 
+		 * }
+		 */
 	}
 
 	@Override
