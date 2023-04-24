@@ -31,6 +31,7 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 	private JLabel signIn, acceder;
 	private User user;
 	private UserControllable controller;
+	private MainWindow parent;
 
 	/**
 	 * Launch the application.
@@ -48,10 +49,11 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 	/**
 	 * Create the dialog.
 	 */
-	public Login(UserControllable control) {
+	public Login(UserControllable control, MainWindow main) {
+		setModal(true);
 		controller = control;
-		// user = userReceived;
-		// parent = main;
+		parent = main;
+		main.setUser(user);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(
 				"C:\\Users\\Aussar\\eclipse-workspace1\\pruebaVentanas\\Resources\\LoL_icon.svg (1) (1).png"));
 		setResizable(false);
@@ -73,11 +75,7 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 		acceder.addMouseListener(this);
 
 		signIn = new JLabel("SIGN IN");
-		signIn.addMouseListener(this /*new MouseAdapter() {
-			public void ActionPerformed() {
-
-			}
-		}*/);
+		signIn.addMouseListener(this);
 
 		signIn.setBounds(174, 293, 85, 28);
 		panel.add(signIn);
@@ -133,7 +131,6 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 		lblFondo.setIcon(new ImageIcon(Login.class.getResource("/img/fondo.jpg")));
 		lblFondo.setBounds(-57, -38, 759, 435);
 		panel.add(lblFondo);
-		// userReceived = user;
 	}
 
 	@Override
@@ -150,14 +147,10 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 		if (e.getSource().equals(acceder)) {
 			char[] pass = passwordField.getPassword();
 			String passString = new String(pass);
-			if (!username_1.getText().isBlank() && passString != null) {
+			if (!username_1.getText().isBlank() && passString != "") {
 				if (controller.logIn(username_1.getText(), passString)) {
-					String username = username_1.getText();
-					user = controller.findUser(username);
-					//parent.setVisible(true);
-					//correctoTodo = true;
-					MainWindow main = new MainWindow(controller, user);
-					main.setVisible(true);
+					parent.setUser(controller.findUser(username_1.getText()));
+					parent.setVisible(true);
 					this.dispose();
 				}
 
@@ -169,13 +162,6 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 				JOptionPane.showMessageDialog(this, "ERROR. Rellene todos los campos.");
 			}
 		}
-
-		/*
-		 * if(correctoTodo) { this.dispose(); } if(correctoVacio) {
-		 * JOptionPane.showMessageDialog(this, "Usuario o clave de acceso erronea."); }
-		 * 
-		 * }
-		 */
 	}
 
 	@Override
