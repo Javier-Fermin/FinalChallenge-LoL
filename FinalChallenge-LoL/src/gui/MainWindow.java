@@ -77,11 +77,10 @@ public class MainWindow extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
-	public MainWindow(UserControllable control,  User userReceived/*, MainWindow main*/) {
+	public MainWindow(UserControllable control) {
 		controller = control;
-		//Login login = new Login(controller, user, this);
-		//login.setVisible(true);
-		user = userReceived;
+		Login login = new Login(control, this);
+		login.setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1210, 703);
 		contentPane = new JPanel();
@@ -93,7 +92,6 @@ public class MainWindow extends JFrame implements ActionListener {
 		contentPane.setLayout(new GridLayout(0, 1, 0, 0));
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		// tabbedPane.setBounds(0, 0, 1196, 656);
 		tabbedPane.setMaximumSize(getMaximumSize());
 		tabbedPane.setMinimumSize(getMinimumSize());
 		contentPane.add(tabbedPane);
@@ -367,15 +365,24 @@ public class MainWindow extends JFrame implements ActionListener {
 						.addContainerGap()));
 		playerDelete.setLayout(gl_playerDelete);
 		management.add(tabbedPaneAdmin);
-		if(user instanceof Player) {
+
+		if (user instanceof Player) {
 			tabbedPane.remove(champAdmin);
 			tabbedPane.remove(management);
 		}
-		if(user instanceof Administrator) {
+		if (user instanceof Administrator) {
 			tabbedPane.remove(champsPlayer);
 			tabbedPane.remove(game);
 			tabbedPane.remove(stadistics);
 		}
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override
@@ -383,22 +390,20 @@ public class MainWindow extends JFrame implements ActionListener {
 		if (e.getSource().equals(btnSend)) {
 			char[] pass = passwordField.getPassword();
 			String passString = new String(pass);
-			if (!textFieldName.getText().isBlank() && passString != null
-					&& !textFieldMail.getText().isBlank() && !textFieldPhone.getText().isBlank()
-					&& comboBox.getSelectedIndex() > -1) {
+			if (!textFieldName.getText().isBlank() && passString != null && !textFieldMail.getText().isBlank()
+					&& !textFieldPhone.getText().isBlank() && comboBox.getSelectedIndex() > -1) {
 				user = new Administrator();
 				user.setName(textFieldName.getText());
 				user.setPassword(passString);
 				user.setEmail(textFieldMail.getText());
 				// birthdate
 				user.setBirthDate(LocalDate.now());
-				//System.out.println(comboBox.getSelectedItem().toString());
 				user.setPhone(textFieldPhone.getText());
 				user.setNationality(comboBox.getSelectedItem().toString());
 				((Administrator) user).setAddtions(0);
 				((Administrator) user).setStartDate(LocalDate.now());
 				controller.addUser(user);
-				
+
 				JOptionPane.showMessageDialog(getParent(), "Enviado correctamente.");
 				textFieldName.setText("");
 				passwordField.setText("");
@@ -417,19 +422,19 @@ public class MainWindow extends JFrame implements ActionListener {
 					textArea.append(userDel.getId() + "\n" + userDel.getName() + "\n" + userDel.getEmail() + "\n");
 					textArea.setVisible(true);
 					option = JOptionPane.showConfirmDialog(this, "Quiere borrar a " + userDel.getName() + "?");
-					if(option == 0) {
+					if (option == 0) {
 						controller.delete(userDel);
 						JOptionPane.showMessageDialog(this, userDel.getName() + " eliminado correctamente.");
 						textFieldFindUser.setText("");
 						textArea.setText("");
 						textArea.setVisible(false);
 					}
-					if(option == 1) {
+					if (option == 1) {
 						textFieldFindUser.setText("");
 						textArea.setText("");
 						textArea.setVisible(false);
 					}
-					if(option == 2) {
+					if (option == 2) {
 						textFieldFindUser.setText("");
 						textArea.setText("");
 						textArea.setVisible(false);
