@@ -9,5 +9,5 @@ public interface UserControllable {
 	public boolean delete (User user);
 	public User findUser (String usr);
 	public void addUser (User user);
-	public boolean modifyPlayer (User user);
+	public boolean modifyUser (User user);
 }

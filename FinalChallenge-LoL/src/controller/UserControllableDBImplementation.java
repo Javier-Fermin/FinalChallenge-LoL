@@ -24,6 +24,7 @@ public class UserControllableDBImplementation implements UserControllable {
 	@Override
 	/**
 	 * Method use to check if the information related to the logIn is correct
+	 * 
 	 * @param usr
 	 * @param passwd
 	 * @return correct
@@ -41,7 +42,7 @@ public class UserControllableDBImplementation implements UserControllable {
 		try {
 			con = conection.openConnection();
 		} catch (SQLException e1) {
-			// 
+			//
 			e1.printStackTrace();
 		}
 
@@ -87,8 +88,8 @@ public class UserControllableDBImplementation implements UserControllable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		//Close ResultSet
+
+		// Close ResultSet
 
 		if (rs != null) {
 			try {
@@ -132,8 +133,8 @@ public class UserControllableDBImplementation implements UserControllable {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		//Close the connection
+
+		// Close the connection
 
 		try {
 			conection.closeConnection(stmt, con);
@@ -157,13 +158,13 @@ public class UserControllableDBImplementation implements UserControllable {
 		final String SELECTadmin = "Select * FROM Administrator where id=?";
 
 		// Open connection with DB.
-				try {
-					con= conection.openConnection();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
+		try {
+			con = conection.openConnection();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
 		try {
 			// Prepare the first query, set the received usr String as parameter.
 			stmt = con.prepareStatement(SELECTplayer);
@@ -220,69 +221,75 @@ public class UserControllableDBImplementation implements UserControllable {
 			} catch (SQLException ex) {
 			}
 		}
-		
-		//Close the connection
 
-				try {
-					conection.closeConnection(stmt, con);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
+		// Close the connection
+
+		try {
+			conection.closeConnection(stmt, con);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		// Return the user with the info from the DB.
 		// null means there was no user in DB with received usr String.
 		return user;
 	}
+
 	@Override
 	public void addUser(User user) {
 		ResultSet rs = null;
 		String id = null;
-		//Find how many administrators are to generate the id
-		final String COUNTAdministrator = "SELECT COUNT(*) FROM Administrator";
-		//Find how many players are to generate the id
-		final String COUNTPlayer = "SELECT COUNT(*) FROM Player";
+		// Find how many administrators are to generate the id
+		final String MAXAdministrator = "SELECT id FROM Administrator WHERE id = (SELECT MAX(id) FROM Administrator) AND (SELECT COUNT(*) FROM Administrator) > 0";
+		// Find how many players are to generate the id
+		final String MAXPlayer = "SELECT id FROM player WHERE id = (SELECT MAX(id) FROM player) AND (SELECT COUNT(*) FROM player) > 0";
 		// First query to insert the user
 		final String INSERTuser = "INSERT INTO user (Id, Mail, Name, BirthDate, Phone, Nationality, Password) VALUES (?, ?, ?, ?, ?, ?, ?)";
 		// Second query to insert the information just related to player or admin
 		final String INSERTplayer = "INSERT INTO player (Nickname, Id) VALUES (?, ?)";
 		final String INSERTAdmin = "INSERT INTO Administrator (StartDate, Id, Additions) VALUES( ?,?,?)";
-		
+
 		// Open connection with DB.
 		try {
-			con= conection.openConnection();
+			con = conection.openConnection();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
 		try {
-			//Check the instance to establish the id code
-			if(user instanceof Player) {
-				stmt= con.prepareStatement(COUNTPlayer);
-				rs= stmt.executeQuery();
-				if(rs.next()) {
-				 id= "P" + rs.getInt(1);
-				}
-				
-			}else {
-				stmt= con.prepareStatement(COUNTAdministrator);
-				rs= stmt.executeQuery();
-				if(rs.next()) {
-					 id= "A" + rs.getInt(1);
-					}
-				
+			// Check the instance to establish the id code
+			if (user instanceof Player) {
+				stmt = con.prepareStatement(MAXPlayer);
+				// We establish the code for the first entry in the table player
+				id = "P1";
+			} else {
+				stmt = con.prepareStatement(MAXAdministrator);
+				// We establish the code for the first entry in the table Administrator
+				id = "A1";
 			}
-			
-			//Close the ResultSet
-			
-			if(rs!= null) {
+			rs = stmt.executeQuery();
+			if (rs.next()) {
+				id = rs.getString(1);
+				// Take the first letter: A or P
+				char clave = id.charAt(0);
+				// Remove the letter so you can caste it to integer and add one
+				id = id.substring(1);
+				int number = Integer.parseInt(id) + 1;
+				// Join the letter and the number
+				id = String.valueOf(clave) + String.valueOf(number);
+			}
+
+			// Close the ResultSet
+
+			if (rs != null) {
 				try {
 					rs.close();
 				} catch (SQLException ex) {
 				}
 			}
-			
+
 			// Prepare sentence for query adding all the items to the stmt.
 			stmt = con.prepareStatement(INSERTuser);
 
@@ -296,13 +303,13 @@ public class UserControllableDBImplementation implements UserControllable {
 
 			// Execute query.
 			stmt.executeUpdate();
-			
-			//Check the instance to make the second insert
-			if(user instanceof Player) {
+
+			// Check the instance to make the second insert
+			if (user instanceof Player) {
 				stmt = con.prepareStatement(INSERTplayer);
 				stmt.setString(1, ((Player) user).getNickname());
 				stmt.setString(2, id);
-			}else {
+			} else {
 				stmt = con.prepareStatement(INSERTAdmin);
 				stmt.setDate(1, Date.valueOf(((Administrator) user).getStartDate()));
 				stmt.setString(2, id);
@@ -324,21 +331,21 @@ public class UserControllableDBImplementation implements UserControllable {
 	}
 
 	@Override
-	public boolean modifyPlayer(User user) {
+	public boolean modifyUser(User user) {
 		// Creation of the three statements needed to make the modification
 		final String UPDATEUser = "UPDATE User SET Mail = ?, Name= ?, BirthDate= ?, Phone= ?, Nationality= ?, Password= ? WHERE id= ? ";
 		final String UPDATEPlayer = "UPDATE Player SET nickname = ? WHERE id= ?";
-
+		final String UPDATEAdmin = "UPDATE Administrator SET additions = ? WHERE id=? ";
 		// To check that the modification has been carried out correctly
 		boolean correct1 = false, correct2 = false;
 
 		// Open connection with DB.
-				try {
-					con= conection.openConnection();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+		try {
+			con = conection.openConnection();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		try {
 			// Prepare the first statement
 			stmt = con.prepareStatement(UPDATEUser);
@@ -357,12 +364,19 @@ public class UserControllableDBImplementation implements UserControllable {
 				correct1 = true;
 			}
 
-			// Prepare the second statement
-			stmt = con.prepareStatement(UPDATEPlayer);
+			if (user instanceof Player) {
+				// Prepare the second statement
+				stmt = con.prepareStatement(UPDATEPlayer);
 
-			// Establish the parameters for the second statement --> UPDATEPlayer
-			stmt.setString(1, ((Player) user).getNickname());
-			stmt.setString(2, user.getId());
+				// Establish the parameters for the second statement --> UPDATEPlayer
+				stmt.setString(1, ((Player) user).getNickname());
+				stmt.setString(2, user.getId());
+			} else {
+				stmt = con.prepareStatement(UPDATEAdmin);
+
+				stmt.setInt(1, ((Administrator) user).getAddtions());
+				stmt.setString(2, user.getId());
+			}
 
 			// Execute the second statement and check it
 			if (stmt.executeUpdate() != 0 && correct1 == true) {
@@ -372,16 +386,15 @@ public class UserControllableDBImplementation implements UserControllable {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		//Close the connection
 
-				try {
-					conection.closeConnection(stmt, con);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+		// Close the connection
+
+		try {
+			conection.closeConnection(stmt, con);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return correct2;
 	}
-
 }
