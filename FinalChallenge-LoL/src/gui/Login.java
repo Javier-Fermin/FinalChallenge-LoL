@@ -25,6 +25,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 
 public class Login extends JDialog implements ActionListener, MouseListener {
+	/**
+	 * 
+	 */
+	//Instance of necessary global variables
 	private final JPanel contentPanel = new JPanel();
 	private JPasswordField passwordField;
 	private JTextField username_1;
@@ -51,9 +55,10 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 	 */
 	public Login(UserControllable control, MainWindow main) {
 		setModal(true);
+		//Receive and keep as global for later use controller and main window information.
 		controller = control;
 		parent = main;
-		main.setUser(user);
+		// Necessary code for window GUI.
 		setIconImage(Toolkit.getDefaultToolkit().getImage(
 				"C:\\Users\\Aussar\\eclipse-workspace1\\pruebaVentanas\\Resources\\LoL_icon.svg (1) (1).png"));
 		setResizable(false);
@@ -97,9 +102,6 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 		PanelTransparente.setLayout(null);
 
 		JLabel lblLogo = new JLabel("");
-		lblLogo.addMouseListener(new MouseAdapter() {
-
-		});
 		lblLogo.setIcon(new ImageIcon(Login.class.getResource("/img/lolLogo (2).png")));
 		lblLogo.setBounds(126, 25, 64, 64);
 		PanelTransparente.add(lblLogo);
@@ -135,30 +137,39 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+	// Not needed.
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		//Enter when "sign in" button is pressed
 		if (e.getSource().equals(signIn)) {
-			// SignIn dialogSign = new SignIn();
+			// SignIn dialogSign = new SignIn(parent);
 			// dialogSign.setVisible(true);
 			this.dispose();
 		}
+		//Enter when log in button is pressed.
 		if (e.getSource().equals(acceder)) {
+			// Store the password as a String to set the user later.
 			char[] pass = passwordField.getPassword();
 			String passString = new String(pass);
+			// Checks if the fields for password and user are blank or not.
 			if (!username_1.getText().isBlank() && passString != "") {
+				// Checks the credentials are correct with DB.
 				if (controller.logIn(username_1.getText(), passString)) {
+					// Sets the data found to user and calls for parent, disposes of window when finished.
 					parent.setUser(controller.findUser(username_1.getText()));
 					parent.setVisible(true);
 					this.dispose();
 				}
 
 				else {
+					//If credentials are wrong, panel shown to indicate so.
 					JOptionPane.showMessageDialog(this, "Usuario o clave de acceso erronea.");
 
 				}
 			} else {
+				//If none of the fields are filled, shows error panel.
 				JOptionPane.showMessageDialog(this, "ERROR. Rellene todos los campos.");
 			}
 		}
@@ -166,17 +177,18 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-
+		// Not needed.
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-
+		// Not needed.
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		if (e.getSource().equals(signIn)) {
+			// If mouse hovers over "signIn" label, the font increases.
 			signIn.setFont(new Font("Bahnschrift", Font.BOLD, 16));
 		}
 	}
@@ -184,6 +196,7 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 	@Override
 	public void mouseExited(MouseEvent e) {
 		if (e.getSource().equals(signIn)) {
+			// When mouse exists the "signIn" label area, font decreases back to original size.
 			signIn.setFont(new Font("Bahnschrift", Font.BOLD, 13));
 		}
 	}
