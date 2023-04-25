@@ -1,7 +1,5 @@
 package gui;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -22,7 +20,10 @@ import java.awt.GridLayout;
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Set;
 import java.awt.BorderLayout;
 
 import javax.swing.GroupLayout;
@@ -33,6 +34,13 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTextArea;
+import javax.swing.JSeparator;
+import java.awt.Color;
+import java.awt.Dimension;
+
+import javax.swing.border.EtchedBorder;
+import javax.swing.SwingConstants;
+import com.toedter.calendar.JCalendar;
 
 public class MainWindow extends JFrame implements ActionListener {
 
@@ -53,9 +61,10 @@ public class MainWindow extends JFrame implements ActionListener {
 	private JButton btnSend;
 	private JButton btnDelete;
 	private JTextArea textArea;
+	private JCalendar calendar;
 
 	private User user, userDel;
-	private JTextField textFieldFindUser;
+	private JComboBox comboBoxFindUser;
 	private UserControllable controller;
 
 	/**
@@ -77,7 +86,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
-	public MainWindow(UserControllable control) {
+	public MainWindow(UserControllable control/* , User userReceived, MainWindow main */) {
 		controller = control;
 		Login login = new Login(control, this);
 		login.setVisible(true);
@@ -196,54 +205,76 @@ public class MainWindow extends JFrame implements ActionListener {
 
 		JPanel stadistics = new JPanel();
 		tabbedPane.addTab("STADISTICS", null, stadistics, null);
+		stadistics.setLayout(null);
 
 		JPanel management = new JPanel();
+		management.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		tabbedPane.addTab("MANAGEMENT", null, management, null);
-		management.setLayout(new BorderLayout(0, 0));
-
-		JTabbedPane tabbedPaneAdmin = new JTabbedPane(JTabbedPane.LEFT);
+		management.setLayout(new GridLayout(0, 2, 0, 0));
 
 		JPanel addAdmin = new JPanel();
-		tabbedPaneAdmin.addTab("Add administrator", null, addAdmin, null);
+		addAdmin.setForeground(new Color(255, 255, 255));
+		addAdmin.setBackground(new Color(255, 255, 255));
+		addAdmin.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		management.add(addAdmin);
 
-		JLabel lblName = new JLabel("Name:");
-		lblName.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		JLabel lblName = new JLabel("NAME");
+		lblName.setForeground(new Color(0, 0, 0));
+		lblName.setBounds(54, 137, 56, 19);
+		lblName.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
 
-		btnSend = new JButton("Send");
-		btnSend.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnSend = new JButton("SEND");
+		btnSend.setBounds(258, 584, 80, 27);
+		btnSend.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
 		btnSend.addActionListener(this);
 
 		textFieldName = new JTextField();
-		textFieldName.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		textFieldName.setBounds(341, 137, 199, 25);
+		textFieldName.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
 		textFieldName.setColumns(10);
 
-		JLabel lblPassword = new JLabel("Password:");
-		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		JLabel lblPassword = new JLabel("PASSWORD");
+		lblPassword.setForeground(new Color(0, 0, 0));
+		lblPassword.setBounds(54, 177, 91, 19);
+		lblPassword.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
 
 		passwordField = new JPasswordField();
-		passwordField.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		passwordField.setBounds(341, 177, 199, 25);
+		passwordField.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
 
-		JLabel lblMail = new JLabel("Mail:");
-		lblMail.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		JLabel lblMail = new JLabel("MAIL");
+		lblMail.setForeground(new Color(0, 0, 0));
+		lblMail.setBounds(54, 220, 45, 19);
+		lblMail.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
 
 		textFieldMail = new JTextField();
-		textFieldMail.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		textFieldMail.setBounds(341, 220, 199, 25);
+		textFieldMail.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
 		textFieldMail.setColumns(10);
 
-		JLabel lblBDate = new JLabel("Birth date:");
-		lblBDate.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		JLabel lblBDate = new JLabel("BIRTH DATE");
+		lblBDate.setForeground(new Color(0, 0, 0));
+		lblBDate.setBounds(54, 344, 98, 19);
+		lblBDate.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
 
-		JLabel lblPhoneAdmin = new JLabel("Phone:");
-		lblPhoneAdmin.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		JLabel lblPhoneAdmin = new JLabel("PHONE");
+		lblPhoneAdmin.setForeground(new Color(0, 0, 0));
+		lblPhoneAdmin.setBounds(54, 451, 56, 19);
+		lblPhoneAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
 
 		textFieldPhone = new JTextField();
-		textFieldPhone.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		textFieldPhone.setBounds(341, 448, 199, 25);
+		textFieldPhone.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
 		textFieldPhone.setColumns(10);
 
-		JLabel lblNationality = new JLabel("Nationality:");
-		lblNationality.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		JLabel lblNationality = new JLabel("NATIONALITY");
+		lblNationality.setForeground(new Color(0, 0, 0));
+		lblNationality.setBounds(54, 494, 108, 19);
+		lblNationality.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
 
 		comboBox = new JComboBox();
+		comboBox.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		comboBox.setBounds(341, 495, 199, 25);
 		comboBox.setModel(new DefaultComboBoxModel(new String[] { "Afghan", "Albanian", "Algerian", "American",
 				"Andorran", "Angolan", "Antiguans", "Argentinean", "Armenian", "Australian", "Austrian", "Azerbaijani",
 				"Bahamian", "Bahraini", "Bangladeshi", "Barbadian", "Barbudans", "Batswana", "Belarusian", "Belgian",
@@ -272,99 +303,69 @@ public class MainWindow extends JFrame implements ActionListener {
 				"Tuvaluan", "Ugandan", "Ukrainian", "Uruguayan", "Uzbekistani", "Venezuelan", "Vietnamese", "Welsh",
 				"Welsh", "Yemenite", "Zambian", "Zimbabwean" }));
 		comboBox.setSelectedIndex(-1);
-		GroupLayout gl_addAdmin = new GroupLayout(addAdmin);
-		gl_addAdmin.setHorizontalGroup(gl_addAdmin.createParallelGroup(Alignment.TRAILING).addGroup(gl_addAdmin
-				.createSequentialGroup().addGap(131)
-				.addGroup(gl_addAdmin.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_addAdmin.createSequentialGroup().addComponent(lblName).addGap(261).addComponent(
-								textFieldName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE))
-						.addGroup(
-								gl_addAdmin.createSequentialGroup().addComponent(lblPassword).addGap(239).addComponent(
-										passwordField, GroupLayout.PREFERRED_SIZE, 136, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_addAdmin.createSequentialGroup().addComponent(lblMail).addGap(276).addComponent(
-								textFieldMail, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE))
-						.addComponent(lblBDate)
-						.addGroup(gl_addAdmin.createParallelGroup(Alignment.TRAILING, false)
-								.addGroup(gl_addAdmin.createSequentialGroup().addComponent(lblPhoneAdmin)
-										.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE,
-												Short.MAX_VALUE)
-										.addComponent(textFieldPhone, GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-								.addGroup(Alignment.LEADING,
-										gl_addAdmin.createSequentialGroup().addComponent(lblNationality).addGap(234)
-												.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 136,
-														GroupLayout.PREFERRED_SIZE))))
-				.addGap(0, 501, Short.MAX_VALUE))
-				.addGroup(gl_addAdmin.createSequentialGroup().addContainerGap(992, Short.MAX_VALUE)
-						.addComponent(btnSend, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
-						.addContainerGap()));
-		gl_addAdmin.setVerticalGroup(gl_addAdmin.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_addAdmin.createSequentialGroup().addGap(101)
-						.addGroup(gl_addAdmin.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_addAdmin.createSequentialGroup().addGap(3).addComponent(lblName))
-								.addComponent(textFieldName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE))
-						.addGap(18)
-						.addGroup(gl_addAdmin.createParallelGroup(Alignment.LEADING).addComponent(lblPassword)
-								.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE))
-						.addGap(18)
-						.addGroup(gl_addAdmin.createParallelGroup(Alignment.LEADING).addComponent(lblMail).addComponent(
-								textFieldMail, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE))
-						.addGap(12).addComponent(lblBDate).addGap(150)
-						.addGroup(gl_addAdmin.createParallelGroup(Alignment.BASELINE).addComponent(lblPhoneAdmin)
-								.addComponent(textFieldPhone, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE))
-						.addGap(21)
-						.addGroup(gl_addAdmin.createParallelGroup(Alignment.LEADING).addComponent(lblNationality)
-								.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE))
-						.addGap(130).addComponent(btnSend).addContainerGap()));
-		addAdmin.setLayout(gl_addAdmin);
+		addAdmin.setLayout(null);
+		addAdmin.add(lblMail);
+		addAdmin.add(textFieldMail);
+		addAdmin.add(lblBDate);
+		addAdmin.add(lblNationality);
+		addAdmin.add(lblPhoneAdmin);
+		addAdmin.add(comboBox);
+		addAdmin.add(textFieldPhone);
+		addAdmin.add(lblPassword);
+		addAdmin.add(lblName);
+		addAdmin.add(textFieldName);
+		addAdmin.add(passwordField);
+		addAdmin.add(btnSend);
+		
+		JLabel lblAddAdminTitle = new JLabel("ADD AMINISTRATOR");
+		lblAddAdminTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAddAdminTitle.setFont(new Font("Bahnschrift", Font.PLAIN, 20));
+		lblAddAdminTitle.setBounds(197, 25, 193, 25);
+		addAdmin.add(lblAddAdminTitle);
+		
+		calendar = new JCalendar();
+		calendar.setBounds(341, 265, 198, 153);
+		addAdmin.add(calendar);
 
 		JPanel playerDelete = new JPanel();
-		tabbedPaneAdmin.addTab("Delete player", null, playerDelete, null);
+		playerDelete.setBackground(new Color(255, 255, 255));
+		playerDelete.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		management.add(playerDelete);
 
-		btnDelete = new JButton("Delete");
-		btnDelete.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnDelete = new JButton("DELETE");
+		btnDelete.setBounds(246, 584, 95, 27);
+		btnDelete.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
 		btnDelete.addActionListener(this);
 
-		JLabel lblSearchUser = new JLabel("Search a user:");
-		lblSearchUser.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		JLabel lblSearchUser = new JLabel("SELECT A USER");
+		lblSearchUser.setForeground(new Color(0, 0, 0));
+		lblSearchUser.setBounds(232, 137, 122, 19);
+		lblSearchUser.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
 
-		textFieldFindUser = new JTextField();
-		textFieldFindUser.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		textFieldFindUser.setColumns(10);
+		comboBoxFindUser = new JComboBox();
+		comboBoxFindUser.setBounds(193, 214, 201, 27);
+		comboBoxFindUser.setFont(new Font("Tahoma", Font.PLAIN, 15));
 
 		textArea = new JTextArea();
+		textArea.setForeground(new Color(0, 0, 0));
+		textArea.setBackground(new Color(255, 255, 255));
+		textArea.setBounds(132, 207, 328, 316);
+		textArea.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		textArea.setEditable(false);
 		textArea.setVisible(false);
+		playerDelete.setLayout(null);
+		playerDelete.add(lblSearchUser);
+		playerDelete.add(comboBoxFindUser);
+		playerDelete.add(textArea);
+		playerDelete.add(btnDelete);
+		
+		JLabel lblDeletePlayerTitle = new JLabel("DELETE PLAYERS");
+		lblDeletePlayerTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDeletePlayerTitle.setFont(new Font("Bahnschrift", Font.PLAIN, 20));
+		lblDeletePlayerTitle.setBounds(197, 27, 193, 25);
+		playerDelete.add(lblDeletePlayerTitle);
 
-		GroupLayout gl_playerDelete = new GroupLayout(playerDelete);
-		gl_playerDelete
-				.setHorizontalGroup(gl_playerDelete.createParallelGroup(Alignment.TRAILING)
-						.addGroup(gl_playerDelete.createSequentialGroup().addContainerGap(990, Short.MAX_VALUE)
-								.addComponent(btnDelete).addContainerGap())
-						.addGroup(gl_playerDelete.createSequentialGroup().addGap(485).addComponent(lblSearchUser)
-								.addContainerGap(493, Short.MAX_VALUE))
-						.addGroup(gl_playerDelete.createSequentialGroup().addGap(438)
-								.addComponent(textFieldFindUser, GroupLayout.PREFERRED_SIZE, 201,
-										GroupLayout.PREFERRED_SIZE)
-								.addContainerGap(434, Short.MAX_VALUE))
-						.addGroup(gl_playerDelete.createSequentialGroup().addGap(412)
-								.addComponent(textArea, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
-								.addContainerGap(333, Short.MAX_VALUE)));
-		gl_playerDelete.setVerticalGroup(gl_playerDelete.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_playerDelete.createSequentialGroup().addGap(79).addComponent(lblSearchUser).addGap(47)
-						.addComponent(textFieldFindUser, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE)
-						.addGap(83).addComponent(textArea, GroupLayout.PREFERRED_SIZE, 318, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.RELATED, 12, Short.MAX_VALUE).addComponent(btnDelete)
-						.addContainerGap()));
-		playerDelete.setLayout(gl_playerDelete);
-		management.add(tabbedPaneAdmin);
+		cargarUsers(control);
 
 		if (user instanceof Player) {
 			tabbedPane.remove(champAdmin);
@@ -374,6 +375,17 @@ public class MainWindow extends JFrame implements ActionListener {
 			tabbedPane.remove(champsPlayer);
 			tabbedPane.remove(game);
 			tabbedPane.remove(stadistics);
+		}
+	}
+
+	private void cargarUsers(UserControllable control) {
+		Set<User> users = control.listPlayers();
+
+		for (User u : users) {
+			if (comboBoxFindUser.getItemAt(0) != (u.getId() + " " + u.getName())) {
+				comboBoxFindUser.addItem(((Player) u).getNickname());
+			}
+			comboBoxFindUser.setSelectedIndex(-1);
 		}
 	}
 
@@ -396,12 +408,11 @@ public class MainWindow extends JFrame implements ActionListener {
 				user.setName(textFieldName.getText());
 				user.setPassword(passString);
 				user.setEmail(textFieldMail.getText());
-				// birthdate
+				LocalDate date = calendar.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+				user.setBirthDate(date);
 				user.setBirthDate(LocalDate.now());
 				user.setPhone(textFieldPhone.getText());
 				user.setNationality(comboBox.getSelectedItem().toString());
-				((Administrator) user).setAddtions(0);
-				((Administrator) user).setStartDate(LocalDate.now());
 				controller.addUser(user);
 
 				JOptionPane.showMessageDialog(getParent(), "Enviado correctamente.");
@@ -410,44 +421,42 @@ public class MainWindow extends JFrame implements ActionListener {
 				textFieldMail.setText("");
 				textFieldPhone.setText("");
 				comboBox.setSelectedIndex(-1);
+				calendar.setDate(Date.valueOf(LocalDate.now()));
+
 			} else {
 				JOptionPane.showMessageDialog(this, "ERROR. Rellene todos los campos.");
 			}
 		}
 		if (e.getSource().equals(btnDelete)) {
 			int option;
-			if (!textFieldFindUser.getText().isBlank()) {
-				userDel = controller.findUser(textFieldFindUser.getText());
-				if (userDel.getId() != null && userDel instanceof Player) {
-					textArea.append(userDel.getId() + "\n" + userDel.getName() + "\n" + userDel.getEmail() + "\n");
-					textArea.setVisible(true);
-					option = JOptionPane.showConfirmDialog(this, "Quiere borrar a " + userDel.getName() + "?");
-					if (option == 0) {
-						controller.delete(userDel);
-						JOptionPane.showMessageDialog(this, userDel.getName() + " eliminado correctamente.");
-						textFieldFindUser.setText("");
-						textArea.setText("");
-						textArea.setVisible(false);
-					}
-					if (option == 1) {
-						textFieldFindUser.setText("");
-						textArea.setText("");
-						textArea.setVisible(false);
-					}
-					if (option == 2) {
-						textFieldFindUser.setText("");
-						textArea.setText("");
-						textArea.setVisible(false);
-					}
-				} else {
-					JOptionPane.showMessageDialog(this,
-							"No se ha encontrado el usuario.\nAsegúrese de introducir los datos correctamente.");
-					textFieldFindUser.setText("");
+			if (comboBoxFindUser.getSelectedIndex() != -1) {
+				userDel = controller.findUser(comboBoxFindUser.getSelectedItem().toString());
+				textArea.append("ID: " + userDel.getId() + "\nNickname: " + ((Player) userDel).getNickname() + "\nName: " + userDel.getName() + "\nEmail: " + userDel.getEmail() + "\n");
+				textArea.setVisible(true);
+				option = JOptionPane.showConfirmDialog(this, "Quiere borrar a " + userDel.getName() + "?");
+				if (option == 0) {
+					controller.delete(userDel);
+					JOptionPane.showMessageDialog(this, userDel.getName() + " eliminado correctamente.");
+					comboBoxFindUser.setSelectedIndex(-1);
+					textArea.setText("");
+					textArea.setVisible(false);
+				}
+				if (option == 1) {
+					comboBoxFindUser.setSelectedIndex(-1);
+					textArea.setText("");
+					textArea.setVisible(false);
+				}
+				if (option == 2) {
+					comboBoxFindUser.setSelectedIndex(-1);
 					textArea.setText("");
 					textArea.setVisible(false);
 				}
 			} else {
-				JOptionPane.showMessageDialog(this, "ERROR. Rellene todos los campos.");
+				JOptionPane.showMessageDialog(this,
+						"ERROR. Rellene todos los campos.");
+				comboBoxFindUser.setSelectedIndex(-1);
+				textArea.setText("");
+				textArea.setVisible(false);
 			}
 		}
 	}
