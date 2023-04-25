@@ -15,7 +15,7 @@ public class UserControllableDBImplementation implements UserControllable {
 	/**
 	 * @author Irati Garzón
 	 * @author Alex Salinero
-	 * @version 4 - 20/04/2023
+	 * @version 5- 25/04/2023
 	 */
 	private Connection con;
 	private PreparedStatement stmt;
@@ -172,46 +172,51 @@ public class UserControllableDBImplementation implements UserControllable {
 			// Execute query.
 			rs = stmt.executeQuery();
 			// Prepare second query for table user.
-			stmt = con.prepareStatement(SELECTuser);
 
 			if (rs.next()) {
 				// If a player was received from first query, create new user a Player and get
 				// rest of information.
 				user = new Player();
 				((Player) user).setNickname(rs.getString("nickname"));
+
 				// Set player id as parameter for next query.
-				stmt.setString(1, rs.getString("id"));
+				//stmt.setString(1, rs.getString("id"));
 			} else {
-				// If no player was received the user is Administrator type.
-				user = new Administrator();
-				// Set the original usr String as parameter again.
+				stmt = con.prepareStatement(SELECTadmin);
 				stmt.setString(1, usr);
-			}
-
-			// Execute second query on user table.
-			rs = stmt.executeQuery();
-
-			if (rs.next()) {
-				// Get all the user information from DB and set to user.
-				user.setId(rs.getString("Id"));
-				user.setEmail(rs.getString("Mail"));
-				user.setName(rs.getString("Name"));
-				user.setBirthDate(rs.getDate("BirthDate").toLocalDate());
-				user.setPhone(rs.getString("Phone"));
-				user.setNationality(rs.getString("Nationality"));
-				user.setPassword(rs.getString("Password"));
-				if (user instanceof Administrator) {
-					// If user is administrator, prepare for third query.
-					stmt = con.prepareStatement(SELECTadmin);
+				// Execute third query.
+				rs = stmt.executeQuery();
+				if (rs.next()) {
+					// If no player was received the user is Administrator type.
+					user = new Administrator();
+					// Set the original usr String as parameter again.
 					stmt.setString(1, usr);
-					// Execute third query.
-					rs = stmt.executeQuery();
-					if (rs.next()) {
-						((Administrator) user).setStartDate(rs.getDate("StartDate").toLocalDate());
-						((Administrator) user).setAddtions(rs.getInt("Additions"));
-					}
+					((Administrator) user).setStartDate(rs.getDate("StartDate").toLocalDate());
+					((Administrator) user).setAddtions(rs.getInt("Additions"));
+
+				}
+
+			}
+			
+			//If the user isn't null we execute the query
+			if (user != null) {
+				user.setId(rs.getString("id"));
+				stmt = con.prepareStatement(SELECTuser);
+				stmt.setString(1, user.getId());
+				rs = stmt.executeQuery();
+				if (rs.next()) {
+					// Get all the user information from DB and set to user.
+					user.setId(rs.getString("Id"));
+					user.setEmail(rs.getString("Mail"));
+					user.setName(rs.getString("Name"));
+					user.setBirthDate(rs.getDate("BirthDate").toLocalDate());
+					user.setPhone(rs.getString("Phone"));
+					user.setNationality(rs.getString("Nationality"));
+					user.setPassword(rs.getString("Password"));
+
 				}
 			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -238,17 +243,7 @@ public class UserControllableDBImplementation implements UserControllable {
 
 	@Override
 	public void addUser(User user) {
-		ResultSet rs = null;
-		String id = null;
-		// Find how many administrators are to generate the id
-		final String MAXAdministrator = "SELECT id FROM Administrator WHERE id = (SELECT MAX(id) FROM Administrator) AND (SELECT COUNT(*) FROM Administrator) > 0";
-		// Find how many players are to generate the id
-		final String MAXPlayer = "SELECT id FROM player WHERE id = (SELECT MAX(id) FROM player) AND (SELECT COUNT(*) FROM player) > 0";
-		// First query to insert the user
-		final String INSERTuser = "INSERT INTO user (Id, Mail, Name, BirthDate, Phone, Nationality, Password) VALUES (?, ?, ?, ?, ?, ?, ?)";
-		// Second query to insert the information just related to player or admin
-		final String INSERTplayer = "INSERT INTO player (Nickname, Id) VALUES (?, ?)";
-		final String INSERTAdmin = "INSERT INTO Administrator (StartDate, Id, Additions) VALUES( ?,?,?)";
+		final String CALLUser = "CALL insertUser(?,?,?,?,?,?,?,?)";
 
 		// Open connection with DB.
 		try {
@@ -258,42 +253,19 @@ public class UserControllableDBImplementation implements UserControllable {
 			e1.printStackTrace();
 		}
 
+		// Prepare sentence for query adding all the items to the stmt.
 		try {
-			// Check the instance to establish the id code
+			stmt = con.prepareStatement(CALLUser);
 			if (user instanceof Player) {
-				stmt = con.prepareStatement(MAXPlayer);
-				// We establish the code for the first entry in the table player
-				id = "P1";
+				stmt.setString(1, "P");
+				stmt.setString(8, ((Player) user).getNickname());
+				
 			} else {
-				stmt = con.prepareStatement(MAXAdministrator);
-				// We establish the code for the first entry in the table Administrator
-				id = "A1";
-			}
-			rs = stmt.executeQuery();
-			if (rs.next()) {
-				id = rs.getString(1);
-				// Take the first letter: A or P
-				char clave = id.charAt(0);
-				// Remove the letter so you can caste it to integer and add one
-				id = id.substring(1);
-				int number = Integer.parseInt(id) + 1;
-				// Join the letter and the number
-				id = String.valueOf(clave) + String.valueOf(number);
+				stmt.setString(1, "A");
+				stmt.setString(8, null);
+				
 			}
 
-			// Close the ResultSet
-
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException ex) {
-				}
-			}
-
-			// Prepare sentence for query adding all the items to the stmt.
-			stmt = con.prepareStatement(INSERTuser);
-
-			stmt.setString(1, id);
 			stmt.setString(2, user.getEmail());
 			stmt.setString(3, user.getName());
 			stmt.setDate(4, Date.valueOf(user.getBirthDate()));
@@ -303,25 +275,10 @@ public class UserControllableDBImplementation implements UserControllable {
 
 			// Execute query.
 			stmt.executeUpdate();
-
-			// Check the instance to make the second insert
-			if (user instanceof Player) {
-				stmt = con.prepareStatement(INSERTplayer);
-				stmt.setString(1, ((Player) user).getNickname());
-				stmt.setString(2, id);
-			} else {
-				stmt = con.prepareStatement(INSERTAdmin);
-				stmt.setDate(1, Date.valueOf(((Administrator) user).getStartDate()));
-				stmt.setString(2, id);
-				stmt.setInt(3, ((Administrator) user).getAddtions());
-			}
-
-			// Execute second query.
-			stmt.executeUpdate();
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		try {
 			conection.closeConnection(stmt, con);
 		} catch (SQLException e) {
