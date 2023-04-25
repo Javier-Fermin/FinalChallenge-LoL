@@ -359,7 +359,52 @@ public class UserControllableDBImplementation implements UserControllable {
 
 	@Override
 	public Set<User> listPlayers() {
+		ResultSet rs = null;
+		User usr = null;
 		Set<User> users = new HashSet<User>();
+		String SELECTplayer = "select u.Id, Mail, Name, BirthDate, Phone, Nationality, Password, nickname from user u, player p where u.id = p.id; ";
+		
+		// Open connection with DB.
+		try {
+			con= conection.openConnection();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+			stmt = con.prepareStatement(SELECTplayer);
+			
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				usr = new Player();
+				usr.setId(rs.getString("Id"));
+				usr.setEmail(rs.getString("Mail"));
+				usr.setName(rs.getString("Name"));
+				usr.setBirthDate(rs.getDate("BirthDate").toLocalDate());
+				usr.setPhone(rs.getString("Phone"));
+				usr.setNationality(rs.getString("Nationality"));
+				usr.setPassword(rs.getString("Password"));
+				((Player) usr).setNickname(rs.getString("Nickname"));
+				users.add(usr);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			conection.closeConnection(stmt, con);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 		
 		return users;
 	}
