@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.Set;
+
 import model.Administrator;
 import model.Player;
 import model.User;
@@ -10,4 +12,5 @@ public interface UserControllable {
 	public User findUser (String usr);
 	public void addUser (User user);
 	public boolean modifyUser (User user);
+	public Set<User> listPlayers();
 }

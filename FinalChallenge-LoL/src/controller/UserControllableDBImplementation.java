@@ -5,6 +5,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Set;
+import java.util.HashSet;
 
 import model.Administrator;
 import model.ConnectionOpenClose;
@@ -353,5 +355,12 @@ public class UserControllableDBImplementation implements UserControllable {
 			e.printStackTrace();
 		}
 		return correct2;
+	}
+
+	@Override
+	public Set<User> listPlayers() {
+		Set<User> users = new HashSet<User>();
+		
+		return users;
 	}
 }
