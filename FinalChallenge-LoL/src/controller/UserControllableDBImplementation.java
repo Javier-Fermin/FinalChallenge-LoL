@@ -6,6 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Set;
+
+import exceptions.PersonalizedException;
+
 import java.util.HashSet;
 
 import model.Administrator;
@@ -31,7 +34,7 @@ public class UserControllableDBImplementation implements UserControllable {
 	 * @param passwd
 	 * @return correct
 	 */
-	public boolean logIn(String usr, String passwd) {
+	public boolean logIn(String usr, String passwd)  throws PersonalizedException{
 		User user = null;
 		boolean correct = false;
 		ResultSet rs = null;
@@ -109,7 +112,7 @@ public class UserControllableDBImplementation implements UserControllable {
 	}
 
 	@Override
-	public boolean delete(User user) {
+	public boolean delete(User user)  throws PersonalizedException{
 		// To check that the modification has been carried out correctly
 		boolean correct = false;
 		// Sentence to delete user.
@@ -149,7 +152,7 @@ public class UserControllableDBImplementation implements UserControllable {
 	}
 
 	@Override
-	public User findUser(String usr) {
+	public User findUser(String usr) throws PersonalizedException {
 		User user = null;
 		ResultSet rs = null;
 		// Sentence to get the player with the received nickname for player table.
@@ -244,7 +247,7 @@ public class UserControllableDBImplementation implements UserControllable {
 	}
 
 	@Override
-	public void addUser(User user) {
+	public void addUser(User user)  throws PersonalizedException{
 		final String CALLUser = "CALL insertUser(?,?,?,?,?,?,?,?)";
 
 		// Open connection with DB.
@@ -290,7 +293,7 @@ public class UserControllableDBImplementation implements UserControllable {
 	}
 
 	@Override
-	public boolean modifyUser(User user) {
+	public boolean modifyUser(User user)  throws PersonalizedException{
 		// Creation of the three statements needed to make the modification
 		final String UPDATEUser = "UPDATE User SET Mail = ?, Name= ?, BirthDate= ?, Phone= ?, Nationality= ?, Password= ? WHERE id= ? ";
 		final String UPDATEPlayer = "UPDATE Player SET nickname = ? WHERE id= ?";
@@ -358,7 +361,7 @@ public class UserControllableDBImplementation implements UserControllable {
 	}
 
 	@Override
-	public Set<User> listPlayers() {
+	public Set<User> listPlayers()  throws PersonalizedException{
 		ResultSet rs = null;
 		User usr = null;
 		Set<User> users = new HashSet<User>();

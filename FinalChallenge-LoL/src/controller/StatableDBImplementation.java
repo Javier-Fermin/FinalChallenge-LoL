@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
+import exceptions.PersonalizedException;
 import model.Played;
 
 public class StatableDBImplementation implements Statable {
@@ -35,7 +36,7 @@ public class StatableDBImplementation implements Statable {
 
 	@Override
 	//RECORDAR CAMBIAR LUEGO A THROWS
-	public Set<Played> stadistics(String nickname) {
+	public Set<Played> stadistics(String nickname)  throws PersonalizedException{
 		// TODO Auto-generated method stub
 		Set <Played> stats = null;
 		try {

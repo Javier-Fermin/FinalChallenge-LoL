@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import exceptions.PersonalizedException;
 import model.Champ;
 import model.ConnectionOpenClose;
 
@@ -20,7 +21,7 @@ public class ChampEditableDBImplementation implements ChampEditable {
 	private ResultSet	rs;
 
 	@Override
-	public void addChamp(Champ champ) {
+	public void addChamp(Champ champ)  throws PersonalizedException{
 		// SQL query
 		final String INSERTchamp = "INSERT INTO Champ (Name, Position, Region, Passive, Q, W, E, R) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 		
@@ -59,7 +60,7 @@ public class ChampEditableDBImplementation implements ChampEditable {
 	}
 
 	@Override
-	public boolean modifyChamp(Champ champ) {
+	public boolean modifyChamp(Champ champ)  throws PersonalizedException{
 		// SQL query
 		final String UPDATEchamp = "UPDATE Champ SET Name = ?, Position = ?, Region = ?, Passive = ?, Q = ?, W = ?, E = ?, R = ? WHERE Name = ?";
 		
@@ -103,7 +104,7 @@ public class ChampEditableDBImplementation implements ChampEditable {
 	}
 
 	@Override
-	public List<Champ> listChamp() {
+	public List<Champ> listChamp()  throws PersonalizedException{
 		Champ champ;
 		ArrayList<Champ> list = new ArrayList<Champ>();
 		// SQL query
@@ -148,7 +149,7 @@ public class ChampEditableDBImplementation implements ChampEditable {
 	}
 
 	@Override
-	public List<Champ> listChamp(String filterPosition, String filterRegion) {
+	public List<Champ> listChamp(String filterPosition, String filterRegion)  throws PersonalizedException{
 		Champ champ;
 		ArrayList<Champ> listFiltered = new ArrayList<Champ>();
 		// SQL query
