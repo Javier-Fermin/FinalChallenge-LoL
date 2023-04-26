@@ -101,6 +101,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		contentPane.setLayout(new GridLayout(0, 1, 0, 0));
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setFont(new Font("Calibri", Font.PLAIN, 20));
 		tabbedPane.setMaximumSize(getMaximumSize());
 		tabbedPane.setMinimumSize(getMinimumSize());
 		contentPane.add(tabbedPane);
