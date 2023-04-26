@@ -36,40 +36,22 @@ import java.awt.GridLayout;
 import java.awt.FlowLayout;
 
 public class MainWindow extends JFrame {
-
-
 	private JPanel contentPane;
-	private JTextField textFieldName;
-	private JTextField textFieldNickname;
-	private JTextField textFieldEmail;
-	JComboBox comboBoxNationality = new JComboBox();
-	JButton btnDelete = new JButton("DELETE");
-	JButton btnModify = new JButton("MODIFY ");
-	UserControllable controlador;
-	private JTextField textFieldPhone;
-	JCalendar jCalendar = new JCalendar();
-	JCalendar jCalendarStartDate = new JCalendar();
-	User user;
-	private JTextField textFieldPassword;
+	private JTextField textFieldNameProfile;
+	private JTextField textFieldNicknameProfile;
+	private JTextField textFieldEmailProfile;
+	private JComboBox comboBoxNationalityProfile;
+	private JButton btnDeleteProfile;
+	private JButton btnModifyProfile;
+	private JTextField textFieldPhoneProfile;
+	private JCalendar jCalendarProfile;
+	private JCalendar jCalendarStartDateProfile;
+	private JTextField textFieldPasswordProfile;
 	private String nicknameOriginal;
-	private JTextField textFieldAdditions;
-	JPanel panelAdmin = new JPanel();
-	JLabel nickname = new JLabel("NICKNAME");
-	SignIn signin = new SignIn(controlador);
+	private JTextField textFieldAdditionsProfile;
+	private JLabel nicknameProfile;
 
-	/**
-	 * Launch the application.
-	 */
-
-	/**
-	 * Create the frame.
-	 * 
-	 * @param user
-	 * @param controlador
-	 */
-	public MainWindow(UserControllable controlador, User user) {
-		this.controlador = controlador;
-		this.user = user;
+	public MainWindow2() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1210, 703);
 		contentPane = new JPanel();
@@ -79,7 +61,6 @@ public class MainWindow extends JFrame {
 		contentPane.setLayout(null);
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		tabbedPane.setBounds(0, 0, 1196, 656);
 		contentPane.add(tabbedPane);
 
@@ -88,35 +69,35 @@ public class MainWindow extends JFrame {
 		tabbedPane.addTab("PROFILE\r\n", null, profile, null);
 		profile.setLayout(null);
 
-		panelAdmin = new JPanel();
+		JPanel panelAdmin = new JPanel();
 		panelAdmin.setBounds(625, 10, 556, 609);
 		panelAdmin.setBackground(new Color(255, 255, 255));
 		profile.add(panelAdmin);
 		panelAdmin.setLayout(null);
 
-		JLabel lblAdministratorArea = new JLabel("ADMINISTRATOR AREA");
-		lblAdministratorArea.setBounds(156, 29, 249, 26);
-		lblAdministratorArea.setFont(new Font("Bahnschrift", Font.BOLD, 21));
-		panelAdmin.add(lblAdministratorArea);
+		JLabel lblAdministratorAreaProfile = new JLabel("ADMINISTRATOR AREA");
+		lblAdministratorAreaProfile.setBounds(156, 29, 249, 26);
+		lblAdministratorAreaProfile.setFont(new Font("Bahnschrift", Font.BOLD, 21));
+		panelAdmin.add(lblAdministratorAreaProfile);
 
-		JLabel startDate = new JLabel("START DATE");
-		startDate.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		startDate.setBounds(48, 231, 132, 21);
-		panelAdmin.add(startDate);
+		JLabel startDateProfile = new JLabel("START DATE");
+		startDateProfile.setFont(new Font("Bahnschrift", Font.BOLD, 17));
+		startDateProfile.setBounds(48, 231, 132, 21);
+		panelAdmin.add(startDateProfile);
 
-		jCalendarStartDate = new JCalendar();
-		jCalendarStartDate.setBounds(177, 150, 199, 152);
-		panelAdmin.add(jCalendarStartDate);
+		jCalendarStartDateProfile = new JCalendar();
+		jCalendarStartDateProfile.setBounds(177, 150, 199, 152);
+		panelAdmin.add(jCalendarStartDateProfile);
 
-		JLabel additions = new JLabel("ADDITIONS");
-		additions.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		additions.setBounds(48, 415, 92, 21);
-		panelAdmin.add(additions);
+		JLabel additionsProfile = new JLabel("ADDITIONS");
+		additionsProfile.setFont(new Font("Bahnschrift", Font.BOLD, 17));
+		additionsProfile.setBounds(48, 415, 92, 21);
+		panelAdmin.add(additionsProfile);
 
-		textFieldAdditions = new JTextField();
-		textFieldAdditions.setBounds(177, 416, 199, 19);
-		panelAdmin.add(textFieldAdditions);
-		textFieldAdditions.setColumns(10);
+		textFieldAdditionsProfile = new JTextField();
+		textFieldAdditionsProfile.setBounds(177, 416, 199, 19);
+		panelAdmin.add(textFieldAdditionsProfile);
+		textFieldAdditionsProfile.setColumns(10);
 
 		JPanel panelInfo = new JPanel();
 		panelInfo.setBounds(16, 10, 599, 609);
@@ -125,78 +106,75 @@ public class MainWindow extends JFrame {
 		panelInfo.setBackground(new Color(255, 255, 255));
 		profile.add(panelInfo);
 
-		JLabel password = new JLabel("PASSWORD");
-		password.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		password.setBounds(65, 232, 95, 21);
-		panelInfo.add(password);
+		JLabel passwordProfile = new JLabel("PASSWORD");
+		passwordProfile.setFont(new Font("Bahnschrift", Font.BOLD, 17));
+		passwordProfile.setBounds(65, 232, 95, 21);
+		panelInfo.add(passwordProfile);
 
-		JLabel lblEmail = new JLabel("NAME");
-		lblEmail.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		lblEmail.setBounds(65, 159, 49, 21);
-		panelInfo.add(lblEmail);
+		JLabel lblEmailProfile = new JLabel("NAME");
+		lblEmailProfile.setFont(new Font("Bahnschrift", Font.BOLD, 17));
+		lblEmailProfile.setBounds(65, 159, 49, 21);
+		panelInfo.add(lblEmailProfile);
 
-		JLabel email = new JLabel("EMAIL");
-		email.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		email.setBounds(65, 289, 51, 21);
-		panelInfo.add(email);
+		JLabel emailProfile = new JLabel("EMAIL");
+		emailProfile.setFont(new Font("Bahnschrift", Font.BOLD, 17));
+		emailProfile.setBounds(65, 289, 51, 21);
+		panelInfo.add(emailProfile);
 
-		textFieldName = new JTextField();
-		textFieldName.setToolTipText("");
-		textFieldName.setColumns(10);
-		textFieldName.setBounds(215, 160, 199, 19);
-		panelInfo.add(textFieldName);
+		textFieldNameProfile = new JTextField();
+		textFieldNameProfile.setToolTipText("");
+		textFieldNameProfile.setColumns(10);
+		textFieldNameProfile.setBounds(215, 160, 199, 19);
+		panelInfo.add(textFieldNameProfile);
 
-		JLabel birthdate = new JLabel("BIRTHDATE");
-		birthdate.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		birthdate.setBounds(65, 372, 92, 21);
-		panelInfo.add(birthdate);
+		JLabel birthdateProfile = new JLabel("BIRTHDATE");
+		birthdateProfile.setFont(new Font("Bahnschrift", Font.BOLD, 17));
+		birthdateProfile.setBounds(65, 372, 92, 21);
+		panelInfo.add(birthdateProfile);
 
-		JLabel lblNacionality = new JLabel("NATIONALITY");
-		lblNacionality.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		lblNacionality.setBounds(65, 557, 110, 21);
-		panelInfo.add(lblNacionality);
+		JLabel lblNacionalityProfile = new JLabel("NATIONALITY");
+		lblNacionalityProfile.setFont(new Font("Bahnschrift", Font.BOLD, 17));
+		lblNacionalityProfile.setBounds(65, 557, 110, 21);
+		panelInfo.add(lblNacionalityProfile);
 
-		nickname = new JLabel("NICKNAME");
-		nickname.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		nickname.setBounds(65, 96, 88, 21);
-		panelInfo.add(nickname);
+		nicknameProfile = new JLabel("NICKNAME");
+		nicknameProfile.setFont(new Font("Bahnschrift", Font.BOLD, 17));
+		nicknameProfile.setBounds(65, 96, 88, 21);
+		panelInfo.add(nicknameProfile);
 
-		textFieldNickname = new JTextField();
-		textFieldNickname.setColumns(10);
-		textFieldNickname.setBounds(215, 97, 199, 19);
-		panelInfo.add(textFieldNickname);
+		textFieldNicknameProfile = new JTextField();
+		textFieldNicknameProfile.setColumns(10);
+		textFieldNicknameProfile.setBounds(215, 97, 199, 19);
+		panelInfo.add(textFieldNicknameProfile);
 
-		textFieldEmail = new JTextField();
-		textFieldEmail.setToolTipText("");
-		textFieldEmail.setColumns(10);
-		textFieldEmail.setBounds(215, 290, 199, 19);
-		panelInfo.add(textFieldEmail);
+		textFieldEmailProfile = new JTextField();
+		textFieldEmailProfile.setToolTipText("");
+		textFieldEmailProfile.setColumns(10);
+		textFieldEmailProfile.setBounds(215, 290, 199, 19);
+		panelInfo.add(textFieldEmailProfile);
 
-		JLabel lblPersonalData = new JLabel("PERSONAL DATA");
-		lblPersonalData.setFont(new Font("Bahnschrift", Font.BOLD, 21));
-		lblPersonalData.setBounds(192, 37, 206, 26);
-		panelInfo.add(lblPersonalData);
+		JLabel lblPersonalDataProfile = new JLabel("PERSONAL DATA");
+		lblPersonalDataProfile.setFont(new Font("Bahnschrift", Font.BOLD, 21));
+		lblPersonalDataProfile.setBounds(192, 37, 206, 26);
+		panelInfo.add(lblPersonalDataProfile);
 
-		btnModify = new JButton("MODIFY ");
-		btnModify.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnModify.setBackground(new Color(64, 224, 208));
-		btnModify.setBounds(468, 116, 92, 67);
-		panelInfo.add(btnModify);
-		btnModify.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnModify.addActionListener(this);
+		btnModifyProfile = new JButton("MODIFY ");
+	;
+		btnModifyProfile.setBackground(new Color(64, 224, 208));
+		btnModifyProfile.setBounds(468, 116, 92, 67);
+		panelInfo.add(btnModifyProfile);
+		btnModifyProfile.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnModifyProfile.addActionListener(this);
 
-		btnDelete = new JButton("DELETE");
-		btnDelete.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnDelete.setBackground(new Color(64, 224, 208));
-		btnDelete.setBounds(468, 289, 95, 67);
-		panelInfo.add(btnDelete);
-		btnDelete.addActionListener(this);
+		btnDeleteProfile = new JButton("DELETE");
+		btnDeleteProfile.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnDeleteProfile.setBackground(new Color(64, 224, 208));
+		btnDeleteProfile.setBounds(468, 289, 95, 67);
+		panelInfo.add(btnDeleteProfile);
+		btnDeleteProfile.addActionListener(this);
 
-		comboBoxNationality = new JComboBox();
-		comboBoxNationality.setModel(new DefaultComboBoxModel(new String[] { "Afghan", "Albanian", "Algerian",
+		comboBoxNationalityProfile = new JComboBox();
+		comboBoxNationalityProfile.setModel(new DefaultComboBoxModel(new String[] { "Afghan", "Albanian", "Algerian",
 				"American", "Andorran", "Angolan", "Antiguans", "Argentinean", "Armenian", "Australian", "Austrian",
 				"Azerbaijani", "Bahamian", "Bahraini", "Bangladeshi", "Barbadian", "Barbudans", "Batswana",
 				"Belarusian", "Belgian", "Belizean", "Beninese", "Bhutanese", "Bolivian", "Bosnian", "Brazilian",
@@ -222,32 +200,32 @@ public class MainWindow extends JFrame {
 				"Tanzanian", "Thai", "Togolese", "Tongan", "Trinidadian or Tobagonian", "Tunisian", "Turkish",
 				"Tuvaluan", "Ugandan", "Ukrainian", "Uruguayan", "Uzbekistani", "Venezuelan", "Vietnamese", "Welsh",
 				"Yemenite", "Zambian", "Zimbabwean" }));
-		comboBoxNationality.setBounds(215, 557, 199, 21);
-		panelInfo.add(comboBoxNationality);
+		comboBoxNationalityProfile.setBounds(215, 557, 199, 21);
+		panelInfo.add(comboBoxNationalityProfile);
 
-		jCalendar = new JCalendar();
-		jCalendar.setBounds(215, 331, 199, 152);
-		panelInfo.add(jCalendar);
+		jCalendarProfile = new JCalendar();
+		jCalendarProfile.setBounds(215, 331, 199, 152);
+		panelInfo.add(jCalendarProfile);
 
-		JLabel phone = new JLabel("PHONE");
-		phone.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		phone.setBounds(65, 504, 92, 21);
-		panelInfo.add(phone);
+		JLabel phoneProfile = new JLabel("PHONE");
+		phoneProfile.setFont(new Font("Bahnschrift", Font.BOLD, 17));
+		phoneProfile.setBounds(65, 504, 92, 21);
+		panelInfo.add(phoneProfile);
 
-		textFieldPhone = new JTextField();
-		textFieldPhone.setBounds(215, 505, 199, 19);
-		panelInfo.add(textFieldPhone);
-		textFieldPhone.setColumns(10);
+		textFieldPhoneProfile = new JTextField();
+		textFieldPhoneProfile.setBounds(215, 505, 199, 19);
+		panelInfo.add(textFieldPhoneProfile);
+		textFieldPhoneProfile.setColumns(10);
 
-		textFieldPassword = new JTextField();
-		textFieldPassword.setBounds(215, 233, 199, 19);
-		panelInfo.add(textFieldPassword);
-		textFieldPassword.setColumns(10);
+		textFieldPasswordProfile = new JTextField();
+		textFieldPasswordProfile.setBounds(215, 233, 199, 19);
+		panelInfo.add(textFieldPasswordProfile);
+		textFieldPasswordProfile.setColumns(10);
 		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setBackground(new Color(255, 105, 180));
-		lblNewLabel.setBounds(0, 0, 1201, 629);
-		profile.add(lblNewLabel);
+		JLabel lblNewLabelProfile = new JLabel("");
+		lblNewLabelProfile.setBackground(new Color(255, 105, 180));
+		lblNewLabelProfile.setBounds(0, 0, 1201, 629);
+		profile.add(lblNewLabelProfile);
 
 		JPanel champsPlayer = new JPanel();
 		tabbedPane.addTab("CHAMPS", null, champsPlayer, null);
@@ -265,38 +243,38 @@ public class MainWindow extends JFrame {
 		tabbedPane.addTab("MANAGEMENT", null, management, null);
 		
 		//Load the tab profile with the information for the database
-		loadData(controlador, user);
+		loadData(userControllable);
 
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		if (e.getSource().equals(btnModify)) {
-			modifyPlayer(controlador);
+		if (e.getSource().equals(btnModifyProfile)) {
+			modifyPlayer(userControllable);
 		}
 
-		if (e.getSource().equals(btnDelete)) {
-			deletePlayer(controlador);
+		if (e.getSource().equals(btnDeleteProfile)) {
+			deletePlayer(userControllable);
 		}
 	}
 
 	// Create the user with the information writen in the profile tab
 	public User loadUser() {
-		user.setName(textFieldName.getText());
-		user.setNationality((String) comboBoxNationality.getSelectedItem());
-		user.setEmail(textFieldEmail.getText());
-		user.setPassword(textFieldPassword.getText());
-		user.setPhone(textFieldPhone.getText());
-		LocalDate date = jCalendar.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		user.setName(textFieldNameProfile.getText());
+		user.setNationality((String) comboBoxNationalityProfile.getSelectedItem());
+		user.setEmail(textFieldEmailProfile.getText());
+		user.setPassword(textFieldPasswordProfile.getText());
+		user.setPhone(textFieldPhoneProfile.getText());
+		LocalDate date = jCalendarProfile.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 		user.setBirthDate(date);
 		if (user instanceof Player) {
-			((Player) user).setNickname(textFieldName.getText());
+			((Player) user).setNickname(textFieldNameProfile.getText());
 		} else {
-			textFieldNickname.setVisible(false);
-			LocalDate dateStart = jCalendarStartDate.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			textFieldNicknameProfile.setVisible(false);
+			LocalDate dateStart = jCalendarStartDateProfile.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 			((Administrator) user).setStartDate(dateStart);
-			((Administrator) user).setAddtions(Integer.parseInt(textFieldAdditions.getText()));
+			((Administrator) user).setAddtions(Integer.parseInt(textFieldAdditionsProfile.getText()));
 
 		}
 
@@ -305,13 +283,13 @@ public class MainWindow extends JFrame {
 	}
 
 	// Load the data from the user for the profile tab
-	public void loadData(UserControllable controller, User user) {
-		textFieldName.setText(user.getName());
-		textFieldEmail.setText(user.getEmail());
-		jCalendar.setDate(Date.valueOf(user.getBirthDate()));
-		textFieldPassword.setText(user.getPassword());
-		textFieldPhone.setText(user.getPhone());
-		comboBoxNationality.setSelectedItem(user.getNationality());
+	public void loadData(UserControllable userControllable) {
+		textFieldNameProfile.setText(user.getName());
+		textFieldEmailProfile.setText(user.getEmail());
+		jCalendarProfile.setDate(Date.valueOf(user.getBirthDate()));
+		textFieldPasswordProfile.setText(user.getPassword());
+		textFieldPhoneProfile.setText(user.getPhone());
+		comboBoxNationalityProfile.setSelectedItem(user.getNationality());
 
 		if (user instanceof Player) {
 
@@ -320,48 +298,48 @@ public class MainWindow extends JFrame {
 			nicknameOriginal = ((Player) user).getNickname();
 			// Panel with the admin information isn't visible
 			panelAdmin.setVisible(false);
-			textFieldNickname.setText(((Player) user).getNickname());
+			textFieldNicknameProfile.setText(((Player) user).getNickname());
 
 		} else {
-			textFieldNickname.setVisible(false);
-			btnDelete.setVisible(false);
-			nickname.setVisible(false);
+			textFieldNicknameProfile.setVisible(false);
+			btnDeleteProfile.setVisible(false);
+			nicknameProfile.setVisible(false);
 			// Change the btnModify location to panelAdmin
-			panelAdmin.add(btnModify);
-			btnModify.setBounds(249, 483, 92, 67);
-			textFieldAdditions.setText(String.valueOf(((Administrator) user).getAddtions()));
-			jCalendarStartDate.setDate(Date.valueOf(((Administrator) user).getStartDate()));
+			panelAdmin.add(btnModifyProfile);
+			btnModifyProfile.setBounds(249, 483, 92, 67);
+			textFieldAdditionsProfile.setText(String.valueOf(((Administrator) user).getAddtions()));
+			jCalendarStartDateProfile.setDate(Date.valueOf(((Administrator) user).getStartDate()));
 		}
 	}
 
 	// Clear method to set all the fields with no information.
 	public void clear() {
 
-		JCalendar.setDefaultLocale(getLocale());
-		textFieldEmail.setText("");
-		textFieldName.setText("");
-		textFieldPassword.setText("");
-		textFieldNickname.setText("");
-		textFieldPhone.setText("");
-		comboBoxNationality.setSelectedIndex(-1);
+		jCalendarProfile.setDefaultLocale(getLocale());
+		textFieldEmailProfile.setText("");
+		textFieldNameProfile.setText("");
+		textFieldPasswordProfile.setText("");
+		textFieldNicknameProfile.setText("");
+		textFieldPhoneProfile.setText("");
+		comboBoxNationalityProfile.setSelectedIndex(-1);
 	}
 
 	public void focusGained(FocusEvent e) {
 
 	}
 
-	public void modifyPlayer(UserControllable controlador) {
+	public void modifyPlayer(UserControllable userControllable) {
 		boolean correct = false;
 		// If the user is instance as player we use the original nickname saved before
 		if (user instanceof Player) {
-			user = controlador.findUser(nicknameOriginal);
+			user = userControllable.findUser(nicknameOriginal);
 		} else {
-			user = controlador.findUser(user.getId());
+			user = userControllable.findUser(user.getId());
 		}
 		//ADD CHECKEO
 		User user = loadUser();
 
-		correct = controlador.modifyUser(user);
+		correct = userControllable.modifyUser(user);
 		if (correct) {
 			JOptionPane.showMessageDialog(this, "PERSONAL DATA MODIFIED");
 		} else {
@@ -371,18 +349,23 @@ public class MainWindow extends JFrame {
 	}
 
 	// Method to delete Player
-	public void deletePlayer(UserControllable controller) {
+	public void deletePlayer(UserControllable userControllable) {
 		boolean correct = false;
 		int aceptar;
 		User user = null;
 		// Find the user
-		user = controller.findUser(textFieldNickname.getText());
+		user = userControllable.findUser(textFieldNicknameProfile.getText());
 		// Show a confirmation dialog
 		aceptar = JOptionPane.showConfirmDialog(this, "WARNING: do you want to delete your account?");
 		// Yes --> 0 so If the user accepts the message, his account will be deleted.
 		if (aceptar == 0) {
-			controller.delete(user);
+			correct= userControllable.delete(user);
 			clear();
+		}
+		if (correct) {
+			JOptionPane.showMessageDialog(this, "USER DELETE");
+		} else {
+			JOptionPane.showMessageDialog(this, "USER NO DELETE");
 		}
 
 	}
