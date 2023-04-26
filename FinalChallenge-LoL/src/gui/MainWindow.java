@@ -20,6 +20,8 @@ import java.awt.GridLayout;
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -41,8 +43,9 @@ import java.awt.Dimension;
 import javax.swing.border.EtchedBorder;
 import javax.swing.SwingConstants;
 import com.toedter.calendar.JCalendar;
+import javax.swing.ImageIcon;
 
-public class MainWindow extends JFrame implements ActionListener {
+public class MainWindow extends JFrame implements ActionListener, MouseListener {
 
 	private JPanel contentPane;
 	private JTextField Nickname_TextField;
@@ -53,18 +56,19 @@ public class MainWindow extends JFrame implements ActionListener {
 	private JTextField Nacionality_textField;
 	private JTextField StartDate_textField;
 	private JTextField Additions_textField;
-	private JTextField textFieldName;
-	private JTextField textFieldMail;
-	private JTextField textFieldPhone;
-	private JPasswordField passwordField;
-	private JComboBox comboBox;
-	private JButton btnSend;
-	private JButton btnDelete;
-	private JTextArea textArea;
-	private JCalendar calendar;
+	private JTextField textFieldNameAddAdmin;
+	private JTextField textFieldMailAddAdmin;
+	private JTextField textFieldPhoneAddAdmin;
+	private JPasswordField passwordFieldAddAdmin;
+	private JComboBox comboBoxAddAdmin;
+	private JButton btnSendAddAdmin;
+	private JButton btnDeletePlayer;
+	private JTextArea textAreaDeletePlayer;
+	private JCalendar calendarAddAdmin;
+	private JLabel lblPassEyeAddAdmin;
 
 	private User user, userDel;
-	private JComboBox comboBoxFindUser;
+	private JComboBox comboBoxSelectUser;
 	private UserControllable controller;
 
 	/**
@@ -101,7 +105,6 @@ public class MainWindow extends JFrame implements ActionListener {
 		contentPane.setLayout(new GridLayout(0, 1, 0, 0));
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setFont(new Font("Calibri", Font.PLAIN, 20));
 		tabbedPane.setMaximumSize(getMaximumSize());
 		tabbedPane.setMinimumSize(getMinimumSize());
 		contentPane.add(tabbedPane);
@@ -219,64 +222,60 @@ public class MainWindow extends JFrame implements ActionListener {
 		addAdmin.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		management.add(addAdmin);
 
-		JLabel lblName = new JLabel("NAME");
-		lblName.setForeground(new Color(0, 0, 0));
-		lblName.setBounds(54, 137, 56, 19);
-		lblName.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
+		JLabel lblNameAddAdmin = new JLabel("NAME");
+		lblNameAddAdmin.setForeground(new Color(0, 0, 0));
+		lblNameAddAdmin.setBounds(54, 137, 56, 19);
+		lblNameAddAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
 
-		btnSend = new JButton("SEND");
-		btnSend.setBounds(258, 584, 80, 27);
-		btnSend.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
-		btnSend.addActionListener(this);
+		btnSendAddAdmin = new JButton("SEND");
+		btnSendAddAdmin.setBounds(258, 584, 80, 27);
+		btnSendAddAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		btnSendAddAdmin.addActionListener(this);
 
-		textFieldName = new JTextField();
-		textFieldName.setBounds(341, 137, 199, 25);
-		textFieldName.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
-		textFieldName.setColumns(10);
+		textFieldNameAddAdmin = new JTextField();
+		textFieldNameAddAdmin.setBounds(341, 137, 199, 25);
+		textFieldNameAddAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textFieldNameAddAdmin.setColumns(10);
 
-		JLabel lblPassword = new JLabel("PASSWORD");
-		lblPassword.setForeground(new Color(0, 0, 0));
-		lblPassword.setBounds(54, 177, 91, 19);
-		lblPassword.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
+		JLabel lblPasswordAddAdmin = new JLabel("PASSWORD");
+		lblPasswordAddAdmin.setForeground(new Color(0, 0, 0));
+		lblPasswordAddAdmin.setBounds(54, 177, 91, 19);
+		lblPasswordAddAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
 
-		passwordField = new JPasswordField();
-		passwordField.setBounds(341, 177, 199, 25);
-		passwordField.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		JLabel lblMailAddAdmin = new JLabel("MAIL");
+		lblMailAddAdmin.setForeground(new Color(0, 0, 0));
+		lblMailAddAdmin.setBounds(54, 220, 45, 19);
+		lblMailAddAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
 
-		JLabel lblMail = new JLabel("MAIL");
-		lblMail.setForeground(new Color(0, 0, 0));
-		lblMail.setBounds(54, 220, 45, 19);
-		lblMail.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
+		textFieldMailAddAdmin = new JTextField();
+		textFieldMailAddAdmin.setBounds(341, 220, 199, 25);
+		textFieldMailAddAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textFieldMailAddAdmin.setColumns(10);
 
-		textFieldMail = new JTextField();
-		textFieldMail.setBounds(341, 220, 199, 25);
-		textFieldMail.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
-		textFieldMail.setColumns(10);
-
-		JLabel lblBDate = new JLabel("BIRTH DATE");
-		lblBDate.setForeground(new Color(0, 0, 0));
-		lblBDate.setBounds(54, 344, 98, 19);
-		lblBDate.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
+		JLabel lblBDateAddAdmin = new JLabel("BIRTH DATE");
+		lblBDateAddAdmin.setForeground(new Color(0, 0, 0));
+		lblBDateAddAdmin.setBounds(54, 344, 98, 19);
+		lblBDateAddAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
 
 		JLabel lblPhoneAdmin = new JLabel("PHONE");
 		lblPhoneAdmin.setForeground(new Color(0, 0, 0));
 		lblPhoneAdmin.setBounds(54, 451, 56, 19);
 		lblPhoneAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
 
-		textFieldPhone = new JTextField();
-		textFieldPhone.setBounds(341, 448, 199, 25);
-		textFieldPhone.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
-		textFieldPhone.setColumns(10);
+		textFieldPhoneAddAdmin = new JTextField();
+		textFieldPhoneAddAdmin.setBounds(341, 448, 199, 25);
+		textFieldPhoneAddAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textFieldPhoneAddAdmin.setColumns(10);
 
-		JLabel lblNationality = new JLabel("NATIONALITY");
-		lblNationality.setForeground(new Color(0, 0, 0));
-		lblNationality.setBounds(54, 494, 108, 19);
-		lblNationality.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
+		JLabel lblNationalityAddAdmin = new JLabel("NATIONALITY");
+		lblNationalityAddAdmin.setForeground(new Color(0, 0, 0));
+		lblNationalityAddAdmin.setBounds(54, 494, 108, 19);
+		lblNationalityAddAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
 
-		comboBox = new JComboBox();
-		comboBox.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
-		comboBox.setBounds(341, 495, 199, 25);
-		comboBox.setModel(new DefaultComboBoxModel(new String[] { "Afghan", "Albanian", "Algerian", "American",
+		comboBoxAddAdmin = new JComboBox();
+		comboBoxAddAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		comboBoxAddAdmin.setBounds(341, 495, 199, 25);
+		comboBoxAddAdmin.setModel(new DefaultComboBoxModel(new String[] { "Afghan", "Albanian", "Algerian", "American",
 				"Andorran", "Angolan", "Antiguans", "Argentinean", "Armenian", "Australian", "Austrian", "Azerbaijani",
 				"Bahamian", "Bahraini", "Bangladeshi", "Barbadian", "Barbudans", "Batswana", "Belarusian", "Belgian",
 				"Belizean", "Beninese", "Bhutanese", "Bolivian", "Bosnian", "Brazilian", "British", "Bruneian",
@@ -303,20 +302,34 @@ public class MainWindow extends JFrame implements ActionListener {
 				"Tanzanian", "Thai", "Togolese", "Tongan", "Trinidadian or Tobagonian", "Tunisian", "Turkish",
 				"Tuvaluan", "Ugandan", "Ukrainian", "Uruguayan", "Uzbekistani", "Venezuelan", "Vietnamese", "Welsh",
 				"Welsh", "Yemenite", "Zambian", "Zimbabwean" }));
-		comboBox.setSelectedIndex(-1);
+		comboBoxAddAdmin.setSelectedIndex(-1);
 		addAdmin.setLayout(null);
-		addAdmin.add(lblMail);
-		addAdmin.add(textFieldMail);
-		addAdmin.add(lblBDate);
-		addAdmin.add(lblNationality);
+		
+		lblPassEyeAddAdmin = new JLabel("");
+		lblPassEyeAddAdmin.addMouseListener(this);
+		lblPassEyeAddAdmin.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPassEyeAddAdmin.setVerticalAlignment(SwingConstants.TOP);
+		lblPassEyeAddAdmin.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblPassEyeAddAdmin.setIcon(new ImageIcon(MainWindow.class.getResource("/img/pass_eye_25_17.jpg")));
+		lblPassEyeAddAdmin.setBounds(546, 180, 31, 22);
+		addAdmin.add(lblPassEyeAddAdmin);
+		addAdmin.add(lblMailAddAdmin);
+		addAdmin.add(textFieldMailAddAdmin);
+		addAdmin.add(lblBDateAddAdmin);
+		addAdmin.add(lblNationalityAddAdmin);
 		addAdmin.add(lblPhoneAdmin);
-		addAdmin.add(comboBox);
-		addAdmin.add(textFieldPhone);
-		addAdmin.add(lblPassword);
-		addAdmin.add(lblName);
-		addAdmin.add(textFieldName);
-		addAdmin.add(passwordField);
-		addAdmin.add(btnSend);
+		addAdmin.add(comboBoxAddAdmin);
+		addAdmin.add(textFieldPhoneAddAdmin);
+		addAdmin.add(lblPasswordAddAdmin);
+		addAdmin.add(lblNameAddAdmin);
+		addAdmin.add(textFieldNameAddAdmin);
+		addAdmin.add(btnSendAddAdmin);
+		
+				passwordFieldAddAdmin = new JPasswordField();
+				passwordFieldAddAdmin.setEchoChar('·');
+				passwordFieldAddAdmin.setBounds(341, 177, 199, 25);
+				passwordFieldAddAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+				addAdmin.add(passwordFieldAddAdmin);
 		
 		JLabel lblAddAdminTitle = new JLabel("ADD AMINISTRATOR");
 		lblAddAdminTitle.setHorizontalAlignment(SwingConstants.CENTER);
@@ -324,41 +337,41 @@ public class MainWindow extends JFrame implements ActionListener {
 		lblAddAdminTitle.setBounds(197, 25, 193, 25);
 		addAdmin.add(lblAddAdminTitle);
 		
-		calendar = new JCalendar();
-		calendar.setBounds(341, 265, 198, 153);
-		addAdmin.add(calendar);
+		calendarAddAdmin = new JCalendar();
+		calendarAddAdmin.setBounds(341, 265, 198, 153);
+		addAdmin.add(calendarAddAdmin);
 
 		JPanel playerDelete = new JPanel();
 		playerDelete.setBackground(new Color(255, 255, 255));
 		playerDelete.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		management.add(playerDelete);
 
-		btnDelete = new JButton("DELETE");
-		btnDelete.setBounds(246, 584, 95, 27);
-		btnDelete.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
-		btnDelete.addActionListener(this);
+		btnDeletePlayer = new JButton("DELETE");
+		btnDeletePlayer.setBounds(246, 584, 95, 27);
+		btnDeletePlayer.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		btnDeletePlayer.addActionListener(this);
 
-		JLabel lblSearchUser = new JLabel("SELECT A USER");
-		lblSearchUser.setForeground(new Color(0, 0, 0));
-		lblSearchUser.setBounds(232, 137, 122, 19);
-		lblSearchUser.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
+		JLabel lblSelectUser = new JLabel("SELECT A USER");
+		lblSelectUser.setForeground(new Color(0, 0, 0));
+		lblSelectUser.setBounds(232, 137, 122, 19);
+		lblSelectUser.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
 
-		comboBoxFindUser = new JComboBox();
-		comboBoxFindUser.setBounds(193, 214, 201, 27);
-		comboBoxFindUser.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		comboBoxSelectUser = new JComboBox();
+		comboBoxSelectUser.setBounds(193, 214, 201, 27);
+		comboBoxSelectUser.setFont(new Font("Tahoma", Font.PLAIN, 15));
 
-		textArea = new JTextArea();
-		textArea.setForeground(new Color(0, 0, 0));
-		textArea.setBackground(new Color(255, 255, 255));
-		textArea.setBounds(132, 207, 328, 316);
-		textArea.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		textArea.setEditable(false);
-		textArea.setVisible(false);
+		textAreaDeletePlayer = new JTextArea();
+		textAreaDeletePlayer.setForeground(new Color(0, 0, 0));
+		textAreaDeletePlayer.setBackground(new Color(255, 255, 255));
+		textAreaDeletePlayer.setBounds(132, 207, 328, 316);
+		textAreaDeletePlayer.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		textAreaDeletePlayer.setEditable(false);
+		textAreaDeletePlayer.setVisible(false);
 		playerDelete.setLayout(null);
-		playerDelete.add(lblSearchUser);
-		playerDelete.add(comboBoxFindUser);
-		playerDelete.add(textArea);
-		playerDelete.add(btnDelete);
+		playerDelete.add(lblSelectUser);
+		playerDelete.add(comboBoxSelectUser);
+		playerDelete.add(textAreaDeletePlayer);
+		playerDelete.add(btnDeletePlayer);
 		
 		JLabel lblDeletePlayerTitle = new JLabel("DELETE PLAYERS");
 		lblDeletePlayerTitle.setHorizontalAlignment(SwingConstants.CENTER);
@@ -383,10 +396,10 @@ public class MainWindow extends JFrame implements ActionListener {
 		Set<User> users = control.listPlayers();
 
 		for (User u : users) {
-			if (comboBoxFindUser.getItemAt(0) != (u.getId() + " " + u.getName())) {
-				comboBoxFindUser.addItem(((Player) u).getNickname());
+			if (comboBoxSelectUser.getItemAt(0) != (u.getId() + " " + u.getName())) {
+				comboBoxSelectUser.addItem(((Player) u).getNickname());
 			}
-			comboBoxFindUser.setSelectedIndex(-1);
+			comboBoxSelectUser.setSelectedIndex(-1);
 		}
 	}
 
@@ -400,65 +413,94 @@ public class MainWindow extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(btnSend)) {
-			char[] pass = passwordField.getPassword();
+		if (e.getSource().equals(btnSendAddAdmin)) {
+			char[] pass = passwordFieldAddAdmin.getPassword();
 			String passString = new String(pass);
-			if (!textFieldName.getText().isBlank() && passString != null && !textFieldMail.getText().isBlank()
-					&& !textFieldPhone.getText().isBlank() && comboBox.getSelectedIndex() > -1) {
+			if (!textFieldNameAddAdmin.getText().isBlank() && passString != null && !textFieldMailAddAdmin.getText().isBlank()
+					&& !textFieldPhoneAddAdmin.getText().isBlank() && comboBoxAddAdmin.getSelectedIndex() > -1) {
 				user = new Administrator();
-				user.setName(textFieldName.getText());
+				user.setName(textFieldNameAddAdmin.getText());
 				user.setPassword(passString);
-				user.setEmail(textFieldMail.getText());
-				LocalDate date = calendar.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+				user.setEmail(textFieldMailAddAdmin.getText());
+				LocalDate date = calendarAddAdmin.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 				user.setBirthDate(date);
 				user.setBirthDate(LocalDate.now());
-				user.setPhone(textFieldPhone.getText());
-				user.setNationality(comboBox.getSelectedItem().toString());
+				user.setPhone(textFieldPhoneAddAdmin.getText());
+				user.setNationality(comboBoxAddAdmin.getSelectedItem().toString());
 				controller.addUser(user);
 
 				JOptionPane.showMessageDialog(getParent(), "Enviado correctamente.");
-				textFieldName.setText("");
-				passwordField.setText("");
-				textFieldMail.setText("");
-				textFieldPhone.setText("");
-				comboBox.setSelectedIndex(-1);
-				calendar.setDate(Date.valueOf(LocalDate.now()));
+				textFieldNameAddAdmin.setText("");
+				passwordFieldAddAdmin.setText("");
+				textFieldMailAddAdmin.setText("");
+				textFieldPhoneAddAdmin.setText("");
+				comboBoxAddAdmin.setSelectedIndex(-1);
+				calendarAddAdmin.setDate(Date.valueOf(LocalDate.now()));
 
 			} else {
 				JOptionPane.showMessageDialog(this, "ERROR. Rellene todos los campos.");
 			}
 		}
-		if (e.getSource().equals(btnDelete)) {
+		if (e.getSource().equals(btnDeletePlayer)) {
 			int option;
-			if (comboBoxFindUser.getSelectedIndex() != -1) {
-				userDel = controller.findUser(comboBoxFindUser.getSelectedItem().toString());
-				textArea.append("ID: " + userDel.getId() + "\nNickname: " + ((Player) userDel).getNickname() + "\nName: " + userDel.getName() + "\nEmail: " + userDel.getEmail() + "\n");
-				textArea.setVisible(true);
+			if (comboBoxSelectUser.getSelectedIndex() != -1) {
+				userDel = controller.findUser(comboBoxSelectUser.getSelectedItem().toString());
+				textAreaDeletePlayer.append("ID: " + userDel.getId() + "\nNickname: " + ((Player) userDel).getNickname() + "\nName: " + userDel.getName() + "\nEmail: " + userDel.getEmail() + "\n");
+				textAreaDeletePlayer.setVisible(true);
 				option = JOptionPane.showConfirmDialog(this, "Quiere borrar a " + userDel.getName() + "?");
 				if (option == 0) {
 					controller.delete(userDel);
 					JOptionPane.showMessageDialog(this, userDel.getName() + " eliminado correctamente.");
-					comboBoxFindUser.setSelectedIndex(-1);
-					textArea.setText("");
-					textArea.setVisible(false);
+					comboBoxSelectUser.setSelectedIndex(-1);
+					textAreaDeletePlayer.setText("");
+					textAreaDeletePlayer.setVisible(false);
 				}
 				if (option == 1) {
-					comboBoxFindUser.setSelectedIndex(-1);
-					textArea.setText("");
-					textArea.setVisible(false);
+					comboBoxSelectUser.setSelectedIndex(-1);
+					textAreaDeletePlayer.setText("");
+					textAreaDeletePlayer.setVisible(false);
 				}
 				if (option == 2) {
-					comboBoxFindUser.setSelectedIndex(-1);
-					textArea.setText("");
-					textArea.setVisible(false);
+					comboBoxSelectUser.setSelectedIndex(-1);
+					textAreaDeletePlayer.setText("");
+					textAreaDeletePlayer.setVisible(false);
 				}
 			} else {
 				JOptionPane.showMessageDialog(this,
 						"ERROR. Rellene todos los campos.");
-				comboBoxFindUser.setSelectedIndex(-1);
-				textArea.setText("");
-				textArea.setVisible(false);
+				comboBoxSelectUser.setSelectedIndex(-1);
+				textAreaDeletePlayer.setText("");
+				textAreaDeletePlayer.setVisible(false);
 			}
 		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// Not used.
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		if(e.getSource().equals(lblPassEyeAddAdmin)) {
+			passwordFieldAddAdmin.setEchoChar((char) 0);
+		}
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		if(e.getSource().equals(lblPassEyeAddAdmin)) {
+			passwordFieldAddAdmin.setEchoChar('·');
+		}
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// Not used.
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// Not used.
 	}
 }
