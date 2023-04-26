@@ -9,7 +9,10 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="jcalendar-1.4.jar"/>
 	<classpathentry kind="lib" path="jgoodies-common-1.2.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/irati/Desktop/RETOFINAL/FinalChallenge-LoL/FinalChallenge-LoL/jgoodies-looks-2.4.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/irati/Desktop/RETOFINAL/FinalChallenge-LoL/FinalChallenge-LoL/junit-4.6.jar"/>
+	<classpathentry kind="lib" path="mysql-connector-java-8.0.15.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
