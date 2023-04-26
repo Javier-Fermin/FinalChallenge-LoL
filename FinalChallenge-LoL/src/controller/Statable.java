@@ -7,5 +7,5 @@ import exceptions.PersonalizedException;
 import model.Played;
 
 public interface Statable {
-	public Set <Played> stadistics (String nickname) throws SQLException, PersonalizedException;
+	public Set <Played> stadistics (String nickname) throws PersonalizedException;
 }

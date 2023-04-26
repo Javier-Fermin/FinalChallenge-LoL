@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 import controller.*;
+import exceptions.PersonalizedException;
 import model.*;
 import java.util.List;
 import java.util.ArrayList;
@@ -111,25 +112,10 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 	private UserControllable userControllable;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainWindow frame = new MainWindow(userControllable, champEditable, gameStorable, statable);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the frame.
 	 */
-	public MainWindow(UserControllable userControllable,ChampEditable champEditable,GameStorable gameStorable,Statable statable) {
+	public MainWindow(UserControllable userControllable, ChampEditable champEditable, GameStorable gameStorable,
+			Statable statable) {
 		this.userControllable = userControllable;
 		this.champEditable = champEditable;
 		this.gameStorable = gameStorable;
@@ -708,7 +694,12 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 		lblDeletePlayerTitle.setBounds(197, 27, 193, 25);
 		playerDelete.add(lblDeletePlayerTitle);
 
-		cargarUsers(userControllable);
+		try {
+			cargarUsers(userControllable);
+		} catch (PersonalizedException e) {
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, e.getMessage(),"An unexpected error has occured!", JOptionPane.ERROR_MESSAGE);
+		}
 
 		if (user instanceof Player) {
 			tabbedPane.remove(champAdmin);
@@ -722,50 +713,109 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 
 		// Load the tab profile with the information for the database
 		loadData(userControllable);
-
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnUpdateStats) {
-			updateStats();
+			try {
+				updateStats();
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, e1.getMessage(),"An unexpected error has occured!", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 		if (e.getSource() == btnUpdateGame) {
-			updateGame();
+			try {
+				updateGame();
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, e1.getMessage(),"An unexpected error has occured!", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 		if (e.getSource() == btnAddGame) {
 			AddGame addGame = new AddGame(this, true, gameStorable);
 			addGame.setVisible(true);
 		}
 		if (e.getSource().equals(btnSendAddAdmin)) {
-			sendAddAdmin();
+			try {
+				sendAddAdmin();
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, e1.getMessage(),"An unexpected error has occured!", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 		if (e.getSource().equals(btnDeletePlayer)) {
-			deletePlayerAdmin();
+			try {
+				deletePlayerAdmin();
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, e1.getMessage(),"An unexpected error has occured!", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 
 		if (e.getSource().equals(btnModifyProfile)) {
-			modifyPlayer(userControllable);
+			try {
+				modifyPlayer(userControllable);
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, e1.getMessage(),"An unexpected error has occured!", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 
 		if (e.getSource().equals(btnDeleteProfile)) {
-			deletePlayer(userControllable);
+			try {
+				deletePlayer(userControllable);
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, e1.getMessage(),"An unexpected error has occured!", JOptionPane.ERROR_MESSAGE);
+			}
 		}
-		if (e.getSource().equals(buttonChampsPlayer_Enter))
-			listChampPlayer();
-		if (e.getSource().equals(buttonChampsAdmin_Check))
-			checkChampAdmin();
-		if (e.getSource().equals(buttonChampAdmin_Add))
-			addChampAdmin();
-		if (e.getSource().equals(buttonChampAdmin_Modify))
-			executeModificationChampAdmin();
+		if (e.getSource().equals(buttonChampsPlayer_Enter)) {
+			try {
+				listChampPlayer();
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, e1.getMessage(),"An unexpected error has occured!", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		if (e.getSource().equals(buttonChampsAdmin_Check)){
+			try {
+				checkChampAdmin();
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, e1.getMessage(),"An unexpected error has occured!", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		if (e.getSource().equals(buttonChampAdmin_Add)) {
+			try {
+				addChampAdmin();
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, e1.getMessage(),"An unexpected error has occured!", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		if (e.getSource().equals(buttonChampAdmin_Modify)) {
+			try {
+				executeModificationChampAdmin();
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, e1.getMessage(),"An unexpected error has occured!", JOptionPane.ERROR_MESSAGE);
+			}
+		}
 	}
 
-	private void deletePlayerAdmin() {
+	private void deletePlayerAdmin() throws PersonalizedException {
 		// TODO Auto-generated method stub
 		int option;
 		if (comboBoxSelectUser.getSelectedIndex() != -1) {
-			userDel = userControllable.findUser(comboBoxSelectUser.getSelectedItem().toString());
+			try {
+				userDel = userControllable.findUser(comboBoxSelectUser.getSelectedItem().toString());
+			} catch (PersonalizedException e) {
+				// TODO Auto-generated catch block
+
+				e.getMessage();
+			}
 			textAreaDeletePlayer.append("ID: " + userDel.getId() + "\nNickname: " + ((Player) userDel).getNickname()
 					+ "\nName: " + userDel.getName() + "\nEmail: " + userDel.getEmail() + "\n");
 			textAreaDeletePlayer.setVisible(true);
@@ -795,7 +845,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 		}
 	}
 
-	private void sendAddAdmin() {
+	private void sendAddAdmin() throws PersonalizedException {
 		// TODO Auto-generated method stub
 		char[] pass = passwordFieldAddAdmin.getPassword();
 		String passString = new String(pass);
@@ -826,7 +876,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 		}
 	}
 
-	private void updateGame() {
+	private void updateGame() throws PersonalizedException {
 		// TODO Auto-generated method stub
 		if (!textNicknameGame.getText().isEmpty()) {
 			modelGame.setRowCount(0);
@@ -844,10 +894,11 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 		}
 	}
 
-	public void updateStats() {
+	public void updateStats() throws PersonalizedException {
 		if (!textNicknameStats.getText().isEmpty()) {
 			modelStats.setRowCount(0);
-			Set<Played> listStats = statable.stadistics(textNicknameStats.getText());
+			Set<Played> listStats;
+			listStats = statable.stadistics(textNicknameStats.getText());
 			for (Played played : listStats) {
 				Object[] row = new Object[5];
 				row[0] = played.getId();
@@ -937,7 +988,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 
 	}
 
-	public void modifyPlayer(UserControllable userControllable) {
+	public void modifyPlayer(UserControllable userControllable) throws PersonalizedException {
 		boolean correct = false;
 		// If the user is instance as player we use the original nickname saved before
 		if (user instanceof Player) {
@@ -958,27 +1009,27 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 	}
 
 	// Method to delete Player
-	public void deletePlayer(UserControllable userControllable) {
-			boolean correct = false;
-			int aceptar;
-			User user = null;
-			// Find the user
-			user = userControllable.findUser(textFieldNicknameProfile.getText());
-			// Show a confirmation dialog
-			aceptar = JOptionPane.showConfirmDialog(this, "WARNING: do you want to delete your account?");
-			// Yes --> 0 so If the user accepts the message, his account will be deleted.
-			if (aceptar == 0) {
-				correct= userControllable.delete(user);
-				clear();
-			}
-			if (correct) {
-				JOptionPane.showMessageDialog(this, "USER DELETE");
-			} else {
-				JOptionPane.showMessageDialog(this, "USER NO DELETE");
-			}
+	public void deletePlayer(UserControllable userControllable) throws PersonalizedException {
+		boolean correct = false;
+		int aceptar;
+		User user = null;
+		// Find the user
+		user = userControllable.findUser(textFieldNicknameProfile.getText());
+		// Show a confirmation dialog
+		aceptar = JOptionPane.showConfirmDialog(this, "WARNING: do you want to delete your account?");
+		// Yes --> 0 so If the user accepts the message, his account will be deleted.
+		if (aceptar == 0) {
+			correct = userControllable.delete(user);
+			clear();
+		}
+		if (correct) {
+			JOptionPane.showMessageDialog(this, "USER DELETE");
+		} else {
+			JOptionPane.showMessageDialog(this, "USER NO DELETE");
+		}
 	}
 
-	private void cargarUsers(UserControllable control) {
+	private void cargarUsers(UserControllable control) throws PersonalizedException {
 		Set<User> users = control.listPlayers();
 
 		for (User u : users) {
@@ -1016,14 +1067,14 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 		panelChampAdmin.setBackground(Color.LIGHT_GRAY);
 	}
 
-	public void checkChampAdmin() {
+	public void checkChampAdmin() throws PersonalizedException {
 		if (textFieldChampsAdmin_Name.getText().isEmpty())
 			JOptionPane.showMessageDialog(null, "Añade un nombre correcto", "Alert", JOptionPane.WARNING_MESSAGE);
 		else
 			addOrModifyChamp();
 	}
 
-	public void addOrModifyChamp() {
+	public void addOrModifyChamp() throws PersonalizedException {
 		buttonChampsAdmin_Check.setVisible(false);
 		JLabel labelChampsAdmin_Position = new JLabel("Position");
 		labelChampsAdmin_Position.setBounds(346, 162, 61, 16);
@@ -1124,7 +1175,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 		return true;
 	}
 
-	public void addChampAdmin() {
+	public void addChampAdmin() throws PersonalizedException {
 		Champ champ = new Champ();
 		if (checkFieldsChampAdmin() == false)
 			return;
@@ -1151,7 +1202,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 		champAdmin.add(buttonChampAdmin_Modify);
 	}
 
-	public void executeModificationChampAdmin() {
+	public void executeModificationChampAdmin() throws PersonalizedException {
 		Champ champ = new Champ();
 		if (checkFieldsChampAdmin() == false)
 			return;
@@ -1169,7 +1220,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 		ChampAdminTabConstruction();
 	}
 
-	public void listChampPlayer() {
+	public void listChampPlayer() throws PersonalizedException {
 		if (checkBoxChampsPlayer.isSelected() || checkBoxChampsPlayer_Filtered.isSelected()) {
 
 			List<Champ> list = null;
@@ -1215,7 +1266,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 		JTableHeader tableHeaderChampPlayer = table.getTableHeader();
 		tableHeaderChampPlayer.setBackground(new Color(225, 223, 225));
 	}
-	
+
 	public User getUser() {
 		return user;
 	}

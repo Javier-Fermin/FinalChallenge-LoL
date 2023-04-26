@@ -5,12 +5,15 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controller.UserControllable;
+import exceptions.PersonalizedException;
 import model.User;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
+import java.awt.HeadlessException;
+
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 
@@ -36,19 +39,6 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 	private User user;
 	private UserControllable controller;
 	private MainWindow parent;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			Login dialog = new Login();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	/**
 	 * Create the dialog.
@@ -150,29 +140,40 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 		}
 		//Enter when log in button is pressed.
 		if (e.getSource().equals(acceder)) {
-			// Store the password as a String to set the user later.
-			char[] pass = passwordField.getPassword();
-			String passString = new String(pass);
-			// Checks if the fields for password and user are blank or not.
-			if (!username_1.getText().isBlank() && passString != "") {
-				// Checks the credentials are correct with DB.
-				if (controller.logIn(username_1.getText(), passString)) {
-					// Sets the data found to user and calls for parent, disposes of window when finished.
-					parent.setUser(controller.findUser(username_1.getText()));
-					parent.setVisible(true);
-					this.dispose();
-				}
-
-				else {
-					//If credentials are wrong, panel shown to indicate so.
-					JOptionPane.showMessageDialog(this, "Usuario o clave de acceso erronea.");
-
-				}
-			} else {
-				//If none of the fields are filled, shows error panel.
-				JOptionPane.showMessageDialog(this, "ERROR. Rellene todos los campos.");
+			try {
+				access();
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, e1.getMessage(), "An unexpected error has occured!",
+						JOptionPane.ERROR_MESSAGE);
 			}
 		}
+	}
+
+	private void access() throws PersonalizedException {
+		// TODO Auto-generated method stub
+		// Store the password as a String to set the user later.
+					char[] pass = passwordField.getPassword();
+					String passString = new String(pass);
+					// Checks if the fields for password and user are blank or not.
+					if (!username_1.getText().isBlank() && passString != "") {
+						// Checks the credentials are correct with DB.
+						if (controller.logIn(username_1.getText(), passString)) {
+							// Sets the data found to user and calls for parent, disposes of window when finished.
+							parent.setUser(controller.findUser(username_1.getText()));
+							parent.setVisible(true);
+							this.dispose();
+						}
+
+						else {
+							//If credentials are wrong, panel shown to indicate so.
+							JOptionPane.showMessageDialog(this, "Usuario o clave de acceso erronea.");
+
+						}
+					} else {
+						//If none of the fields are filled, shows error panel.
+						JOptionPane.showMessageDialog(this, "ERROR. Rellene todos los campos.");
+					}
 	}
 
 	@Override

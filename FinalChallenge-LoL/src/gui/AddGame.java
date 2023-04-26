@@ -10,10 +10,13 @@ import javax.swing.border.EmptyBorder;
 
 import controller.GameStorable;
 import controller.GameStorableDBImplementation;
+import exceptions.PersonalizedException;
 import model.Game;
 
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.GridBagConstraints;
 import javax.swing.JSplitPane;
 import java.awt.Insets;
@@ -569,11 +572,16 @@ public class AddGame extends JDialog implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource()==btnAdd) {
-			addGame();
+			try {
+				addGame();
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, e1.getMessage(),"An unexpected error has occured!", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 	}
 
-	private void addGame() {
+	private void addGame() throws PersonalizedException {
 		// TODO Auto-generated method stub
 		Game aux = new Game();
 		blueTeam.put(textNicknameP1T1.getText(), textChampP1T1.getText());
