@@ -3,7 +3,7 @@ package model;
 import java.time.LocalDate;
 import java.time.Period;
 
-public class Administrator {
+public class Administrator extends User{
 	private int addtions;
 	private LocalDate startDate;
 	public int getAddtions() {
