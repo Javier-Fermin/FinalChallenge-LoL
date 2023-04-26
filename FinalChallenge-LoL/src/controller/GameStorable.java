@@ -1,9 +1,12 @@
 package controller;
 
+import java.util.Set;
+
 import exceptions.PersonalizedException;
 import model.Game;
 
 public interface GameStorable {
-	public void addGame(Game game) throws PersonalizedException;
-	public Game searchGame(int id) throws PersonalizedException;
+	public int addGame(Game game) throws PersonalizedException;
+	public Set<Game> searchGames(String nickname) throws PersonalizedException;
+	public void completeGame(int id, String nickname, String name, boolean win, String position) throws PersonalizedException;
 }
