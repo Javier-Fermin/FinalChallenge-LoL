@@ -193,7 +193,7 @@ public class SignIn extends JDialog implements ActionListener, FocusListener {
 		textFieldPhone.setBounds(245, 500, 212, 19);
 		secondPanel.add(textFieldPhone);
 		textFieldPhone.setColumns(10);
-		JLabel Fondo = new JLabel("New label");
+		JLabel Fondo = new JLabel("");
 		Fondo.setBounds(0, 0, 1112, 677);
 		firstPanel.add(Fondo);
 		Fondo.setIcon(new ImageIcon(SignIn.class.getResource("/img/2021_Key_art (1).jpg")));

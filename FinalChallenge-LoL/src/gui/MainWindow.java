@@ -54,14 +54,6 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 	private String nicknameOriginal;
 	private JTextField textFieldAdditionsProfile;
 	private JLabel nicknameProfile;
-	private JTextField Nickname_TextField;
-	private JTextField Email_textField;
-	private JTextField textField_1;
-	private JTextField Phone_textField;
-	private JTextField Password_textField;
-	private JTextField Nacionality_textField;
-	private JTextField StartDate_textField;
-	private JTextField Additions_textField;
 	private JTextField textFieldNameAddAdmin;
 	private JTextField textFieldMailAddAdmin;
 	private JTextField textFieldPhoneAddAdmin;
@@ -293,96 +285,6 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 		panelInfo.add(textFieldPasswordProfile);
 		textFieldPasswordProfile.setColumns(10);
 
-		JLabel lblNewLabelProfile = new JLabel("");
-		lblNewLabelProfile.setBackground(new Color(255, 105, 180));
-		lblNewLabelProfile.setBounds(0, 0, 1201, 629);
-		profile.add(lblNewLabelProfile);
-
-		JLabel Nickname = new JLabel("NICKNAME");
-		Nickname.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		Nickname.setBounds(64, 96, 108, 28);
-		profile.add(Nickname);
-
-		Nickname_TextField = new JTextField();
-		Nickname_TextField.setBounds(64, 134, 191, 19);
-		profile.add(Nickname_TextField);
-		Nickname_TextField.setColumns(10);
-
-		JLabel Email = new JLabel("EMAIL");
-		Email.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		Email.setBounds(64, 244, 108, 28);
-		profile.add(Email);
-
-		Email_textField = new JTextField();
-		Email_textField.setColumns(10);
-		Email_textField.setBounds(64, 271, 191, 19);
-		profile.add(Email_textField);
-
-		JLabel Birthdate_textField = new JLabel("");
-		Birthdate_textField.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		Birthdate_textField.setBounds(64, 342, 108, 28);
-		profile.add(Birthdate_textField);
-
-		JLabel Birthdate = new JLabel("BIRTHDATE");
-		Birthdate.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		Birthdate.setBounds(64, 314, 108, 28);
-		profile.add(Birthdate);
-
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(64, 352, 191, 19);
-		profile.add(textField_1);
-
-		JLabel lblPhone = new JLabel("PHONE");
-		lblPhone.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		lblPhone.setBounds(64, 399, 108, 28);
-		profile.add(lblPhone);
-
-		Phone_textField = new JTextField();
-		Phone_textField.setColumns(10);
-		Phone_textField.setBounds(64, 437, 191, 19);
-		profile.add(Phone_textField);
-
-		JLabel Password = new JLabel("PASSWORD");
-		Password.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		Password.setBounds(64, 174, 108, 28);
-		profile.add(Password);
-
-		Password_textField = new JTextField();
-		Password_textField.setColumns(10);
-		Password_textField.setBounds(64, 212, 191, 19);
-		profile.add(Password_textField);
-
-		JLabel Nacionality = new JLabel("NACIONALITY");
-		Nacionality.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		Nacionality.setBounds(64, 490, 156, 28);
-		profile.add(Nacionality);
-
-		Nacionality_textField = new JTextField();
-		Nacionality_textField.setColumns(10);
-		Nacionality_textField.setBounds(64, 528, 191, 19);
-		profile.add(Nacionality_textField);
-
-		JLabel StartDate = new JLabel("START DATE");
-		StartDate.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		StartDate.setBounds(494, 174, 108, 28);
-		profile.add(StartDate);
-
-		StartDate_textField = new JTextField();
-		StartDate_textField.setColumns(10);
-		StartDate_textField.setBounds(493, 212, 191, 19);
-		profile.add(StartDate_textField);
-
-		JLabel Additions = new JLabel("ADDITIONS");
-		Additions.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		Additions.setBounds(494, 274, 108, 28);
-		profile.add(Additions);
-
-		Additions_textField = new JTextField();
-		Additions_textField.setColumns(10);
-		Additions_textField.setBounds(494, 319, 191, 19);
-		profile.add(Additions_textField);
-
 		tabbedPane.addTab("CHAMPS", null, champsPlayer, null);
 		champsPlayer.setLayout(null);
 
@@ -500,31 +402,56 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 
 		JPanel stadistics = new JPanel();
 		tabbedPane.addTab("STADISTICS", null, stadistics, null);
-
-		JLabel lblNickStats = new JLabel("Nickname");
-		lblNickStats.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		stadistics.add(lblNickStats, "4, 4");
-
-		textNicknameStats = new JTextField();
-		stadistics.add(textNicknameStats, "8, 4, fill, default");
-		textNicknameStats.setColumns(10);
-
-		btnUpdateStats = new JButton("Update");
-		btnUpdateStats.addActionListener(this);
-		stadistics.add(btnUpdateStats, "4, 6");
-
-		JScrollPane scrollPaneStats = new JScrollPane();
-		stadistics.add(scrollPaneStats, "8, 6, fill, fill");
-
-		stats = new JTable();
+		GridBagLayout gbl_stadistics = new GridBagLayout();
+		gbl_stadistics.columnWidths = new int[]{248, 66, 96, 65, 452, 0};
+		gbl_stadistics.rowHeights = new int[]{402, 0};
+		gbl_stadistics.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_stadistics.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		stadistics.setLayout(gbl_stadistics);
+				
+						JLabel lblNickStats = new JLabel("Nickname");
+						lblNickStats.setFont(new Font("Tahoma", Font.PLAIN, 15));
+						GridBagConstraints gbc_lblNickStats = new GridBagConstraints();
+						gbc_lblNickStats.anchor = GridBagConstraints.WEST;
+						gbc_lblNickStats.insets = new Insets(0, 0, 0, 5);
+						gbc_lblNickStats.gridx = 1;
+						gbc_lblNickStats.gridy = 0;
+						stadistics.add(lblNickStats, gbc_lblNickStats);
+		
+				textNicknameStats = new JTextField();
+				GridBagConstraints gbc_textNicknameStats = new GridBagConstraints();
+				gbc_textNicknameStats.anchor = GridBagConstraints.WEST;
+				gbc_textNicknameStats.insets = new Insets(0, 0, 0, 5);
+				gbc_textNicknameStats.gridx = 2;
+				gbc_textNicknameStats.gridy = 0;
+				stadistics.add(textNicknameStats, gbc_textNicknameStats);
+				textNicknameStats.setColumns(10);
+		
+				btnUpdateStats = new JButton("Update");
+				btnUpdateStats.addActionListener(this);
+				GridBagConstraints gbc_btnUpdateStats = new GridBagConstraints();
+				gbc_btnUpdateStats.anchor = GridBagConstraints.WEST;
+				gbc_btnUpdateStats.insets = new Insets(0, 0, 0, 5);
+				gbc_btnUpdateStats.gridx = 3;
+				gbc_btnUpdateStats.gridy = 0;
+				stadistics.add(btnUpdateStats, gbc_btnUpdateStats);
 		modelStats = new DefaultTableModel();
-		stats.setModel(modelStats);
 		modelStats.addColumn("ID");
 		modelStats.addColumn("Nickname");
 		modelStats.addColumn("Name");
 		modelStats.addColumn("Position");
 		modelStats.addColumn("Win/Lose");
-		scrollPaneStats.setViewportView(stats);
+		
+				JScrollPane scrollPaneStats = new JScrollPane();
+				GridBagConstraints gbc_scrollPaneStats = new GridBagConstraints();
+				gbc_scrollPaneStats.anchor = GridBagConstraints.NORTHWEST;
+				gbc_scrollPaneStats.gridx = 4;
+				gbc_scrollPaneStats.gridy = 0;
+				stadistics.add(scrollPaneStats, gbc_scrollPaneStats);
+				
+						stats = new JTable();
+						stats.setModel(modelStats);
+						scrollPaneStats.setViewportView(stats);
 
 		JPanel management = new JPanel();
 		management.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -1059,12 +986,6 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 		buttonChampsAdmin_Check.addActionListener(this);
 		buttonChampsAdmin_Check.setVisible(true);
 		champAdmin.add(buttonChampsAdmin_Check);
-
-		JPanel panelChampAdmin = new JPanel();
-		panelChampAdmin.setBounds(740, 207, 296, 134);
-		champAdmin.add(panelChampAdmin);
-		panelChampAdmin.setVisible(false);
-		panelChampAdmin.setBackground(Color.LIGHT_GRAY);
 	}
 
 	public void checkChampAdmin() throws PersonalizedException {
