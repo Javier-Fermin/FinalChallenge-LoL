@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.HeadlessException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -18,6 +19,7 @@ import com.toedter.calendar.JDayChooser;
 
 import controller.UserControllable;
 import exceptions.PersonalizedException;
+import inputControl.InputControl;
 
 import com.toedter.calendar.JCalendar;
 import javax.swing.JList;
@@ -39,23 +41,30 @@ import model.User;
 import model.Player;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-public class SignIn extends JDialog implements ActionListener, FocusListener {
+public class SignIn extends JDialog implements ActionListener, FocusListener, MouseListener {
 	/**
 	 * @author Irati Garzón
+	 * @version 1.1 27/04/2023
 	 */
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textFieldNickname;
 	private JTextField nameTextField;
 	private JTextField emailTextField;
-	JComboBox nationalityComboBox = new JComboBox();
-	private JTextField textFieldPassword;
+	private JComboBox nationalityComboBox = new JComboBox();
 	private JTextField textFieldPhone;
-	JCalendar jCalendar = new JCalendar();
-	UserControllable controller;
+	private JCalendar jCalendar = new JCalendar();
+	private UserControllable controller;
+	private InputControl control = new InputControl();
+	private MainWindow parent;
+	private JPasswordField passwordField;
+	private JLabel lblSend;
+	private JLabel lblEye;
 
-	public SignIn(UserControllable controller) {
+	public SignIn(UserControllable controller, MainWindow main) {
 		this.controller = controller;
+		parent = main;
 		setIconImage(Toolkit.getDefaultToolkit().getImage(SignIn.class.getResource("/icon/LoL_icon.svg.png")));
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -77,6 +86,12 @@ public class SignIn extends JDialog implements ActionListener, FocusListener {
 		secondPanel.setBounds(208, 10, 495, 657);
 		firstPanel.add(secondPanel);
 		secondPanel.setLayout(null);
+
+		lblEye = new JLabel("");
+		lblEye.setIcon(new ImageIcon(SignIn.class.getResource("/img/pass_eye_25_17.jpg")));
+		lblEye.setBounds(460, 193, 25, 21);
+		secondPanel.add(lblEye);
+		lblEye.addMouseListener(this);
 
 		JLabel iconLol = new JLabel("");
 		iconLol.setIcon(new ImageIcon(SignIn.class.getResource("/img/lolLogo (2).png")));
@@ -114,6 +129,7 @@ public class SignIn extends JDialog implements ActionListener, FocusListener {
 		nameTextField.setColumns(10);
 		nameTextField.setBounds(245, 246, 212, 19);
 		secondPanel.add(nameTextField);
+		nameTextField.addFocusListener(this);
 
 		JLabel email = new JLabel("EMAIL");
 		email.setFont(new Font("Bahnschrift", Font.BOLD, 17));
@@ -125,6 +141,7 @@ public class SignIn extends JDialog implements ActionListener, FocusListener {
 		emailTextField.setColumns(10);
 		emailTextField.setBounds(245, 294, 212, 19);
 		secondPanel.add(emailTextField);
+		emailTextField.addFocusListener(this);
 
 		JLabel birthdate = new JLabel("BIRTHDATE");
 		birthdate.setFont(new Font("Bahnschrift", Font.BOLD, 17));
@@ -136,11 +153,12 @@ public class SignIn extends JDialog implements ActionListener, FocusListener {
 		lblNacionality.setBounds(50, 550, 114, 21);
 		secondPanel.add(lblNacionality);
 
-		JLabel lblNewLabel_1 = new JLabel("");
+		lblSend = new JLabel("");
 
-		lblNewLabel_1.setIcon(new ImageIcon(SignIn.class.getResource("/img/salir.png")));
-		lblNewLabel_1.setBounds(206, 602, 63, 45);
-		secondPanel.add(lblNewLabel_1);
+		lblSend.setIcon(new ImageIcon(SignIn.class.getResource("/img/salir.png")));
+		lblSend.setBounds(206, 602, 63, 45);
+		secondPanel.add(lblSend);
+		lblSend.addMouseListener(this);
 
 		JCalendar calendar = new JCalendar();
 		calendar.setBounds(245, 335, 212, 152);
@@ -179,11 +197,6 @@ public class SignIn extends JDialog implements ActionListener, FocusListener {
 		secondPanel.add(nationalityComboBox);
 		nationalityComboBox.setSelectedIndex(-1);
 
-		textFieldPassword = new JTextField();
-		textFieldPassword.setBounds(245, 194, 212, 19);
-		secondPanel.add(textFieldPassword);
-		textFieldPassword.setColumns(10);
-
 		JLabel lblPhone = new JLabel("PHONE");
 		lblPhone.setFont(new Font("Bahnschrift", Font.BOLD, 17));
 		lblPhone.setBounds(50, 499, 114, 21);
@@ -193,54 +206,59 @@ public class SignIn extends JDialog implements ActionListener, FocusListener {
 		textFieldPhone.setBounds(245, 500, 212, 19);
 		secondPanel.add(textFieldPhone);
 		textFieldPhone.setColumns(10);
-		JLabel Fondo = new JLabel("New label");
+		textFieldPhone.addFocusListener(this);
+
+		passwordField = new JPasswordField();
+		passwordField.setEchoChar('*');
+		passwordField.setBounds(244, 193, 212, 19);
+		secondPanel.add(passwordField);
+		passwordField.addMouseListener(this);
+
+		JLabel Fondo = new JLabel("");
 		Fondo.setBounds(0, 0, 1112, 677);
 		firstPanel.add(Fondo);
 		Fondo.setIcon(new ImageIcon(SignIn.class.getResource("/img/2021_Key_art (1).jpg")));
-		// Event handler to user a label as a botton
-		lblNewLabel_1.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				try {
-					openMainWindow();
-				} catch (PersonalizedException e1) {
-					// TODO Auto-generated catch block
-					JOptionPane.showMessageDialog(null, e1.getMessage(), "An unexpected error has occured!",
-							JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		});
 
 	}
 
+	/**
+	 * Method to add the new user and open the next window
+	 * 
+	 * @throws PersonalizedException
+	 */
 	public void openMainWindow() throws PersonalizedException {
 		// TODO Auto-generated method stub
 		// Pass from date to localDate
 		LocalDate date = jCalendar.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
+		String password = new String(passwordField.getPassword());
 		// Check if all the fields have been filled.
-		if (textFieldNickname.getText().isBlank() || textFieldPassword.getText().isBlank()
-				|| textFieldPhone.getText().isBlank() || nameTextField.getText().isBlank()
-				|| emailTextField.getText().isBlank() || date == LocalDate.now()
+		if (textFieldNickname.getText().isBlank() || password.isBlank() || textFieldPhone.getText().isBlank()
+				|| nameTextField.getText().isBlank() || emailTextField.getText().isBlank() || date == LocalDate.now()
 				|| nationalityComboBox.getSelectedIndex() == -1) {
 			JOptionPane.showMessageDialog(null, "You have to fill all the fields", "League of legends",
 					JOptionPane.ERROR_MESSAGE);
 		} else {
 			User user = setInformation();
 			controller.addUser(user);
-			JOptionPane.showMessageDialog(null, "CORRECTO", "League of legends", JOptionPane.INFORMATION_MESSAGE);
-			// OPEN MAIN WINDOW
-
+			parent.setUser(user);
+			parent.setVisible(true);
+			this.dispose();
 		}
 	}
 
-	// Method create the user with the information given
+	/**
+	 * Method that creates the user with the information written by the user
+	 * 
+	 * @return User
+	 */
+
 	public User setInformation() {
 		User user = new Player();
+		String password = new String(passwordField.getPassword());
 		user.setName(nameTextField.getText());
 		user.setNationality((String) nationalityComboBox.getSelectedItem());
 		user.setEmail(emailTextField.getText());
-		user.setPassword(textFieldPassword.getText());
+		user.setPassword(password);
 		user.setPhone(textFieldPhone.getText());
 		((Player) user).setNickname(textFieldNickname.getText());
 		LocalDate date = jCalendar.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -248,6 +266,9 @@ public class SignIn extends JDialog implements ActionListener, FocusListener {
 		return user;
 	}
 
+	/**
+	 * Method to make verifications when focusLost
+	 */
 	public void focusLost(FocusEvent e) {
 		if (e.getSource().equals(textFieldNickname)) {
 			try {
@@ -258,9 +279,34 @@ public class SignIn extends JDialog implements ActionListener, FocusListener {
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
+		if (e.getSource().equals(textFieldNickname)) {
+			try {
+				checkUser();
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 
+		}
+		if (e.getSource().equals(textFieldPhone)) {
+			checkPhone();
+		}
+
+		if (e.getSource().equals(nameTextField)) {
+			checkName();
+		}
+
+		if (e.getSource().equals(emailTextField)) {
+			checkEmail();
+		}
 	}
 
+	/**
+	 * Method to check if the user exist and check that the user only inserts one
+	 * word as nickname
+	 * 
+	 * @throws PersonalizedException
+	 */
 	private void checkUser() throws PersonalizedException {
 		// TODO Auto-generated method stub
 		// Check that the inserted nickname doesn't exists
@@ -268,21 +314,124 @@ public class SignIn extends JDialog implements ActionListener, FocusListener {
 		userComprobar = controller.findUser(textFieldNickname.getText());
 
 		if (userComprobar != null) {
-			JOptionPane.showMessageDialog(null, "Nickname allready exists", "League of legends",
+			JOptionPane.showMessageDialog(this, "Nickname already exists", "League of legends",
+					JOptionPane.ERROR_MESSAGE);
+			textFieldNickname.setText("");
+		}
+		if (!control.validateNickname(textFieldNickname.getText())) {
+			JOptionPane.showMessageDialog(this, "Nickname can only consist of a single word", "League of legends",
 					JOptionPane.ERROR_MESSAGE);
 			textFieldNickname.setText("");
 		}
 	}
 
+	/**
+	 * Method to validate that the text inserted in the email textField is correct
+	 */
+	public void checkEmail() {
+			if (!control.validateEmail(emailTextField.getText()) && !emailTextField.getText().isBlank()) {
+				JOptionPane.showMessageDialog(this, "Email format incorrect. Example: ____@____.com", "League of legends",
+						JOptionPane.ERROR_MESSAGE);
+				emailTextField.setText("");
+			}
+		}
+
+
+	/**
+	 * Method to validate that the text inserted by the user is a string
+	 */
+	public void checkName() {
+		if (!control.validateString(nameTextField.getText()) && !nameTextField.getText().isBlank()) {
+			JOptionPane.showMessageDialog(this, "This field can't contain numbers", "League of legends",
+					JOptionPane.ERROR_MESSAGE);
+			nameTextField.setText("");
+		}
+	}
+
+	/**
+	 * Method to validate that the phone only consists of 9 numbers
+	 */
+	public void checkPhone() {
+		if (!control.validatePhone(textFieldPhone.getText()) && textFieldPhone.getText().isBlank()) {
+			JOptionPane.showMessageDialog(this, "The telephone must have a lenght of 9 numbers", "League of legends",
+					JOptionPane.ERROR_MESSAGE);
+			textFieldPhone.setText("");
+		}
+	}
+
+	/**
+	 * Method implemented by FocusListener but not used
+	 */
 	@Override
 	public void focusGained(FocusEvent e) {
-		// TODO Auto-generated method stub
+		// not used
 
 	}
 
+	/**
+	 * Method implemented by ActionPerformed but not used
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		// not used
+
+	}
+
+	/**
+	 * Method to make a action when mouseClicked
+	 */
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if (e.getSource().equals(lblSend)) {
+			try {
+				openMainWindow();
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, e1.getMessage(), "An unexpected error has occured!",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+
+	/**
+	 * Method to make a action during mousePressed
+	 */
+	@Override
+	public void mousePressed(MouseEvent e) {
+		if (e.getSource().equals(lblEye)) {
+			passwordField.setEchoChar((char) 0);
+		}
+
+	}
+
+	/**
+	 * Method to make a action when mouseReleased
+	 */
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		if (e.getSource().equals(lblEye)) {
+			passwordField.setEchoChar('*');
+		}
+
+	}
+
+	/**
+	 * Method implemented by MouseListener but not used
+	 */
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// not used
+
+	}
+
+	/**
+	 * Method implemented by MouseListener but not used
+	 */
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// not used
 
 	}
 }
