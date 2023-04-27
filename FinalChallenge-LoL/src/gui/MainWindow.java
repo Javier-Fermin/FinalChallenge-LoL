@@ -105,7 +105,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 	private UserControllable userControllable;
 
 	/**
-	 * 
+	 * Create the frame.
 	 * @param userControllable
 	 * @param champEditable
 	 * @param gameStorable
@@ -646,6 +646,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 		// Load the tab profile with the information for the database
 		loadData(userControllable);
 	}
+	
 	/**
 	 * ActionPerformed implementation for buttons in main window.
 	 */
