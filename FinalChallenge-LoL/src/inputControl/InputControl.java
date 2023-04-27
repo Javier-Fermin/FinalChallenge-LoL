@@ -18,13 +18,6 @@ public class InputControl {
         
         return correct;
 	}
-	public boolean validatePhone(String phone) {
-		correct = true;
-		if(phone.length()!=9 || !phone.matches("[0-9]+")) {
-			correct= false;
-		}
-		return correct;
-	}
 	
 	public boolean validateNickname(String nickname) {
 		correct = true;
@@ -41,8 +34,11 @@ public class InputControl {
 		return correct;
 	}
 	
-	public boolean validateInteger(int number) {
-		
+	public boolean validateInteger(String number) {
+		correct= false;
+		if(number.matches("[0-9]+")) {
+			correct= true;
+		}
 		return correct;
 	}
 }

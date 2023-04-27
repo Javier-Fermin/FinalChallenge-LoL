@@ -253,7 +253,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		textFieldPhoneProfile = new JTextField();
 		textFieldPhoneProfile.setBounds(215, 505, 199, 19);
 		panelInfo.add(textFieldPhoneProfile);
-		textFieldPhoneProfile.setColumns(10);
+		textFieldPhoneProfile.setColumns(9);
 
 		passwordFieldProfile = new JPasswordField();
 		passwordFieldProfile.setFont(new Font("Tahoma", Font.PLAIN, 10));
@@ -291,6 +291,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		JLabel additionsProfile = new JLabel("ADDITIONS");
 		additionsProfile.setFont(new Font("Bahnschrift", Font.BOLD, 17));
 		additionsProfile.setBounds(48, 415, 92, 21);
+		additionsProfile.addFocusListener(this);
 		panelAdmin.add(additionsProfile);
 
 		textFieldAdditionsProfile = new JTextField();
@@ -1302,11 +1303,18 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 	 */
 
 	public void checkPhone(String phone) {
-		if (!control.validatePhone(phone) && !phone.isEmpty()) {
+		if (phone.length()!= 9 || !control.validateInteger(phone) && !phone.isEmpty()) {
 			JOptionPane.showMessageDialog(this, "The telephone must have a lenght of 9 numbers", "League of legends",
 					JOptionPane.ERROR_MESSAGE);
 			textFieldPhoneProfile.setText(user.getPhone());
 			textFieldPhoneAddAdmin.setText("");
+		}
+	}
+	public void checkNumber(String number) {
+		if(!control.validateInteger(textFieldAdditionsProfile.getText())){
+			JOptionPane.showMessageDialog(this, "Only numbers", "League of legends",
+					JOptionPane.ERROR_MESSAGE);
+			textFieldAdditionsProfile.setText(String.valueOf(((Administrator) user).getAddtions()));
 		}
 	}
 
@@ -1373,7 +1381,10 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 
 		if (e.getSource().equals(textFieldPhoneAddAdmin))
 			checkPhone(textFieldPhoneAddAdmin.getText());
-
+		
+		if(e.getSource().equals(textFieldAdditionsProfile)) {
+			checkNumber(textFieldAdditionsProfile.getText());
+		}
 	}
 
 }
