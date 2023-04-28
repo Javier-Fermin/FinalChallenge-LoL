@@ -8,10 +8,14 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import controller.ChampEditable;
 import controller.GameStorable;
 import controller.GameStorableDBImplementation;
+import controller.UserControllable;
 import exceptions.PersonalizedException;
+import model.Champ;
 import model.Game;
+import model.User;
 
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
@@ -22,6 +26,8 @@ import javax.swing.JSplitPane;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,11 +42,11 @@ import javax.swing.JComponent;
 import javax.swing.ButtonGroup;
 import com.toedter.calendar.JDateChooser;
 
-public class AddGame extends JDialog implements ActionListener{
+public class AddGame extends JDialog implements ActionListener, FocusListener {
 
 	private final JPanel contentPanel = new JPanel();
-	private Map <String,String> blueTeam=new HashMap<String,String>();
-	private Map <String,String> redTeam=new HashMap<String,String>();
+	private Map<String, String> blueTeam = new HashMap<String, String>();
+	private Map<String, String> redTeam = new HashMap<String, String>();
 	private JTextField textChampP5T1;
 	private JTextField textNicknameP5T1;
 	private JTextField textNicknameP4T1;
@@ -63,6 +69,8 @@ public class AddGame extends JDialog implements ActionListener{
 	private JTextField textNicknameP5T2;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private GameStorable gameStorable;
+	private UserControllable userControllable;
+	private ChampEditable champEditable;
 	private JButton btnAdd;
 	private JDateChooser dateChooser;
 	private JTextField textDuration;
@@ -71,22 +79,29 @@ public class AddGame extends JDialog implements ActionListener{
 
 	/**
 	 * Create the dialog.
-	 * @param gameStorable 
-	 * @param b 
-	 * @param mainWindow 
+	 * 
+	 * @param gameStorable
+	 * @param b
+	 * @param mainWindow
 	 */
-	public AddGame(MainWindow mainWindow, boolean b, GameStorable gameStorable) {
+	public AddGame(MainWindow mainWindow, boolean b, GameStorable gameStorable, UserControllable userControllable,
+			ChampEditable champEditable) {
 		this.gameStorable = gameStorable;
+		this.userControllable = userControllable;
+		this.champEditable = champEditable;
 		this.setModal(b);
 		setBounds(100, 100, 745, 791);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_contentPanel = new GridBagLayout();
-		gbl_contentPanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_contentPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_contentPanel.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_contentPanel.rowWeights = new double[]{1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPanel.columnWidths = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0 };
+		gbl_contentPanel.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		gbl_contentPanel.columnWeights = new double[] { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0,
+				0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gbl_contentPanel.rowWeights = new double[] { 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,
+				0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		contentPanel.setLayout(gbl_contentPanel);
 		{
 			JSplitPane splitPaneTeams = new JSplitPane();
@@ -103,10 +118,11 @@ public class AddGame extends JDialog implements ActionListener{
 				JPanel panel = new JPanel();
 				splitPaneTeams.setLeftComponent(panel);
 				GridBagLayout gbl_panel = new GridBagLayout();
-				gbl_panel.columnWidths = new int[]{0, 0, 0, 0, 0};
-				gbl_panel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-				gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-				gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+				gbl_panel.columnWidths = new int[] { 0, 0, 0, 0, 0 };
+				gbl_panel.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+				gbl_panel.columnWeights = new double[] { 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
+				gbl_panel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+						0.0, 0.0, 0.0, Double.MIN_VALUE };
 				panel.setLayout(gbl_panel);
 				{
 					JLabel lblTeam1 = new JLabel("Blue Team");
@@ -300,10 +316,11 @@ public class AddGame extends JDialog implements ActionListener{
 				JPanel panel = new JPanel();
 				splitPaneTeams.setRightComponent(panel);
 				GridBagLayout gbl_panel = new GridBagLayout();
-				gbl_panel.columnWidths = new int[]{0, 0, 0, 0, 0};
-				gbl_panel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-				gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-				gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+				gbl_panel.columnWidths = new int[] { 0, 0, 0, 0, 0 };
+				gbl_panel.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+				gbl_panel.columnWeights = new double[] { 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
+				gbl_panel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+						0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 				panel.setLayout(gbl_panel);
 				{
 					JLabel lblNewLabel_6 = new JLabel("Red Team");
@@ -566,17 +583,41 @@ public class AddGame extends JDialog implements ActionListener{
 			gbc_btnAdd.gridy = 17;
 			contentPanel.add(btnAdd, gbc_btnAdd);
 		}
+
+		{
+			textChampP1T1.addFocusListener(this);
+			textChampP1T2.addFocusListener(this);
+			textChampP2T1.addFocusListener(this);
+			textChampP2T2.addFocusListener(this);
+			textChampP3T1.addFocusListener(this);
+			textChampP3T2.addFocusListener(this);
+			textChampP4T1.addFocusListener(this);
+			textChampP4T2.addFocusListener(this);
+			textChampP5T1.addFocusListener(this);
+			textChampP5T2.addFocusListener(this);
+			textNicknameP1T1.addFocusListener(this);
+			textNicknameP1T2.addFocusListener(this);
+			textNicknameP2T1.addFocusListener(this);
+			textNicknameP2T2.addFocusListener(this);
+			textNicknameP3T1.addFocusListener(this);
+			textNicknameP3T2.addFocusListener(this);
+			textNicknameP4T1.addFocusListener(this);
+			textNicknameP4T2.addFocusListener(this);
+			textNicknameP5T1.addFocusListener(this);
+			textNicknameP5T2.addFocusListener(this);
+		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getSource()==btnAdd) {
+		if (e.getSource() == btnAdd) {
 			try {
 				addGame();
 			} catch (PersonalizedException e1) {
 				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, e1.getMessage(),"An unexpected error has occured!", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, e1.getMessage(), "An unexpected error has occured!",
+						JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
@@ -584,61 +625,372 @@ public class AddGame extends JDialog implements ActionListener{
 	private void addGame() throws PersonalizedException {
 		// TODO Auto-generated method stub
 		Game aux = new Game();
-		blueTeam.put(textNicknameP1T1.getText(), textChampP1T1.getText());
-		blueTeam.put(textNicknameP2T1.getText(), textChampP2T1.getText());
-		blueTeam.put(textNicknameP3T1.getText(), textChampP3T1.getText());
-		blueTeam.put(textNicknameP4T1.getText(), textChampP4T1.getText());
-		blueTeam.put(textNicknameP5T1.getText(), textChampP5T1.getText());
-		redTeam.put(textNicknameP1T2.getText(), textChampP1T2.getText());
-		redTeam.put(textNicknameP2T2.getText(), textChampP2T2.getText());
-		redTeam.put(textNicknameP3T2.getText(), textChampP3T2.getText());
-		redTeam.put(textNicknameP4T2.getText(), textChampP4T2.getText());
-		redTeam.put(textNicknameP5T2.getText(), textChampP5T2.getText());
-		aux.setDateGame(dateChooser.getDate().toInstant().atZone(ZoneId.of("Europe/Paris")).toLocalDate());
-		aux.setDuration(Float.parseFloat(textDuration.getText()));
-		aux.setId(gameStorable.addGame(aux));
-		Set <Entry<String,String>>redTeamSet = redTeam.entrySet(),blueTeamSet = blueTeam.entrySet();
-		int count=0;
-		String role = null;
-		for (Entry<String,String> entry : blueTeamSet) {
-			if(count==0) {
-				role="TOP";
-			}
-			if(count==1) {
-				role="JNG";
-			}
-			if(count==2) {
-				role="MID";
-			}
-			if(count==3) {
-				role="ADC";
-			}
-			if(count==4) {
-				role="SUP";
-			}
-			gameStorable.completeGame(aux.getId(), entry.getKey(), entry.getValue(), chckbxT1.isSelected(),role);
-			count++;
+		if (checkFields()) {
+			blueTeam.put(textNicknameP1T1.getText(), textChampP1T1.getText());
+			blueTeam.put(textNicknameP2T1.getText(), textChampP2T1.getText());
+			blueTeam.put(textNicknameP3T1.getText(), textChampP3T1.getText());
+			blueTeam.put(textNicknameP4T1.getText(), textChampP4T1.getText());
+			blueTeam.put(textNicknameP5T1.getText(), textChampP5T1.getText());
+			redTeam.put(textNicknameP1T2.getText(), textChampP1T2.getText());
+			redTeam.put(textNicknameP2T2.getText(), textChampP2T2.getText());
+			redTeam.put(textNicknameP3T2.getText(), textChampP3T2.getText());
+			redTeam.put(textNicknameP4T2.getText(), textChampP4T2.getText());
+			redTeam.put(textNicknameP5T2.getText(), textChampP5T2.getText());
+			aux.setDateGame(dateChooser.getDate().toInstant().atZone(ZoneId.of("Europe/Paris")).toLocalDate());
+			aux.setDuration(Float.parseFloat(textDuration.getText()));
+			aux.setId(gameStorable.addGame(aux));
+		} else {
+			JOptionPane.showMessageDialog(this, "There are empty fields. Please check it!", "League of legends",
+					JOptionPane.ERROR_MESSAGE);
 		}
-		count=0;
-		for (Entry<String,String> entry : redTeamSet) {
-			if(count==0) {
-				role="TOP";
+		Set<Entry<String, String>> redTeamSet = redTeam.entrySet(), blueTeamSet = blueTeam.entrySet();
+		int count = 0;
+		String role = null;
+		for (Entry<String, String> entry : blueTeamSet) {
+			if (count == 0) {
+				role = "TOP";
 			}
-			if(count==1) {
-				role="JNG";
+			if (count == 1) {
+				role = "JNG";
 			}
-			if(count==2) {
-				role="MID";
+			if (count == 2) {
+				role = "MID";
 			}
-			if(count==3) {
-				role="ADC";
+			if (count == 3) {
+				role = "ADC";
 			}
-			if(count==4) {
-				role="SUP";
+			if (count == 4) {
+				role = "SUP";
 			}
-			gameStorable.completeGame(aux.getId(), entry.getKey(), entry.getValue(), chckbxT2.isSelected(),role);
+			if(checkFields()) {
+			gameStorable.completeGame(aux.getId(), entry.getKey(), entry.getValue(), chckbxT1.isSelected(), role);
 			count++;
+			}
+
+		}
+		count = 0;
+		for (Entry<String, String> entry : redTeamSet) {
+			if (count == 0) {
+				role = "TOP";
+			}
+			if (count == 1) {
+				role = "JNG";
+			}
+			if (count == 2) {
+				role = "MID";
+			}
+			if (count == 3) {
+				role = "ADC";
+			}
+			if (count == 4) {
+				role = "SUP";
+			}
+			if(checkFields()) {
+			gameStorable.completeGame(aux.getId(), entry.getKey(), entry.getValue(), chckbxT2.isSelected(), role);
+			count++;
+			}
+
 		}
 	}
+	/**
+	 * Method to check if the user exists
+	 * @param user
+	 * @return correct
+	 * @throws PersonalizedException
+	 */
 
+	public boolean checkUser(String user) throws PersonalizedException {
+		boolean correct = true;
+		User userCheck = userControllable.findUser(user);
+		if (userCheck == null && !user.isEmpty()) {
+			correct = false;
+			JOptionPane.showMessageDialog(this, "The nickname doesn't exist", "League of legends",
+					JOptionPane.ERROR_MESSAGE);
+		}
+
+		return correct;
+	}
+	/**
+	 * Method to check if the champ exits
+	 * @param champ
+	 * @return
+	 * @throws PersonalizedException
+	 */
+
+	public boolean checkChamp(String champ) throws PersonalizedException {
+		boolean correct = true;
+
+		Champ champCheck = champEditable.checkChampName(champ);
+		if (champCheck == null && !champ.isEmpty()) {
+			correct = false;
+			JOptionPane.showMessageDialog(this, "Champ doesn't exist", "League of legends", JOptionPane.ERROR_MESSAGE);
+		}
+		return correct;
+	}
+
+	/**
+	 * Method to check if the fields aren't empty before sending the information
+	 * @return
+	 */
+	public boolean checkFields() {
+		boolean correct = false;
+		if (textChampP1T1.getText().isBlank() || textChampP2T1.getText().isBlank() || textChampP3T1.getText().isBlank()
+				|| textChampP4T1.getText().isBlank() || textChampP5T1.getText().isBlank()
+				|| textNicknameP1T1.getText().isBlank() || textNicknameP2T1.getText().isBlank()
+				|| textNicknameP3T1.getText().isBlank() || textNicknameP4T1.getText().isBlank()
+				|| textNicknameP5T1.getText().isBlank() || textDuration.getText().isBlank()
+				|| dateChooser.getDate() == null) {
+			correct = false;
+
+			if (chckbxT1.isSelected() || chckbxT2.isSelected()) {
+				correct = true;
+			} else {
+				correct = false;
+			}
+		}
+		return correct;
+	}
+
+	/**
+	 * Method implemented by FocusListener but not used
+	 */
+	@Override
+	public void focusGained(FocusEvent e) {
+		// not used
+
+	}
+	/**
+	 * Method to make validations when focusLost
+	 */
+
+	@Override
+	public void focusLost(FocusEvent e) {
+		if (e.getSource().equals(textNicknameP1T1)) {
+			try {
+				if (!checkUser(textNicknameP1T1.getText())) {
+					textNicknameP1T1.setText("");
+				}
+
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		if (e.getSource().equals(textNicknameP1T2)) {
+			try {
+				if (!checkUser(textNicknameP1T2.getText())) {
+					textNicknameP1T2.setText("");
+				}
+
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		if (e.getSource().equals(textNicknameP2T1)) {
+			try {
+				if (!checkUser(textNicknameP2T1.getText())) {
+					textNicknameP2T1.setText("");
+				}
+
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		if (e.getSource().equals(textNicknameP2T2)) {
+			try {
+				if (!checkUser(textNicknameP2T2.getText())) {
+					textNicknameP2T2.setText("");
+				}
+
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		if (e.getSource().equals(textNicknameP3T1)) {
+			try {
+				if (!checkUser(textNicknameP3T1.getText())) {
+					textNicknameP3T1.setText("");
+				}
+
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		if (e.getSource().equals(textNicknameP3T2)) {
+			try {
+				if (!checkUser(textNicknameP3T2.getText())) {
+					textNicknameP3T2.setText("");
+				}
+
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+
+		if (e.getSource().equals(textNicknameP4T1)) {
+			try {
+				if (!checkUser(textNicknameP4T1.getText())) {
+					textNicknameP4T1.setText("");
+				}
+
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		if (e.getSource().equals(textNicknameP4T2)) {
+			try {
+				if (!checkUser(textNicknameP4T2.getText())) {
+					textNicknameP4T2.setText("");
+				}
+
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+
+		if (e.getSource().equals(textNicknameP5T1)) {
+			try {
+				if (!checkUser(textNicknameP5T1.getText())) {
+					textNicknameP5T1.setText("");
+				}
+
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		if (e.getSource().equals(textNicknameP5T2)) {
+			try {
+				if (!checkUser(textNicknameP5T2.getText())) {
+					textNicknameP5T2.setText("");
+				}
+
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+
+		if (e.getSource().equals(textChampP1T1)) {
+			try {
+				if (!checkChamp(textChampP1T1.getText())) {
+					textChampP1T1.setText("");
+				}
+
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		if (e.getSource().equals(textChampP1T2)) {
+			try {
+				if (!checkChamp(textChampP1T2.getText())) {
+					textChampP1T2.setText("");
+				}
+
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+
+		if (e.getSource().equals(textChampP2T1)) {
+			try {
+				if (!checkChamp(textChampP2T1.getText())) {
+					textChampP2T1.setText("");
+				}
+
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+
+		if (e.getSource().equals(textChampP2T2)) {
+			try {
+				if (!checkChamp(textChampP2T2.getText())) {
+					textChampP2T2.setText("");
+				}
+
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+
+		if (e.getSource().equals(textChampP3T1)) {
+			try {
+				if (!checkChamp(textChampP3T1.getText())) {
+					textChampP3T1.setText("");
+				}
+
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		if (e.getSource().equals(textChampP3T2)) {
+			try {
+				if (!checkChamp(textChampP3T2.getText())) {
+					textChampP3T2.setText("");
+				}
+
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		if (e.getSource().equals(textChampP4T1)) {
+			try {
+				if (!checkChamp(textChampP4T1.getText())) {
+					textChampP4T1.setText("");
+				}
+
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		if (e.getSource().equals(textChampP4T2)) {
+			try {
+				if (!checkChamp(textChampP4T2.getText())) {
+					textChampP4T2.setText("");
+				}
+
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		if (e.getSource().equals(textChampP5T1)) {
+			try {
+				if (!checkChamp(textChampP5T1.getText())) {
+					textChampP5T1.setText("");
+				}
+
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+
+		if (e.getSource().equals(textChampP5T2)) {
+			try {
+				if (!checkChamp(textChampP5T2.getText())) {
+					textChampP5T2.setText("");
+				}
+
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+	}
 }

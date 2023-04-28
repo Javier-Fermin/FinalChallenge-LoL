@@ -121,7 +121,7 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 
 		JLabel lblFondo = new JLabel("");
 		lblFondo.setIcon(new ImageIcon(Login.class.getResource("/img/fondo.jpg")));
-		lblFondo.setBounds(-57, -38, 759, 435);
+		lblFondo.setBounds(-56, -28, 778, 448);
 		panel.add(lblFondo);
 	}
 
@@ -134,8 +134,8 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		//Enter when "sign in" button is pressed
 		if (e.getSource().equals(signIn)) {
-			// SignIn dialogSign = new SignIn(parent);
-			// dialogSign.setVisible(true);
+			SignIn dialogSign = new SignIn(controller, parent);
+			dialogSign.setVisible(true);
 			this.dispose();
 		}
 		//Enter when log in button is pressed.

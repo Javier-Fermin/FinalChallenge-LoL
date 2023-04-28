@@ -14,6 +14,7 @@ import javax.swing.table.JTableHeader;
 
 import controller.*;
 import exceptions.PersonalizedException;
+import inputControl.InputControl;
 import model.*;
 import java.util.List;
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ import javax.swing.border.EtchedBorder;
 
 import com.toedter.calendar.JCalendar;
 
-public class MainWindow extends JFrame implements ActionListener, MouseListener {
+public class MainWindow extends JFrame implements ActionListener, MouseListener, FocusListener {
 	private JPanel contentPane;
 	private JTextField textFieldNameProfile;
 	private JTextField textFieldNicknameProfile;
@@ -50,18 +51,9 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 	private JTextField textFieldPhoneProfile;
 	private JCalendar jCalendarProfile;
 	private JCalendar jCalendarStartDateProfile;
-	private JTextField textFieldPasswordProfile;
 	private String nicknameOriginal;
 	private JTextField textFieldAdditionsProfile;
 	private JLabel nicknameProfile;
-	private JTextField Nickname_TextField;
-	private JTextField Email_textField;
-	private JTextField textField_1;
-	private JTextField Phone_textField;
-	private JTextField Password_textField;
-	private JTextField Nacionality_textField;
-	private JTextField StartDate_textField;
-	private JTextField Additions_textField;
 	private JTextField textFieldNameAddAdmin;
 	private JTextField textFieldMailAddAdmin;
 	private JTextField textFieldPhoneAddAdmin;
@@ -110,12 +102,16 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 	private Statable statable;
 	private GameStorable gameStorable;
 	private UserControllable userControllable;
+	private InputControl control = new InputControl();
+	private JPasswordField passwordFieldProfile;
+	private JLabel lblEyeProfile;
 
 	/**
 	 * Create the frame.
 	 */
 	public MainWindow(UserControllable userControllable, ChampEditable champEditable, GameStorable gameStorable,
 			Statable statable) {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(MainWindow.class.getResource("/icon/LoL_icon.svg.png")));
 		this.userControllable = userControllable;
 		this.champEditable = champEditable;
 		this.gameStorable = gameStorable;
@@ -129,46 +125,15 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		contentPane.setLayout(new BorderLayout(0, 0));
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(0, 0, 1196, 656);
 		contentPane.add(tabbedPane);
 
 		JPanel profile = new JPanel();
 		profile.setBackground(new Color(240, 230, 140));
 		tabbedPane.addTab("PROFILE\r\n", null, profile, null);
 		profile.setLayout(null);
-
-		panelAdmin = new JPanel();
-		panelAdmin.setBounds(625, 10, 556, 609);
-		panelAdmin.setBackground(new Color(255, 255, 255));
-		profile.add(panelAdmin);
-		panelAdmin.setLayout(null);
-
-		JLabel lblAdministratorAreaProfile = new JLabel("ADMINISTRATOR AREA");
-		lblAdministratorAreaProfile.setBounds(156, 29, 249, 26);
-		lblAdministratorAreaProfile.setFont(new Font("Bahnschrift", Font.BOLD, 21));
-		panelAdmin.add(lblAdministratorAreaProfile);
-
-		JLabel startDateProfile = new JLabel("START DATE");
-		startDateProfile.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		startDateProfile.setBounds(48, 231, 132, 21);
-		panelAdmin.add(startDateProfile);
-
-		jCalendarStartDateProfile = new JCalendar();
-		jCalendarStartDateProfile.setBounds(177, 150, 199, 152);
-		panelAdmin.add(jCalendarStartDateProfile);
-
-		JLabel additionsProfile = new JLabel("ADDITIONS");
-		additionsProfile.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		additionsProfile.setBounds(48, 415, 92, 21);
-		panelAdmin.add(additionsProfile);
-
-		textFieldAdditionsProfile = new JTextField();
-		textFieldAdditionsProfile.setBounds(177, 416, 199, 19);
-		panelAdmin.add(textFieldAdditionsProfile);
-		textFieldAdditionsProfile.setColumns(10);
 
 		JPanel panelInfo = new JPanel();
 		panelInfo.setBounds(16, 10, 599, 609);
@@ -197,6 +162,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 		textFieldNameProfile.setColumns(10);
 		textFieldNameProfile.setBounds(215, 160, 199, 19);
 		panelInfo.add(textFieldNameProfile);
+		textFieldNameProfile.addFocusListener(this);
 
 		JLabel birthdateProfile = new JLabel("BIRTHDATE");
 		birthdateProfile.setFont(new Font("Bahnschrift", Font.BOLD, 17));
@@ -217,11 +183,13 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 		textFieldNicknameProfile.setColumns(10);
 		textFieldNicknameProfile.setBounds(215, 97, 199, 19);
 		panelInfo.add(textFieldNicknameProfile);
+		textFieldNicknameProfile.addFocusListener(this);
 
 		textFieldEmailProfile = new JTextField();
 		textFieldEmailProfile.setToolTipText("");
 		textFieldEmailProfile.setColumns(10);
 		textFieldEmailProfile.setBounds(215, 290, 199, 19);
+		textFieldEmailProfile.addFocusListener(this);
 		panelInfo.add(textFieldEmailProfile);
 
 		JLabel lblPersonalDataProfile = new JLabel("PERSONAL DATA");
@@ -230,7 +198,6 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 		panelInfo.add(lblPersonalDataProfile);
 
 		btnModifyProfile = new JButton("MODIFY ");
-		
 		btnModifyProfile.setBackground(new Color(64, 224, 208));
 		btnModifyProfile.setBounds(468, 116, 92, 67);
 		panelInfo.add(btnModifyProfile);
@@ -286,102 +253,55 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 		textFieldPhoneProfile = new JTextField();
 		textFieldPhoneProfile.setBounds(215, 505, 199, 19);
 		panelInfo.add(textFieldPhoneProfile);
-		textFieldPhoneProfile.setColumns(10);
 
-		textFieldPasswordProfile = new JTextField();
-		textFieldPasswordProfile.setBounds(215, 233, 199, 19);
-		panelInfo.add(textFieldPasswordProfile);
-		textFieldPasswordProfile.setColumns(10);
+		textFieldPhoneProfile.setColumns(9);
 
-		JLabel lblNewLabelProfile = new JLabel("");
-		lblNewLabelProfile.setBackground(new Color(255, 105, 180));
-		lblNewLabelProfile.setBounds(0, 0, 1201, 629);
-		profile.add(lblNewLabelProfile);
+		passwordFieldProfile = new JPasswordField();
+		passwordFieldProfile.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		passwordFieldProfile.setEchoChar('·');
+		passwordFieldProfile.setBounds(215, 226, 199, 19);
+		panelInfo.add(passwordFieldProfile);
+		
+		lblEyeProfile = new JLabel("");
+		lblEyeProfile.setIcon(new ImageIcon(MainWindow.class.getResource("/img/pass_eye_25_17.jpg")));
+		lblEyeProfile.setBounds(424, 232, 30, 13);
+		lblEyeProfile.addMouseListener(this);
+		panelInfo.add(lblEyeProfile);
+		textFieldPhoneProfile.addFocusListener(this);
 
-		JLabel Nickname = new JLabel("NICKNAME");
-		Nickname.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		Nickname.setBounds(64, 96, 108, 28);
-		profile.add(Nickname);
+		panelAdmin = new JPanel();
+		panelAdmin.setBounds(625, 10, 556, 609);
+		panelAdmin.setBackground(new Color(255, 255, 255));
+		profile.add(panelAdmin);
+		panelAdmin.setLayout(null);
 
-		Nickname_TextField = new JTextField();
-		Nickname_TextField.setBounds(64, 134, 191, 19);
-		profile.add(Nickname_TextField);
-		Nickname_TextField.setColumns(10);
+		JLabel lblAdministratorAreaProfile = new JLabel("ADMINISTRATOR AREA");
+		lblAdministratorAreaProfile.setBounds(156, 29, 249, 26);
+		lblAdministratorAreaProfile.setFont(new Font("Bahnschrift", Font.BOLD, 21));
+		panelAdmin.add(lblAdministratorAreaProfile);
 
-		JLabel Email = new JLabel("EMAIL");
-		Email.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		Email.setBounds(64, 244, 108, 28);
-		profile.add(Email);
+		JLabel startDateProfile = new JLabel("START DATE");
+		startDateProfile.setFont(new Font("Bahnschrift", Font.BOLD, 17));
+		startDateProfile.setBounds(48, 231, 132, 21);
+		panelAdmin.add(startDateProfile);
 
-		Email_textField = new JTextField();
-		Email_textField.setColumns(10);
-		Email_textField.setBounds(64, 271, 191, 19);
-		profile.add(Email_textField);
+		jCalendarStartDateProfile = new JCalendar();
+		jCalendarStartDateProfile.setBounds(177, 150, 199, 152);
+		panelAdmin.add(jCalendarStartDateProfile);
 
-		JLabel Birthdate_textField = new JLabel("");
-		Birthdate_textField.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		Birthdate_textField.setBounds(64, 342, 108, 28);
-		profile.add(Birthdate_textField);
+		JLabel additionsProfile = new JLabel("ADDITIONS");
+		additionsProfile.setFont(new Font("Bahnschrift", Font.BOLD, 17));
+		additionsProfile.setBounds(48, 415, 92, 21);
+		additionsProfile.addFocusListener(this);
+		panelAdmin.add(additionsProfile);
 
-		JLabel Birthdate = new JLabel("BIRTHDATE");
-		Birthdate.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		Birthdate.setBounds(64, 314, 108, 28);
-		profile.add(Birthdate);
+		textFieldAdditionsProfile = new JTextField();
+		textFieldAdditionsProfile.setBounds(177, 416, 199, 19);
+		panelAdmin.add(textFieldAdditionsProfile);
+		textFieldAdditionsProfile.setColumns(10);
+		textFieldAdditionsProfile.addFocusListener(this);
+		;
 
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(64, 352, 191, 19);
-		profile.add(textField_1);
-
-		JLabel lblPhone = new JLabel("PHONE");
-		lblPhone.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		lblPhone.setBounds(64, 399, 108, 28);
-		profile.add(lblPhone);
-
-		Phone_textField = new JTextField();
-		Phone_textField.setColumns(10);
-		Phone_textField.setBounds(64, 437, 191, 19);
-		profile.add(Phone_textField);
-
-		JLabel Password = new JLabel("PASSWORD");
-		Password.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		Password.setBounds(64, 174, 108, 28);
-		profile.add(Password);
-
-		Password_textField = new JTextField();
-		Password_textField.setColumns(10);
-		Password_textField.setBounds(64, 212, 191, 19);
-		profile.add(Password_textField);
-
-		JLabel Nacionality = new JLabel("NACIONALITY");
-		Nacionality.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		Nacionality.setBounds(64, 490, 156, 28);
-		profile.add(Nacionality);
-
-		Nacionality_textField = new JTextField();
-		Nacionality_textField.setColumns(10);
-		Nacionality_textField.setBounds(64, 528, 191, 19);
-		profile.add(Nacionality_textField);
-
-		JLabel StartDate = new JLabel("START DATE");
-		StartDate.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		StartDate.setBounds(494, 174, 108, 28);
-		profile.add(StartDate);
-
-		StartDate_textField = new JTextField();
-		StartDate_textField.setColumns(10);
-		StartDate_textField.setBounds(493, 212, 191, 19);
-		profile.add(StartDate_textField);
-
-		JLabel Additions = new JLabel("ADDITIONS");
-		Additions.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		Additions.setBounds(494, 274, 108, 28);
-		profile.add(Additions);
-
-		Additions_textField = new JTextField();
-		Additions_textField.setColumns(10);
-		Additions_textField.setBounds(494, 319, 191, 19);
-		profile.add(Additions_textField);
 
 		champsPlayer = new JPanel();
 		tabbedPane.addTab("CHAMPS", null, champsPlayer, null);
@@ -505,31 +425,56 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 
 		JPanel stadistics = new JPanel();
 		tabbedPane.addTab("STADISTICS", null, stadistics, null);
-
-		JLabel lblNickStats = new JLabel("Nickname");
-		lblNickStats.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		stadistics.add(lblNickStats, "4, 4");
-
-		textNicknameStats = new JTextField();
-		stadistics.add(textNicknameStats, "8, 4, fill, default");
-		textNicknameStats.setColumns(10);
-
-		btnUpdateStats = new JButton("Update");
-		btnUpdateStats.addActionListener(this);
-		stadistics.add(btnUpdateStats, "4, 6");
-
-		JScrollPane scrollPaneStats = new JScrollPane();
-		stadistics.add(scrollPaneStats, "8, 6, fill, fill");
-
-		stats = new JTable();
+		GridBagLayout gbl_stadistics = new GridBagLayout();
+		gbl_stadistics.columnWidths = new int[]{248, 66, 96, 65, 452, 0};
+		gbl_stadistics.rowHeights = new int[]{402, 0};
+		gbl_stadistics.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_stadistics.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		stadistics.setLayout(gbl_stadistics);
+				
+						JLabel lblNickStats = new JLabel("Nickname");
+						lblNickStats.setFont(new Font("Tahoma", Font.PLAIN, 15));
+						GridBagConstraints gbc_lblNickStats = new GridBagConstraints();
+						gbc_lblNickStats.anchor = GridBagConstraints.WEST;
+						gbc_lblNickStats.insets = new Insets(0, 0, 0, 5);
+						gbc_lblNickStats.gridx = 1;
+						gbc_lblNickStats.gridy = 0;
+						stadistics.add(lblNickStats, gbc_lblNickStats);
+		
+				textNicknameStats = new JTextField();
+				GridBagConstraints gbc_textNicknameStats = new GridBagConstraints();
+				gbc_textNicknameStats.anchor = GridBagConstraints.WEST;
+				gbc_textNicknameStats.insets = new Insets(0, 0, 0, 5);
+				gbc_textNicknameStats.gridx = 2;
+				gbc_textNicknameStats.gridy = 0;
+				stadistics.add(textNicknameStats, gbc_textNicknameStats);
+				textNicknameStats.setColumns(10);
+		
+				btnUpdateStats = new JButton("Update");
+				btnUpdateStats.addActionListener(this);
+				GridBagConstraints gbc_btnUpdateStats = new GridBagConstraints();
+				gbc_btnUpdateStats.anchor = GridBagConstraints.WEST;
+				gbc_btnUpdateStats.insets = new Insets(0, 0, 0, 5);
+				gbc_btnUpdateStats.gridx = 3;
+				gbc_btnUpdateStats.gridy = 0;
+				stadistics.add(btnUpdateStats, gbc_btnUpdateStats);
 		modelStats = new DefaultTableModel();
-		stats.setModel(modelStats);
 		modelStats.addColumn("ID");
 		modelStats.addColumn("Nickname");
 		modelStats.addColumn("Name");
 		modelStats.addColumn("Position");
 		modelStats.addColumn("Win/Lose");
-		scrollPaneStats.setViewportView(stats);
+		
+				JScrollPane scrollPaneStats = new JScrollPane();
+				GridBagConstraints gbc_scrollPaneStats = new GridBagConstraints();
+				gbc_scrollPaneStats.anchor = GridBagConstraints.NORTHWEST;
+				gbc_scrollPaneStats.gridx = 4;
+				gbc_scrollPaneStats.gridy = 0;
+				stadistics.add(scrollPaneStats, gbc_scrollPaneStats);
+				
+						stats = new JTable();
+						stats.setModel(modelStats);
+						scrollPaneStats.setViewportView(stats);
 
 		JPanel management = new JPanel();
 		management.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -556,6 +501,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 		textFieldNameAddAdmin.setBounds(341, 137, 199, 25);
 		textFieldNameAddAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
 		textFieldNameAddAdmin.setColumns(10);
+		textFieldNameAddAdmin.addFocusListener(this);
 
 		JLabel lblPasswordAddAdmin = new JLabel("PASSWORD");
 		lblPasswordAddAdmin.setForeground(new Color(0, 0, 0));
@@ -571,6 +517,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 		textFieldMailAddAdmin.setBounds(341, 220, 199, 25);
 		textFieldMailAddAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
 		textFieldMailAddAdmin.setColumns(10);
+		textFieldMailAddAdmin.addFocusListener(this);
 
 		JLabel lblBDateAddAdmin = new JLabel("BIRTH DATE");
 		lblBDateAddAdmin.setForeground(new Color(0, 0, 0));
@@ -586,6 +533,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 		textFieldPhoneAddAdmin.setBounds(341, 448, 199, 25);
 		textFieldPhoneAddAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
 		textFieldPhoneAddAdmin.setColumns(10);
+		textFieldPhoneAddAdmin.addFocusListener(this);
 
 		JLabel lblNationalityAddAdmin = new JLabel("NATIONALITY");
 		lblNationalityAddAdmin.setForeground(new Color(0, 0, 0));
@@ -683,7 +631,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 		textAreaDeletePlayer = new JTextArea();
 		textAreaDeletePlayer.setForeground(new Color(0, 0, 0));
 		textAreaDeletePlayer.setBackground(new Color(255, 255, 255));
-		textAreaDeletePlayer.setBounds(132, 207, 328, 316);
+		textAreaDeletePlayer.setBounds(196, 272, 201, 251);
 		textAreaDeletePlayer.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		textAreaDeletePlayer.setEditable(false);
 		textAreaDeletePlayer.setVisible(false);
@@ -703,7 +651,8 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 			cargarUsers(userControllable);
 		} catch (PersonalizedException e) {
 			// TODO Auto-generated catch block
-			JOptionPane.showMessageDialog(null, e.getMessage(),"An unexpected error has occured!", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, e.getMessage(), "An unexpected error has occured!",
+					JOptionPane.ERROR_MESSAGE);
 		}
 
 		if (user instanceof Player) {
@@ -727,7 +676,8 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 				updateStats();
 			} catch (PersonalizedException e1) {
 				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, e1.getMessage(),"An unexpected error has occured!", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, e1.getMessage(), "An unexpected error has occured!",
+						JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		if (e.getSource() == btnUpdateGame) {
@@ -735,11 +685,12 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 				updateGame();
 			} catch (PersonalizedException e1) {
 				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, e1.getMessage(),"An unexpected error has occured!", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, e1.getMessage(), "An unexpected error has occured!",
+						JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		if (e.getSource() == btnAddGame) {
-			AddGame addGame = new AddGame(this, true, gameStorable);
+			AddGame addGame = new AddGame(this, true, gameStorable, userControllable, champEditable);
 			addGame.setVisible(true);
 		}
 		if (e.getSource().equals(btnSendAddAdmin)) {
@@ -747,7 +698,8 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 				sendAddAdmin();
 			} catch (PersonalizedException e1) {
 				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, e1.getMessage(),"An unexpected error has occured!", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, e1.getMessage(), "An unexpected error has occured!",
+						JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		if (e.getSource().equals(btnDeletePlayer)) {
@@ -755,7 +707,8 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 				deletePlayerAdmin();
 			} catch (PersonalizedException e1) {
 				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, e1.getMessage(),"An unexpected error has occured!", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, e1.getMessage(), "An unexpected error has occured!",
+						JOptionPane.ERROR_MESSAGE);
 			}
 		}
 
@@ -764,7 +717,8 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 				modifyPlayer(userControllable);
 			} catch (PersonalizedException e1) {
 				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, e1.getMessage(),"An unexpected error has occured!", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, e1.getMessage(), "An unexpected error has occured!",
+						JOptionPane.ERROR_MESSAGE);
 			}
 		}
 
@@ -773,7 +727,8 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 				deletePlayer(userControllable);
 			} catch (PersonalizedException e1) {
 				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, e1.getMessage(),"An unexpected error has occured!", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, e1.getMessage(), "An unexpected error has occured!",
+						JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		if (e.getSource().equals(buttonChampsPlayer_Enter)) {
@@ -781,15 +736,17 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 				listChampPlayer();
 			} catch (PersonalizedException e1) {
 				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, e1.getMessage(),"An unexpected error has occured!", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, e1.getMessage(), "An unexpected error has occured!",
+						JOptionPane.ERROR_MESSAGE);
 			}
 		}
-		if (e.getSource().equals(buttonChampsAdmin_Check)){
+		if (e.getSource().equals(buttonChampsAdmin_Check)) {
 			try {
 				checkChampAdmin();
 			} catch (PersonalizedException e1) {
 				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, e1.getMessage(),"An unexpected error has occured!", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, e1.getMessage(), "An unexpected error has occured!",
+						JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		if (e.getSource().equals(buttonChampAdmin_Add)) {
@@ -797,7 +754,8 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 				addChampAdmin();
 			} catch (PersonalizedException e1) {
 				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, e1.getMessage(),"An unexpected error has occured!", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, e1.getMessage(), "An unexpected error has occured!",
+						JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		if (e.getSource().equals(buttonChampAdmin_Modify)) {
@@ -805,7 +763,8 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 				executeModificationChampAdmin();
 			} catch (PersonalizedException e1) {
 				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, e1.getMessage(),"An unexpected error has occured!", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, e1.getMessage(), "An unexpected error has occured!",
+						JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
@@ -825,7 +784,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 			textAreaDeletePlayer.append("ID: " + userDel.getId() + "\nNickname: " + ((Player) userDel).getNickname()
 					+ "\nName: " + userDel.getName() + "\nEmail: " + userDel.getEmail() + "\n");
 			textAreaDeletePlayer.setVisible(true);
-			option = JOptionPane.showConfirmDialog(this, "Quiere borrar a " + userDel.getName() + "?");
+			option = JOptionPane.showConfirmDialog(this, "Do you want to delete " + userDel.getName() + "?");
 			if (option == 0) {
 				if (userDel instanceof Player)
 					chooseConnection = 2;
@@ -848,7 +807,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 				textAreaDeletePlayer.setVisible(false);
 			}
 		} else {
-			JOptionPane.showMessageDialog(this, "ERROR. Rellene todos los campos.");
+			JOptionPane.showMessageDialog(this, "ERROR. Fill in all fields.");
 			comboBoxSelectUser.setSelectedIndex(-1);
 			textAreaDeletePlayer.setText("");
 			textAreaDeletePlayer.setVisible(false);
@@ -874,7 +833,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 
 			userControllable.addUser(user, 0);
 
-			JOptionPane.showMessageDialog(getParent(), "Enviado correctamente.");
+			JOptionPane.showMessageDialog(getParent(), "Successfully sent.");
 			textFieldNameAddAdmin.setText("");
 			passwordFieldAddAdmin.setText("");
 			textFieldMailAddAdmin.setText("");
@@ -883,7 +842,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 			calendarAddAdmin.setDate(Date.valueOf(LocalDate.now()));
 
 		} else {
-			JOptionPane.showMessageDialog(this, "ERROR. Rellene todos los campos.");
+			JOptionPane.showMessageDialog(this, "ERROR. Fill in all fields.");
 		}
 	}
 
@@ -901,7 +860,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 			}
 
 		} else {
-			JOptionPane.showMessageDialog(this, "Introduzca un nickname");
+			JOptionPane.showMessageDialog(this, "Insert a nickname");
 		}
 	}
 
@@ -925,21 +884,24 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 			}
 
 		} else {
-			JOptionPane.showMessageDialog(this, "Introduzca un nickname");
+			JOptionPane.showMessageDialog(this, "Insert a nickname");
 		}
 	}
-
-	// Create the user with the information writen in the profile tab
+	/**
+	 * Method to create the user with the information writen in the profile tab
+	 * @return User
+	 */
 	public User loadUser() {
+		String password = new String(passwordFieldProfile.getPassword());
 		user.setName(textFieldNameProfile.getText());
 		user.setNationality((String) comboBoxNationalityProfile.getSelectedItem());
 		user.setEmail(textFieldEmailProfile.getText());
-		user.setPassword(textFieldPasswordProfile.getText());
+		user.setPassword(password);
 		user.setPhone(textFieldPhoneProfile.getText());
 		LocalDate date = jCalendarProfile.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 		user.setBirthDate(date);
 		if (user instanceof Player) {
-			((Player) user).setNickname(textFieldNameProfile.getText());
+			((Player) user).setNickname(textFieldNicknameProfile.getText());
 		} else {
 			textFieldNicknameProfile.setVisible(false);
 			LocalDate dateStart = jCalendarStartDateProfile.getDate().toInstant().atZone(ZoneId.systemDefault())
@@ -952,15 +914,17 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 		return user;
 
 	}
-
-	// Load the data from the user for the profile tab
+	/**
+	 * Method to load the data from the database to the profile tab
+	 * @param userControllable
+	 */
 	public void loadData(UserControllable userControllable) {
 		textFieldNameProfile.setText(user.getName());
 		textFieldEmailProfile.setText(user.getEmail());
 		jCalendarProfile.setDate(Date.valueOf(user.getBirthDate()));
-		textFieldPasswordProfile.setText(user.getPassword());
 		textFieldPhoneProfile.setText(user.getPhone());
 		comboBoxNationalityProfile.setSelectedItem(user.getNationality());
+		passwordFieldProfile.setText(user.getPassword());
 
 		if (user instanceof Player) {
 
@@ -989,7 +953,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 		jCalendarProfile.setDefaultLocale(getLocale());
 		textFieldEmailProfile.setText("");
 		textFieldNameProfile.setText("");
-		textFieldPasswordProfile.setText("");
+		passwordFieldProfile.setText("");
 		textFieldNicknameProfile.setText("");
 		textFieldPhoneProfile.setText("");
 		comboBoxNationalityProfile.setSelectedIndex(-1);
@@ -998,28 +962,37 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 	public void focusGained(FocusEvent e) {
 
 	}
-
+	
+	/**
+	 * Method to modify player's account information
+	 * @param userControllable
+	 * @throws PersonalizedException
+	 */
 	public void modifyPlayer(UserControllable userControllable) throws PersonalizedException {
-		boolean correct = false;
+
 		// If the user is instance as player we use the original nickname saved before
 		if (user instanceof Player) {
 			user = userControllable.findUser(nicknameOriginal, 2);
 		} else {
 			user = userControllable.findUser(user.getId(), 0);
 		}
-		// ADD CHECKEO
-		User user = loadUser();
-
-		correct = userControllable.modifyUser(user);
-		if (correct) {
-			JOptionPane.showMessageDialog(this, "PERSONAL DATA MODIFIED");
-		} else {
-			JOptionPane.showMessageDialog(this, "NO MODIFICATION");
+		
+		if(checkFieldsModify()) {
+			if (userControllable.modifyUser(user)) {
+				JOptionPane.showMessageDialog(this, "PERSONAL DATA MODIFIED");
+			} else {
+				JOptionPane.showMessageDialog(this, "NO MODIFICATION");
+			}
 		}
+		
 
 	}
 
-	// Method to delete Player
+	/**
+	 * Method to delete the player's account
+	 * @param userControllable
+	 * @throws PersonalizedException
+	 */
 	public void deletePlayer(UserControllable userControllable) throws PersonalizedException {
 		int chooseConnection;
 		boolean correct = false;
@@ -1076,7 +1049,6 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 		buttonChampsAdmin_Check.addActionListener(this);
 		buttonChampsAdmin_Check.setVisible(true);
 		champAdmin.add(buttonChampsAdmin_Check);
-
 	}
 
 	public void checkChampAdmin() throws PersonalizedException {
@@ -1304,12 +1276,88 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 		if (e.getSource().equals(lblPassEyeAddAdmin)) {
 			passwordFieldAddAdmin.setEchoChar((char) 0);
 		}
+		if(e.getSource().equals(lblEyeProfile)) {
+			passwordFieldProfile.setEchoChar((char) 0);
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (e.getSource().equals(lblPassEyeAddAdmin)) {
 			passwordFieldAddAdmin.setEchoChar('·');
+		}
+		if(e.getSource().equals(lblEyeProfile)) {
+			passwordFieldProfile.setEchoChar('·');
+		}
+	}
+	/**
+	 * Method to check if the user exist and check that the user only inserts one
+	 * word as nickname
+	 * 
+	 * @throws PersonalizedException
+	 */
+	private void checkUser() throws PersonalizedException {
+		// TODO Auto-generated method stub
+		// Check that the inserted nickname doesn't exists
+		User userComprobar = null;
+		userComprobar = userControllable.findUser(textFieldNicknameProfile.getText());
+
+		if (userComprobar != null) {
+			JOptionPane.showMessageDialog(null, "Nickname allready exists", "League of legends",
+					JOptionPane.ERROR_MESSAGE);
+			textFieldNicknameProfile.setText(((Player) user).getNickname());
+		}
+		if (!control.validateNickname(textFieldNicknameProfile.getText())) {
+			JOptionPane.showMessageDialog(this, "Nickname can only consist of a single word", "League of legends",
+					JOptionPane.ERROR_MESSAGE);
+			textFieldNicknameProfile.setText(((Player) user).getNickname());
+		}
+	}
+	/**
+	 * Method to validate that the text inserted in the email textField is correct
+	 * @param email
+	 */
+
+	public void checkEmail(String email) {
+		if (!control.validateEmail(email) && !email.isEmpty()) {
+			JOptionPane.showMessageDialog(this, "Email format incorrect. Example: ____@____.com", "League of legends",
+					JOptionPane.ERROR_MESSAGE);
+			textFieldEmailProfile.setText(user.getEmail());
+			textFieldMailAddAdmin.setText("");
+		}
+
+	}
+	/**
+	 *  Method to validate that the text inserted by the user is a string
+	 * @param name
+	 */
+	public void checkName(String name) {
+		if (!control.validateString(name) && !name.isEmpty()) {
+			JOptionPane.showMessageDialog(this, "This field can't contain numbers", "League of legends",
+					JOptionPane.ERROR_MESSAGE);
+			textFieldNameProfile.setText(user.getName());
+			textFieldNameAddAdmin.setText("");
+		}
+
+	}
+	/**
+	 * Method to validate that the phone only consists of 9 numbers
+	 * @param phone
+	 */
+
+	public void checkPhone(String phone) {
+		if ((phone.length()!= 9 || !control.validateInteger(phone)) && !phone.isEmpty()) {
+			JOptionPane.showMessageDialog(this, "The telephone must have a lenght of 9 numbers", "League of legends",
+					JOptionPane.ERROR_MESSAGE);
+			textFieldPhoneProfile.setText(user.getPhone());
+			textFieldPhoneAddAdmin.setText("");
+		}
+	}
+	public void checkNumber(String number) {
+		if(!control.validateInteger(textFieldAdditionsProfile.getText()) && !textFieldAdditionsProfile.getText().isBlank()){
+			JOptionPane.showMessageDialog(this, "Only numbers", "League of legends",
+					JOptionPane.ERROR_MESSAGE);
+			textFieldAdditionsProfile.setText(String.valueOf(((Administrator) user).getAddtions()));
 		}
 	}
 
@@ -1321,6 +1369,65 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// Not used.
+	}
+	/**
+	 * Method to check if any all the fields have changed to do the modification
+	 * @return correct
+	 */
+	public boolean checkFieldsModify() {
+		boolean correct = false;
+		if(!textFieldEmailProfile.getText().equals(user.getEmail()) || !textFieldNameProfile.getText().equals(user.getName()) || !textFieldPhoneProfile.getText().equals(user.getPhone())
+				|| !comboBoxNationalityProfile.getSelectedItem().equals(user.getNationality())) {
+				correct= true;
+		}
+		if(user instanceof Player) {
+			if(!textFieldNicknameProfile.getText().equals(((Player) user).getNickname())) {
+				correct= true;
+			}
+		}
+		if(user instanceof Administrator) {
+			if(Integer.parseInt(textFieldAdditionsProfile.getText()) != ((Administrator) user).getAddtions()){
+				correct= true;
+			}
+		}
+		if(!correct) {
+			JOptionPane.showMessageDialog(this, "No changes in any field", "League of legends",
+					JOptionPane.ERROR_MESSAGE);
+		}
+		return correct;
+	}
+	@Override
+	public void focusLost(FocusEvent e) {
+		if (e.getSource().equals(textFieldNameProfile))
+			checkName(textFieldNameProfile.getText());
+
+		if (e.getSource().equals(textFieldNameAddAdmin))
+			checkName(textFieldNameAddAdmin.getText());
+
+		if (e.getSource().equals(textFieldNicknameProfile)) {
+			try {
+				checkUser();
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+
+		if (e.getSource().equals(textFieldEmailProfile))
+			checkEmail(textFieldEmailProfile.getText());
+
+		if (e.getSource().equals(textFieldMailAddAdmin))
+			checkEmail(textFieldMailAddAdmin.getText());
+
+		if (e.getSource().equals(textFieldPhoneProfile))
+			checkPhone(textFieldPhoneProfile.getText());
+
+		if (e.getSource().equals(textFieldPhoneAddAdmin))
+			checkPhone(textFieldPhoneAddAdmin.getText());
+		
+		if(e.getSource().equals(textFieldAdditionsProfile)) {
+			checkNumber(textFieldAdditionsProfile.getText());
+		}
 	}
 
 }
