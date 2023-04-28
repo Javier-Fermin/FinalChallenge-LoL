@@ -26,13 +26,14 @@ import java.awt.event.MouseListener;
 import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import javax.swing.SwingConstants;
 
 /**
  * Log in window instance and execution.
  * @author alexs
- * @version 1.2
+ * @version 1.6
  */
-public class Login extends JDialog implements ActionListener, MouseListener {
+public class Login extends JDialog implements MouseListener {
 	
 	//Instance of necessary global variables
 	private final JPanel contentPanel = new JPanel();
@@ -42,6 +43,7 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 	private User user;
 	private UserControllable controller;
 	private MainWindow parent;
+	private JLabel lblPassEye;
 
 	/**
 	 * Create the dialog.
@@ -95,6 +97,15 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 		PanelTransparente.setBounds(0, 0, 316, 398);
 		panel.add(PanelTransparente);
 		PanelTransparente.setLayout(null);
+		
+		lblPassEye = new JLabel("");
+		lblPassEye.setIcon(new ImageIcon(Login.class.getResource("/img/pass_eye_25_17.png")));
+		lblPassEye.setVerticalAlignment(SwingConstants.TOP);
+		lblPassEye.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPassEye.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblPassEye.setBounds(256, 243, 31, 22);
+		lblPassEye.addMouseListener(this);
+		PanelTransparente.add(lblPassEye);
 
 		JLabel lblLogo = new JLabel("");
 		lblLogo.setIcon(new ImageIcon(Login.class.getResource("/img/lolLogo (2).png")));
@@ -109,8 +120,8 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 
 		passwordField = new JPasswordField();
 		passwordField.setBounds(43, 243, 203, 20);
+		passwordField.setEchoChar('·');
 		PanelTransparente.add(passwordField);
-		passwordField.addActionListener(this);
 
 		username_1 = new JTextField();
 		username_1.setBounds(43, 144, 203, 20);
@@ -122,7 +133,6 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 		lblNoAccount.setFont(new Font("Bahnschrift", Font.BOLD, 13));
 		lblNoAccount.setBounds(54, 298, 92, 17);
 		PanelTransparente.add(lblNoAccount);
-		username_1.addActionListener(this);
 
 		JLabel lblFondo = new JLabel("");
 		lblFondo.setIcon(new ImageIcon(Login.class.getResource("/img/fondo.jpg")));
@@ -130,12 +140,6 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 		panel.add(lblFondo);
 	}
 	
-	/**
-	 * Not needed.
-	 */
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	}
 	
 	/**
 	 * Enter when "sign in" button is pressed
@@ -189,17 +193,23 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 	}
 	
 	/**
-	 * Not needed.
+	 * When eye icon is pressed, password is shown.
 	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
+		if(e.getSource().equals(lblPassEye)) {
+			passwordField.setEchoChar((char) 0);
+		}
 	}
 	
 	/**
-	 * Not needed.
+	 * When eye icon is released, password hides.
 	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		if(e.getSource().equals(lblPassEye)) {
+			passwordField.setEchoChar('·');
+		}
 	}
 	
 	/**
