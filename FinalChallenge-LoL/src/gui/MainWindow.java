@@ -111,6 +111,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 	 */
 	public MainWindow(UserControllable userControllable, ChampEditable champEditable, GameStorable gameStorable,
 			Statable statable) {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(MainWindow.class.getResource("/icon/LoL_icon.svg.png")));
 		this.userControllable = userControllable;
 		this.champEditable = champEditable;
 		this.gameStorable = gameStorable;
@@ -124,10 +125,9 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		contentPane.setLayout(new BorderLayout(0, 0));
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(0, 0, 1196, 656);
 		contentPane.add(tabbedPane);
 
 		JPanel profile = new JPanel();
@@ -257,8 +257,8 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		textFieldPhoneProfile.setColumns(9);
 
 		passwordFieldProfile = new JPasswordField();
-		passwordFieldProfile.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		passwordFieldProfile.setEchoChar('*');
+		passwordFieldProfile.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		passwordFieldProfile.setEchoChar('·');
 		passwordFieldProfile.setBounds(215, 226, 199, 19);
 		panelInfo.add(passwordFieldProfile);
 		
@@ -1266,7 +1266,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 			passwordFieldAddAdmin.setEchoChar('·');
 		}
 		if(e.getSource().equals(lblEyeProfile)) {
-			passwordFieldProfile.setEchoChar('*');
+			passwordFieldProfile.setEchoChar('·');
 		}
 	}
 	/**
