@@ -160,7 +160,7 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 						// Checks the credentials are correct with DB.
 						if (controller.logIn(username_1.getText(), passString)) {
 							// Sets the data found to user and calls for parent, disposes of window when finished.
-							parent.setUser(controller.findUser(username_1.getText()));
+							parent.setUser(controller.findUser(username_1.getText(), 1));
 							parent.setVisible(true);
 							this.dispose();
 						}

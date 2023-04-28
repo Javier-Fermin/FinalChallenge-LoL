@@ -13,10 +13,15 @@ public class ConnectionOpenClose {
 	private String pass;
 
 	// CONSTRUCTOR
-	public ConnectionOpenClose() {
+	public ConnectionOpenClose(int chooseConection) {
 		configFile = ResourceBundle.getBundle("model.config");
 		url = configFile.getString("URL");
-		user = configFile.getString("USER");
+		if (chooseConection == 0)
+			user = configFile.getString("ADMIN");
+		else if (chooseConection == 1)
+			user = configFile.getString("LOGIN");
+		else
+			user = configFile.getString("USER");
 		pass = configFile.getString("PASSWORD");
 	}
 

@@ -24,7 +24,7 @@ public class UserControllableDBImplementation implements UserControllable {
 	 */
 	private Connection con;
 	private PreparedStatement stmt;
-	private ConnectionOpenClose conection = new ConnectionOpenClose();
+	private ConnectionOpenClose connection;
 
 	@Override
 	/**
@@ -35,6 +35,7 @@ public class UserControllableDBImplementation implements UserControllable {
 	 * @return correct
 	 */
 	public boolean logIn(String usr, String passwd)  throws PersonalizedException{
+		connection = new ConnectionOpenClose(1);
 		User user = null;
 		boolean correct = false;
 		ResultSet rs = null;
@@ -45,7 +46,7 @@ public class UserControllableDBImplementation implements UserControllable {
 
 		// Open connection
 		try {
-			con = conection.openConnection();
+			con = connection.openConnection();
 		} catch (SQLException e1) {
 			//
 			e1.printStackTrace();
@@ -103,7 +104,7 @@ public class UserControllableDBImplementation implements UserControllable {
 			}
 		}
 		try {
-			conection.closeConnection(stmt, con);
+			connection.closeConnection(stmt, con);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -112,7 +113,8 @@ public class UserControllableDBImplementation implements UserControllable {
 	}
 
 	@Override
-	public boolean delete(User user)  throws PersonalizedException{
+	public boolean delete(User user, int chooseConnection)  throws PersonalizedException{
+		connection = new ConnectionOpenClose(chooseConnection);
 		// To check that the modification has been carried out correctly
 		boolean correct = false;
 		// Sentence to delete user.
@@ -120,7 +122,7 @@ public class UserControllableDBImplementation implements UserControllable {
 
 		// Open connection with DB.
 		try {
-			con = conection.openConnection();
+			con = connection.openConnection();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -142,7 +144,7 @@ public class UserControllableDBImplementation implements UserControllable {
 		// Close the connection
 
 		try {
-			conection.closeConnection(stmt, con);
+			connection.closeConnection(stmt, con);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -152,7 +154,8 @@ public class UserControllableDBImplementation implements UserControllable {
 	}
 
 	@Override
-	public User findUser(String usr) throws PersonalizedException {
+	public User findUser(String usr, int chooseConnection) throws PersonalizedException {
+		connection = new ConnectionOpenClose(chooseConnection);
 		User user = null;
 		ResultSet rs = null;
 		// Sentence to get the player with the received nickname for player table.
@@ -164,7 +167,7 @@ public class UserControllableDBImplementation implements UserControllable {
 
 		// Open connection with DB.
 		try {
-			con = conection.openConnection();
+			con = connection.openConnection();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -235,7 +238,7 @@ public class UserControllableDBImplementation implements UserControllable {
 		// Close the connection
 
 		try {
-			conection.closeConnection(stmt, con);
+			connection.closeConnection(stmt, con);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -247,12 +250,13 @@ public class UserControllableDBImplementation implements UserControllable {
 	}
 
 	@Override
-	public void addUser(User user)  throws PersonalizedException{
+	public void addUser(User user, int chooseConnection)  throws PersonalizedException{
+		connection = new ConnectionOpenClose(chooseConnection);
 		final String CALLUser = "CALL insertUser(?,?,?,?,?,?,?,?)";
 
 		// Open connection with DB.
 		try {
-			con = conection.openConnection();
+			con = connection.openConnection();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -285,7 +289,7 @@ public class UserControllableDBImplementation implements UserControllable {
 			e.printStackTrace();
 		}
 		try {
-			conection.closeConnection(stmt, con);
+			connection.closeConnection(stmt, con);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -294,6 +298,7 @@ public class UserControllableDBImplementation implements UserControllable {
 
 	@Override
 	public boolean modifyUser(User user)  throws PersonalizedException{
+		connection = new ConnectionOpenClose(2);
 		// Creation of the three statements needed to make the modification
 		final String UPDATEUser = "UPDATE User SET Mail = ?, Name= ?, BirthDate= ?, Phone= ?, Nationality= ?, Password= ? WHERE id= ? ";
 		final String UPDATEPlayer = "UPDATE Player SET nickname = ? WHERE id= ?";
@@ -303,7 +308,7 @@ public class UserControllableDBImplementation implements UserControllable {
 
 		// Open connection with DB.
 		try {
-			con = conection.openConnection();
+			con = connection.openConnection();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -352,7 +357,7 @@ public class UserControllableDBImplementation implements UserControllable {
 		// Close the connection
 
 		try {
-			conection.closeConnection(stmt, con);
+			connection.closeConnection(stmt, con);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -362,6 +367,7 @@ public class UserControllableDBImplementation implements UserControllable {
 
 	@Override
 	public Set<User> listPlayers()  throws PersonalizedException{
+		connection = new ConnectionOpenClose(0);
 		ResultSet rs = null;
 		User usr = null;
 		Set<User> users = new HashSet<User>();
@@ -369,7 +375,7 @@ public class UserControllableDBImplementation implements UserControllable {
 		
 		// Open connection with DB.
 		try {
-			con= conection.openConnection();
+			con= connection.openConnection();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -396,7 +402,7 @@ public class UserControllableDBImplementation implements UserControllable {
 			e.printStackTrace();
 		}
 		try {
-			conection.closeConnection(stmt, con);
+			connection.closeConnection(stmt, con);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
