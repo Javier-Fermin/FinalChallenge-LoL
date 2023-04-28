@@ -1027,6 +1027,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		champAdmin.add(labelChampsAdmin_Position);
 
 		String[] positions = { "TOP", "JNG", "MID", "ADC", "SUP" };
+		jComboBoxChampAdmin_Positions = new JComboBox<String>(positions);
 		jComboBoxChampAdmin_Positions.setBounds(459, 157, 130, 26);
 		jComboBoxChampAdmin_Positions.setSelectedIndex(-1);
 		champAdmin.add(jComboBoxChampAdmin_Positions);
