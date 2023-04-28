@@ -557,7 +557,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 		lblPassEyeAddAdmin.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPassEyeAddAdmin.setVerticalAlignment(SwingConstants.TOP);
 		lblPassEyeAddAdmin.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblPassEyeAddAdmin.setIcon(new ImageIcon(MainWindow.class.getResource("/img/pass_eye_25_17.jpg")));
+		lblPassEyeAddAdmin.setIcon(new ImageIcon(MainWindow.class.getResource("/img/pass_eye_25_17.png")));
 		lblPassEyeAddAdmin.setBounds(546, 180, 31, 22);
 		addAdmin.add(lblPassEyeAddAdmin);
 		addAdmin.add(lblMailAddAdmin);
