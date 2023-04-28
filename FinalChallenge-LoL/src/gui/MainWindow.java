@@ -253,6 +253,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		textFieldPhoneProfile = new JTextField();
 		textFieldPhoneProfile.setBounds(215, 505, 199, 19);
 		panelInfo.add(textFieldPhoneProfile);
+
 		textFieldPhoneProfile.setColumns(9);
 
 		passwordFieldProfile = new JPasswordField();
@@ -300,6 +301,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		textFieldAdditionsProfile.setColumns(10);
 		textFieldAdditionsProfile.addFocusListener(this);
 		;
+
 
 		tabbedPane.addTab("CHAMPS", null, champsPlayer, null);
 		champsPlayer.setLayout(null);
@@ -418,31 +420,56 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 
 		JPanel stadistics = new JPanel();
 		tabbedPane.addTab("STADISTICS", null, stadistics, null);
-
-		JLabel lblNickStats = new JLabel("Nickname");
-		lblNickStats.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		stadistics.add(lblNickStats, "4, 4");
-
-		textNicknameStats = new JTextField();
-		stadistics.add(textNicknameStats, "8, 4, fill, default");
-		textNicknameStats.setColumns(10);
-
-		btnUpdateStats = new JButton("Update");
-		btnUpdateStats.addActionListener(this);
-		stadistics.add(btnUpdateStats, "4, 6");
-
-		JScrollPane scrollPaneStats = new JScrollPane();
-		stadistics.add(scrollPaneStats, "8, 6, fill, fill");
-
-		stats = new JTable();
+		GridBagLayout gbl_stadistics = new GridBagLayout();
+		gbl_stadistics.columnWidths = new int[]{248, 66, 96, 65, 452, 0};
+		gbl_stadistics.rowHeights = new int[]{402, 0};
+		gbl_stadistics.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_stadistics.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		stadistics.setLayout(gbl_stadistics);
+				
+						JLabel lblNickStats = new JLabel("Nickname");
+						lblNickStats.setFont(new Font("Tahoma", Font.PLAIN, 15));
+						GridBagConstraints gbc_lblNickStats = new GridBagConstraints();
+						gbc_lblNickStats.anchor = GridBagConstraints.WEST;
+						gbc_lblNickStats.insets = new Insets(0, 0, 0, 5);
+						gbc_lblNickStats.gridx = 1;
+						gbc_lblNickStats.gridy = 0;
+						stadistics.add(lblNickStats, gbc_lblNickStats);
+		
+				textNicknameStats = new JTextField();
+				GridBagConstraints gbc_textNicknameStats = new GridBagConstraints();
+				gbc_textNicknameStats.anchor = GridBagConstraints.WEST;
+				gbc_textNicknameStats.insets = new Insets(0, 0, 0, 5);
+				gbc_textNicknameStats.gridx = 2;
+				gbc_textNicknameStats.gridy = 0;
+				stadistics.add(textNicknameStats, gbc_textNicknameStats);
+				textNicknameStats.setColumns(10);
+		
+				btnUpdateStats = new JButton("Update");
+				btnUpdateStats.addActionListener(this);
+				GridBagConstraints gbc_btnUpdateStats = new GridBagConstraints();
+				gbc_btnUpdateStats.anchor = GridBagConstraints.WEST;
+				gbc_btnUpdateStats.insets = new Insets(0, 0, 0, 5);
+				gbc_btnUpdateStats.gridx = 3;
+				gbc_btnUpdateStats.gridy = 0;
+				stadistics.add(btnUpdateStats, gbc_btnUpdateStats);
 		modelStats = new DefaultTableModel();
-		stats.setModel(modelStats);
 		modelStats.addColumn("ID");
 		modelStats.addColumn("Nickname");
 		modelStats.addColumn("Name");
 		modelStats.addColumn("Position");
 		modelStats.addColumn("Win/Lose");
-		scrollPaneStats.setViewportView(stats);
+		
+				JScrollPane scrollPaneStats = new JScrollPane();
+				GridBagConstraints gbc_scrollPaneStats = new GridBagConstraints();
+				gbc_scrollPaneStats.anchor = GridBagConstraints.NORTHWEST;
+				gbc_scrollPaneStats.gridx = 4;
+				gbc_scrollPaneStats.gridy = 0;
+				stadistics.add(scrollPaneStats, gbc_scrollPaneStats);
+				
+						stats = new JTable();
+						stats.setModel(modelStats);
+						scrollPaneStats.setViewportView(stats);
 
 		JPanel management = new JPanel();
 		management.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -1005,12 +1032,6 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		buttonChampsAdmin_Check.addActionListener(this);
 		buttonChampsAdmin_Check.setVisible(true);
 		champAdmin.add(buttonChampsAdmin_Check);
-
-		JPanel panelChampAdmin = new JPanel();
-		panelChampAdmin.setBounds(740, 207, 296, 134);
-		champAdmin.add(panelChampAdmin);
-		panelChampAdmin.setVisible(false);
-		panelChampAdmin.setBackground(Color.LIGHT_GRAY);
 	}
 
 	public void checkChampAdmin() throws PersonalizedException {

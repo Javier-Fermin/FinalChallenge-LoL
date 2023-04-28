@@ -206,6 +206,7 @@ public class SignIn extends JDialog implements ActionListener, FocusListener, Mo
 		textFieldPhone.setBounds(245, 500, 212, 19);
 		secondPanel.add(textFieldPhone);
 		textFieldPhone.setColumns(10);
+
 		textFieldPhone.addFocusListener(this);
 
 		passwordField = new JPasswordField();

@@ -121,7 +121,7 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 
 		JLabel lblFondo = new JLabel("");
 		lblFondo.setIcon(new ImageIcon(Login.class.getResource("/img/fondo.jpg")));
-		lblFondo.setBounds(-57, -38, 759, 435);
+		lblFondo.setBounds(-56, -28, 778, 448);
 		panel.add(lblFondo);
 	}
 
