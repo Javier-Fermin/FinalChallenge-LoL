@@ -828,27 +828,35 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 
 	private void updateGame() {
 		// TODO Auto-generated method stub
+		//First it is checked if the user has already inserted his Nickname
 		if (!textNicknameGame.getText().isEmpty()) {
+			//Then the table is cleared
 			modelGame.setRowCount(0);
+			//After that it is made a call to the searchGames method to get all the Games for a Player
 			Set<Game> listGames = gameStorable.searchGames(textNicknameGame.getText());
 			for (Game game : listGames) {
+				//Every Game that has been collected is listed in the table
 				Object[] row = new Object[3];
 				row[0] = game.getId();
 				row[1] = game.getDateGame();
 				row[2] = game.getDuration();
 				modelGame.addRow(row);
 			}
-
 		} else {
+			//In case that the Player hasn't filled his nickname we show a Pop-up message
 			JOptionPane.showMessageDialog(this, "Introduzca un nickname");
 		}
 	}
 
 	public void updateStats() {
+		//First it is checked if the user has already inserted his Nickname
 		if (!textNicknameStats.getText().isEmpty()) {
+			//Then the table is cleared
 			modelStats.setRowCount(0);
+			//After that it is made a call to the Stadistics method to get all the Played for a Player
 			Set<Played> listStats = statable.stadistics(textNicknameStats.getText());
 			for (Played played : listStats) {
+				//Every Played that has been collected is listed in the table
 				Object[] row = new Object[5];
 				row[0] = played.getId();
 				row[1] = played.getNickname();
@@ -861,8 +869,8 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 				}
 				modelStats.addRow(row);
 			}
-
 		} else {
+			//In case that the Player hasn't filled his nickname we show a Pop-up message
 			JOptionPane.showMessageDialog(this, "Introduzca un nickname");
 		}
 	}

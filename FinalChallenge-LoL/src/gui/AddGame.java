@@ -576,6 +576,7 @@ public class AddGame extends JDialog implements ActionListener{
 	private void addGame() {
 		// TODO Auto-generated method stub
 		Game aux = new Game();
+		//It is stored the information of both blue and red team
 		blueTeam.put(textNicknameP1T1.getText(), textChampP1T1.getText());
 		blueTeam.put(textNicknameP2T1.getText(), textChampP2T1.getText());
 		blueTeam.put(textNicknameP3T1.getText(), textChampP3T1.getText());
@@ -586,12 +587,17 @@ public class AddGame extends JDialog implements ActionListener{
 		redTeam.put(textNicknameP3T2.getText(), textChampP3T2.getText());
 		redTeam.put(textNicknameP4T2.getText(), textChampP4T2.getText());
 		redTeam.put(textNicknameP5T2.getText(), textChampP5T2.getText());
+		//Then the necessary information for the Game is stored
 		aux.setDateGame(dateChooser.getDate().toInstant().atZone(ZoneId.of("Europe/Paris")).toLocalDate());
 		aux.setDuration(Float.parseFloat(textDuration.getText()));
+		//The the game is sent to be added and in the process the Id of the game that has been generated is stored
 		aux.setId(gameStorable.addGame(aux));
+		//Then the data of the teams are moved into a Set for easier management of the data
 		Set <Entry<String,String>>redTeamSet = redTeam.entrySet(),blueTeamSet = blueTeam.entrySet();
+		//Then two variables that are for setting the Role of the Player automatically are declared create
 		int count=0;
 		String role = null;
+		//Now one team is Stored with all the data that has been stored previously
 		for (Entry<String,String> entry : blueTeamSet) {
 			if(count==0) {
 				role="TOP";
@@ -611,6 +617,7 @@ public class AddGame extends JDialog implements ActionListener{
 			gameStorable.completeGame(aux.getId(), entry.getKey(), entry.getValue(), chckbxT1.isSelected(),role);
 			count++;
 		}
+		//Now the other team is Stored with all the data that has been stored previously
 		count=0;
 		for (Entry<String,String> entry : redTeamSet) {
 			if(count==0) {
