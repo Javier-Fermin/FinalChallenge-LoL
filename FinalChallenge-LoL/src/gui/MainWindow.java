@@ -626,7 +626,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		textAreaDeletePlayer = new JTextArea();
 		textAreaDeletePlayer.setForeground(new Color(0, 0, 0));
 		textAreaDeletePlayer.setBackground(new Color(255, 255, 255));
-		textAreaDeletePlayer.setBounds(132, 207, 328, 316);
+		textAreaDeletePlayer.setBounds(196, 272, 201, 251);
 		textAreaDeletePlayer.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		textAreaDeletePlayer.setEditable(false);
 		textAreaDeletePlayer.setVisible(false);
@@ -1325,7 +1325,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 	 */
 
 	public void checkPhone(String phone) {
-		if (phone.length()!= 9 || !control.validateInteger(phone) && !phone.isEmpty()) {
+		if ((phone.length()!= 9 || !control.validateInteger(phone)) && !phone.isEmpty()) {
 			JOptionPane.showMessageDialog(this, "The telephone must have a lenght of 9 numbers", "League of legends",
 					JOptionPane.ERROR_MESSAGE);
 			textFieldPhoneProfile.setText(user.getPhone());
@@ -1333,7 +1333,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		}
 	}
 	public void checkNumber(String number) {
-		if(!control.validateInteger(textFieldAdditionsProfile.getText())){
+		if(!control.validateInteger(textFieldAdditionsProfile.getText()) && !textFieldAdditionsProfile.getText().isBlank()){
 			JOptionPane.showMessageDialog(this, "Only numbers", "League of legends",
 					JOptionPane.ERROR_MESSAGE);
 			textFieldAdditionsProfile.setText(String.valueOf(((Administrator) user).getAddtions()));
