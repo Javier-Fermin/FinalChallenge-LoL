@@ -9,9 +9,9 @@ import model.User;
 
 public interface UserControllable {
 	public boolean logIn (String usr, String passwd) throws PersonalizedException;
-	public boolean delete (User user) throws PersonalizedException;
-	public User findUser (String usr) throws PersonalizedException;
-	public void addUser (User user) throws PersonalizedException;
+	public boolean delete (User user, int chooseConnection) throws PersonalizedException;
+	public User findUser (String usr, int chooseConnection) throws PersonalizedException;
+	public void addUser (User user, int chooseConnection) throws PersonalizedException;
 	public boolean modifyUser (User user) throws PersonalizedException;
 	public Set<User> listPlayers()  throws PersonalizedException;
 }

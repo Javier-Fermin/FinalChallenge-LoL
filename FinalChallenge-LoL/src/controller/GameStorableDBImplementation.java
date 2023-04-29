@@ -20,11 +20,13 @@ public class GameStorableDBImplementation implements GameStorable {
 	private Connection con;
 	private PreparedStatement stmt;
 	private ResultSet rs;
-	private ConnectionOpenClose connection = new ConnectionOpenClose();
+	private ConnectionOpenClose connection;
+
 	
 	
 	@Override
 	public int addGame(Game game) throws PersonalizedException{
+		connection = new ConnectionOpenClose(2);
 		// TODO Auto-generated method stub
 		int id=0;
 		try {
@@ -46,6 +48,7 @@ public class GameStorableDBImplementation implements GameStorable {
 
 	@Override
 	public Set<Game> searchGames(String nickname) throws PersonalizedException{
+		connection = new ConnectionOpenClose(2);
 		// TODO Auto-generated method stub
 		Set<Game> games=null;
 		try {
@@ -72,6 +75,7 @@ public class GameStorableDBImplementation implements GameStorable {
 
 	@Override
 	public void completeGame(int id,String nickname, String name, boolean win, String position) throws PersonalizedException{
+		connection = new ConnectionOpenClose(2);
 		// TODO Auto-generated method stub
 		try {
 			con = connection.openConnection();
