@@ -1134,7 +1134,10 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 
 		if (e.getSource().equals(btnModifyPlayer)) {
 			try {
-				modifyPlayer(userControllable);
+				if(checkUser()) {
+					modifyPlayer(userControllable);
+				}
+				
 			} catch (PersonalizedException e1) {
 				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "An unexpected error has occured!",
@@ -1625,13 +1628,15 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 	 * 
 	 * @throws PersonalizedException
 	 */
-	private void checkUser() throws PersonalizedException {
+	private boolean checkUser() throws PersonalizedException {
 		// TODO Auto-generated method stub
 		// Check that the inserted nickname doesn't exists
 		User userComprobar = null;
+		boolean correct= true;
 		userComprobar = userControllable.findUser(textFieldNicknameProfile.getText());
 
 		if (userComprobar != null) {
+			correct= false;
 			JOptionPane.showMessageDialog(null, "Nickname allready exists", "League of legends",
 					JOptionPane.ERROR_MESSAGE);
 			textFieldNicknameProfile.setText(((Player) user).getNickname());
@@ -1639,8 +1644,10 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		if (!control.validateNickname(textFieldNicknameProfile.getText())) {
 			JOptionPane.showMessageDialog(this, "Nickname can only consist of a single word", "League of legends",
 					JOptionPane.ERROR_MESSAGE);
+			correct= false;
 			textFieldNicknameProfile.setText(((Player) user).getNickname());
 		}
+		return correct;
 	}
 
 	/**
@@ -1744,15 +1751,6 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 
 		if (e.getSource().equals(textFieldNameAddAdmin))
 			checkName(textFieldNameAddAdmin.getText());
-
-		if (e.getSource().equals(textFieldNicknameProfile)) {
-			try {
-				checkUser();
-			} catch (PersonalizedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}
 
 		if (e.getSource().equals(textFieldEmailProfile))
 			checkEmail(textFieldEmailProfile.getText());

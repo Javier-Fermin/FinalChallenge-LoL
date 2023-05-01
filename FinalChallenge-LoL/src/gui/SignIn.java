@@ -354,7 +354,7 @@ public class SignIn extends JDialog implements ActionListener, FocusListener, Mo
 	 * Method to validate that the phone only consists of 9 numbers
 	 */
 	public void checkPhone() {
-		if(!control.validateInteger(textFieldPhone.getText()) && !textFieldPhone.getText().isBlank()){
+		if((textFieldPhone.getText().length() != 9 || !control.validateInteger(textFieldPhone.getText())) && !textFieldPhone.getText().isEmpty()){
 			JOptionPane.showMessageDialog(this, "The telephone must have a lenght of 9 numbers", "League of legends",
 					JOptionPane.ERROR_MESSAGE);
 			textFieldPhone.setText("");

@@ -170,7 +170,7 @@ public class AddGame extends JDialog implements ActionListener, FocusListener {
 		addGamePanel.add(chckbxT2);
 		
 		btnAdd = new JButton("ADD");
-		btnAdd.setForeground(new Color(0, 0, 0));
+		btnAdd.setForeground(new Color(255, 255, 255));
 		btnAdd.setBackground(new Color(0, 128, 128));
 		btnAdd.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
 		btnAdd.setBounds(144, 326, 101, 33);
