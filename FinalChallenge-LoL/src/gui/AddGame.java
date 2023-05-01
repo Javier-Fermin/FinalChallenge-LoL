@@ -41,41 +41,54 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.ButtonGroup;
 import com.toedter.calendar.JDateChooser;
+import javax.swing.ImageIcon;
+import javax.swing.JLayeredPane;
+import javax.swing.border.EtchedBorder;
+import java.awt.Color;
+import java.awt.Font;
+import javax.swing.JTabbedPane;
+import java.awt.Toolkit;
 
 public class AddGame extends JDialog implements ActionListener, FocusListener {
 
 	private final JPanel contentPanel = new JPanel();
 	private Map<String, String> blueTeam = new HashMap<String, String>();
 	private Map<String, String> redTeam = new HashMap<String, String>();
-	private JTextField textChampP5T1;
-	private JTextField textNicknameP5T1;
-	private JTextField textNicknameP4T1;
-	private JTextField textChampP4T1;
-	private JTextField textChampP3T1;
-	private JTextField textNicknameP3T1;
-	private JTextField textNicknameP2T1;
-	private JTextField textChampP2T1;
-	private JTextField textChampP1T1;
-	private JTextField textNicknameP1T1;
-	private JTextField textNicknameP1T2;
-	private JTextField textChampP1T2;
-	private JTextField textNicknameP2T2;
-	private JTextField textChampP2T2;
-	private JTextField textChampP3T2;
-	private JTextField textNicknameP3T2;
-	private JTextField textChampP4T2;
-	private JTextField textNicknameP4T2;
-	private JTextField textChampP5T2;
-	private JTextField textNicknameP5T2;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private GameStorable gameStorable;
 	private UserControllable userControllable;
 	private ChampEditable champEditable;
-	private JButton btnAdd;
+	private JTextField textNicknameP1T1;
+	private JTextField textChampP1T1;
+	private JTextField textNicknameP2T1;
+	private JTextField textChampP2T1;
+	private JTextField textNicknameP3T1;
+	private JTextField textChampP3T1;
+	private JTextField textNicknameP4T1;
+	private JTextField textChampP4T1;
+	private JTextField textNicknameP5T1;
+	private JTextField textChampP5T1;
+	private JTextField textNicknameP1T2;
+	private JTextField textChampP1T2;
+	private JTextField textNicknameP2T2;
+	private JTextField textChampP2T2;
+	private JTextField textNicknameP3T2;
+	private JTextField textChampP3T2;
+	private JTextField textNicknameP4T2;
+	private JTextField textChampP4T2;
+	private JTextField textNicknameP5T2;
+	private JTextField textChampP5T2;
+	private JLabel lblDate;
 	private JDateChooser dateChooser;
 	private JTextField textDuration;
 	private JCheckBox chckbxT1;
+	private JLabel lblWinner;
 	private JCheckBox chckbxT2;
+	private JButton btnAdd;
+	private JLabel lblGame;
+	private JLabel lblGame_1;
+	private JLabel iconlol;
+	private JPanel panel;
 
 	/**
 	 * Create the dialog.
@@ -86,540 +99,316 @@ public class AddGame extends JDialog implements ActionListener, FocusListener {
 	 */
 	public AddGame(MainWindow mainWindow, boolean b, GameStorable gameStorable, UserControllable userControllable,
 			ChampEditable champEditable) {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(AddGame.class.getResource("/img/lolLogo (2).png")));
 		this.gameStorable = gameStorable;
 		this.userControllable = userControllable;
 		this.champEditable = champEditable;
 		this.setModal(b);
-		setBounds(100, 100, 745, 791);
+		setBounds(100, 100, 1294, 728);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		GridBagLayout gbl_contentPanel = new GridBagLayout();
-		gbl_contentPanel.columnWidths = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0 };
-		gbl_contentPanel.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-		gbl_contentPanel.columnWeights = new double[] { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0,
-				0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
-		gbl_contentPanel.rowWeights = new double[] { 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,
-				0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
-		contentPanel.setLayout(gbl_contentPanel);
+		contentPanel.setLayout(null);
+		
+		iconlol = new JLabel("");
+		iconlol.setIcon(new ImageIcon(AddGame.class.getResource("/img/lolLogo (2).png")));
+		iconlol.setBounds(591, 135, 80, 76);
+		contentPanel.add(iconlol);
+		
+		lblGame = new JLabel("GAME");
+		lblGame.setForeground(new Color(0, 139, 139));
+		lblGame.setFont(new Font("Bahnschrift", Font.BOLD, 70));
+		lblGame.setBounds(523, 61, 214, 89);
+		contentPanel.add(lblGame);
+		
+		lblGame_1 = new JLabel("GAME");
+		lblGame_1.setForeground(new Color(184, 134, 11));
+		lblGame_1.setFont(new Font("Bahnschrift", Font.BOLD, 70));
+		lblGame_1.setBounds(519, 61, 214, 89);
+		contentPanel.add(lblGame_1);
+		
+		JLayeredPane addGamePanel = new JLayeredPane();
+		addGamePanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(218, 165, 32), null));
+		addGamePanel.setBounds(439, 225, 366, 369);
+		contentPanel.add(addGamePanel);
+		addGamePanel.setLayout(null);
+		
+		lblDate = new JLabel("DATE");
+		lblDate.setForeground(Color.WHITE);
+		lblDate.setFont(new Font("Bahnschrift", Font.PLAIN, 26));
+		lblDate.setBounds(10, 64, 82, 49);
+		addGamePanel.add(lblDate);
+		
+		dateChooser = new JDateChooser();
+		dateChooser.setDateFormatString("dd MM yy");
+		dateChooser.setBounds(87, 76, 246, 27);
+		addGamePanel.add(dateChooser);
+		
+		textDuration = new JTextField();
+		textDuration.setColumns(10);
+		textDuration.setBounds(281, 140, 52, 27);
+		addGamePanel.add(textDuration);
+		
+		chckbxT1 = new JCheckBox("Blue Team");
+		chckbxT1.setForeground(new Color(255, 255, 255));
+		chckbxT1.setFont(new Font("Bahnschrift", Font.PLAIN, 23));
+		chckbxT1.setBounds(42, 236, 151, 36);
+		chckbxT1.setOpaque(false);
+		addGamePanel.add(chckbxT1);
+		
+		lblWinner = new JLabel("WINNER");
+		lblWinner.setForeground(new Color(255, 255, 255));
+		lblWinner.setFont(new Font("Bahnschrift", Font.PLAIN, 25));
+		lblWinner.setBounds(128, 193, 117, 32);
+		addGamePanel.add(lblWinner);
+		
+		chckbxT2 = new JCheckBox("Red Team");
+		chckbxT2.setForeground(new Color(255, 255, 255));
+		chckbxT2.setFont(new Font("Bahnschrift", Font.PLAIN, 23));
+		chckbxT2.setBounds(42, 288, 187, 32);
+		chckbxT2.setOpaque(false);
+		addGamePanel.add(chckbxT2);
+		
+		btnAdd = new JButton("ADD");
+		btnAdd.setForeground(new Color(0, 0, 0));
+		btnAdd.setBackground(new Color(0, 128, 128));
+		btnAdd.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		btnAdd.setBounds(144, 326, 101, 33);
+		btnAdd.addActionListener(this);
+		addGamePanel.add(btnAdd);
+		
+		JLabel lblDuration = new JLabel("DURATION");
+		lblDuration.setForeground(Color.WHITE);
+		lblDuration.setFont(new Font("Bahnschrift", Font.PLAIN, 26));
+		lblDuration.setBounds(10, 134, 176, 49);
+		addGamePanel.add(lblDuration);
+		
+		JLayeredPane RedTeamPanel = new JLayeredPane();
+		RedTeamPanel.setBounds(858, 37, 401, 613);
+		RedTeamPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.RED, null));
+		contentPanel.add(RedTeamPanel);
+		
+		JLabel lableRedTeam = new JLabel("RED TEAM");
+		lableRedTeam.setForeground(Color.RED);
+		lableRedTeam.setFont(new Font("Bahnschrift", Font.BOLD, 26));
+		lableRedTeam.setBounds(145, 20, 163, 28);
+		RedTeamPanel.add(lableRedTeam);
+		
+		JLabel iconTopRed = new JLabel("");
+		iconTopRed.setIcon(new ImageIcon(AddGame.class.getResource("/img/Top_icon.png")));
+		iconTopRed.setBounds(20, 61, 101, 85);
+		RedTeamPanel.add(iconTopRed);
+		
+		textNicknameP1T2 = new JTextField();
+		textNicknameP1T2.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textNicknameP1T2.setToolTipText("Nickname\r\n");
+		textNicknameP1T2.setColumns(10);
+		textNicknameP1T2.setBounds(145, 71, 163, 27);
+		RedTeamPanel.add(textNicknameP1T2);
+		
+		textChampP1T2 = new JTextField();
+		textChampP1T2.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textChampP1T2.setToolTipText("Champ");
+		textChampP1T2.setColumns(10);
+		textChampP1T2.setBounds(145, 119, 163, 27);
+		RedTeamPanel.add(textChampP1T2);
+		
+		JLabel iconJungleRed = new JLabel("");
+		iconJungleRed.setIcon(new ImageIcon(AddGame.class.getResource("/img/lol_jungle_icon_by_divoras_degndao-fullview.png")));
+		iconJungleRed.setBounds(20, 166, 101, 85);
+		RedTeamPanel.add(iconJungleRed);
+		
+		textNicknameP2T2 = new JTextField();
+		textNicknameP2T2.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textNicknameP2T2.setToolTipText("Nickname\r\n");
+		textNicknameP2T2.setColumns(10);
+		textNicknameP2T2.setBounds(145, 177, 163, 27);
+		RedTeamPanel.add(textNicknameP2T2);
+		
+		textChampP2T2 = new JTextField();
+		textChampP2T2.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textChampP2T2.setToolTipText("Champ");
+		textChampP2T2.setColumns(10);
+		textChampP2T2.setBounds(145, 224, 163, 27);
+		RedTeamPanel.add(textChampP2T2);
+		
+		JLabel iconMidRed = new JLabel("");
+		iconMidRed.setIcon(new ImageIcon(AddGame.class.getResource("/img/Middle_icon.png")));
+		iconMidRed.setBounds(20, 271, 101, 85);
+		RedTeamPanel.add(iconMidRed);
+		
+		textNicknameP3T2 = new JTextField();
+		textNicknameP3T2.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textNicknameP3T2.setToolTipText("Nickname\r\n");
+		textNicknameP3T2.setColumns(10);
+		textNicknameP3T2.setBounds(145, 282, 163, 27);
+		RedTeamPanel.add(textNicknameP3T2);
+		
+		textChampP3T2 = new JTextField();
+		textChampP3T2.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textChampP3T2.setToolTipText("Champ");
+		textChampP3T2.setColumns(10);
+		textChampP3T2.setBounds(145, 329, 163, 27);
+		RedTeamPanel.add(textChampP3T2);
+		
+		JLabel iconBottonRed = new JLabel("");
+		iconBottonRed.setIcon(new ImageIcon(AddGame.class.getResource("/img/Bottom_icon.png")));
+		iconBottonRed.setBounds(20, 378, 101, 85);
+		RedTeamPanel.add(iconBottonRed);
+		
+		textNicknameP4T2 = new JTextField();
+		textNicknameP4T2.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textNicknameP4T2.setToolTipText("Nickname\r\n");
+		textNicknameP4T2.setColumns(10);
+		textNicknameP4T2.setBounds(145, 394, 163, 27);
+		RedTeamPanel.add(textNicknameP4T2);
+		
+		textChampP4T2 = new JTextField();
+		textChampP4T2.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textChampP4T2.setToolTipText("Champ");
+		textChampP4T2.setColumns(10);
+		textChampP4T2.setBounds(145, 436, 163, 27);
+		RedTeamPanel.add(textChampP4T2);
+		
+		JLabel iconSupportRed = new JLabel("");
+		iconSupportRed.setIcon(new ImageIcon(AddGame.class.getResource("/img/Controller_icon - copia (2).png")));
+		iconSupportRed.setBounds(20, 499, 101, 85);
+		RedTeamPanel.add(iconSupportRed);
+		
+		textNicknameP5T2 = new JTextField();
+		textNicknameP5T2.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textNicknameP5T2.setToolTipText("Nickname\r\n");
+		textNicknameP5T2.setColumns(10);
+		textNicknameP5T2.setBounds(145, 509, 163, 27);
+		RedTeamPanel.add(textNicknameP5T2);
+		
+		textChampP5T2 = new JTextField();
+		textChampP5T2.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textChampP5T2.setToolTipText("Champ");
+		textChampP5T2.setColumns(10);
+		textChampP5T2.setBounds(145, 557, 163, 27);
+		RedTeamPanel.add(textChampP5T2);
+		
+		JLayeredPane blueTeamPanel = new JLayeredPane();
+		blueTeamPanel.setBounds(10, 37, 401, 613);
+		blueTeamPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(0, 139, 139), null));
+		contentPanel.add(blueTeamPanel);
 		{
-			JSplitPane splitPaneTeams = new JSplitPane();
-			splitPaneTeams.setContinuousLayout(true);
-			GridBagConstraints gbc_splitPaneTeams = new GridBagConstraints();
-			gbc_splitPaneTeams.gridheight = 8;
-			gbc_splitPaneTeams.gridwidth = 14;
-			gbc_splitPaneTeams.insets = new Insets(0, 0, 5, 5);
-			gbc_splitPaneTeams.fill = GridBagConstraints.BOTH;
-			gbc_splitPaneTeams.gridx = 5;
-			gbc_splitPaneTeams.gridy = 0;
-			contentPanel.add(splitPaneTeams, gbc_splitPaneTeams);
-			{
-				JPanel panel = new JPanel();
-				splitPaneTeams.setLeftComponent(panel);
-				GridBagLayout gbl_panel = new GridBagLayout();
-				gbl_panel.columnWidths = new int[] { 0, 0, 0, 0, 0 };
-				gbl_panel.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-				gbl_panel.columnWeights = new double[] { 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
-				gbl_panel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-						0.0, 0.0, 0.0, Double.MIN_VALUE };
-				panel.setLayout(gbl_panel);
-				{
-					JLabel lblTeam1 = new JLabel("Blue Team");
-					GridBagConstraints gbc_lblTeam1 = new GridBagConstraints();
-					gbc_lblTeam1.insets = new Insets(0, 0, 5, 5);
-					gbc_lblTeam1.gridx = 2;
-					gbc_lblTeam1.gridy = 0;
-					panel.add(lblTeam1, gbc_lblTeam1);
-				}
-				{
-					JLabel lblPlayer1T1 = new JLabel("Player 1");
-					GridBagConstraints gbc_lblPlayer1T1 = new GridBagConstraints();
-					gbc_lblPlayer1T1.insets = new Insets(0, 0, 5, 5);
-					gbc_lblPlayer1T1.gridx = 1;
-					gbc_lblPlayer1T1.gridy = 2;
-					panel.add(lblPlayer1T1, gbc_lblPlayer1T1);
-				}
-				{
-					textNicknameP1T1 = new JTextField();
-					GridBagConstraints gbc_textNicknameP1T1 = new GridBagConstraints();
-					gbc_textNicknameP1T1.insets = new Insets(0, 0, 5, 0);
-					gbc_textNicknameP1T1.fill = GridBagConstraints.HORIZONTAL;
-					gbc_textNicknameP1T1.gridx = 3;
-					gbc_textNicknameP1T1.gridy = 2;
-					panel.add(textNicknameP1T1, gbc_textNicknameP1T1);
-					textNicknameP1T1.setColumns(10);
-				}
-				{
-					JLabel lblTopT1 = new JLabel("TOP");
-					GridBagConstraints gbc_lblTopT1 = new GridBagConstraints();
-					gbc_lblTopT1.insets = new Insets(0, 0, 5, 5);
-					gbc_lblTopT1.gridx = 1;
-					gbc_lblTopT1.gridy = 3;
-					panel.add(lblTopT1, gbc_lblTopT1);
-				}
-				{
-					textChampP1T1 = new JTextField();
-					GridBagConstraints gbc_textChampP1T1 = new GridBagConstraints();
-					gbc_textChampP1T1.insets = new Insets(0, 0, 5, 0);
-					gbc_textChampP1T1.fill = GridBagConstraints.HORIZONTAL;
-					gbc_textChampP1T1.gridx = 3;
-					gbc_textChampP1T1.gridy = 3;
-					panel.add(textChampP1T1, gbc_textChampP1T1);
-					textChampP1T1.setColumns(10);
-				}
-				{
-					JLabel lblPlayer2T1 = new JLabel("Player 2");
-					GridBagConstraints gbc_lblPlayer2T1 = new GridBagConstraints();
-					gbc_lblPlayer2T1.insets = new Insets(0, 0, 5, 5);
-					gbc_lblPlayer2T1.gridx = 1;
-					gbc_lblPlayer2T1.gridy = 5;
-					panel.add(lblPlayer2T1, gbc_lblPlayer2T1);
-				}
-				{
-					textNicknameP2T1 = new JTextField();
-					GridBagConstraints gbc_textNicknameP2T1 = new GridBagConstraints();
-					gbc_textNicknameP2T1.insets = new Insets(0, 0, 5, 0);
-					gbc_textNicknameP2T1.fill = GridBagConstraints.HORIZONTAL;
-					gbc_textNicknameP2T1.gridx = 3;
-					gbc_textNicknameP2T1.gridy = 5;
-					panel.add(textNicknameP2T1, gbc_textNicknameP2T1);
-					textNicknameP2T1.setColumns(10);
-				}
-				{
-					JLabel lblJngT1 = new JLabel("JNG");
-					GridBagConstraints gbc_lblJngT1 = new GridBagConstraints();
-					gbc_lblJngT1.insets = new Insets(0, 0, 5, 5);
-					gbc_lblJngT1.gridx = 1;
-					gbc_lblJngT1.gridy = 6;
-					panel.add(lblJngT1, gbc_lblJngT1);
-				}
-				{
-					textChampP2T1 = new JTextField();
-					GridBagConstraints gbc_textChampP2T1 = new GridBagConstraints();
-					gbc_textChampP2T1.insets = new Insets(0, 0, 5, 0);
-					gbc_textChampP2T1.fill = GridBagConstraints.HORIZONTAL;
-					gbc_textChampP2T1.gridx = 3;
-					gbc_textChampP2T1.gridy = 6;
-					panel.add(textChampP2T1, gbc_textChampP2T1);
-					textChampP2T1.setColumns(10);
-				}
-				{
-					JLabel lblPlayer3T1 = new JLabel("Player 3");
-					GridBagConstraints gbc_lblPlayer3T1 = new GridBagConstraints();
-					gbc_lblPlayer3T1.insets = new Insets(0, 0, 5, 5);
-					gbc_lblPlayer3T1.gridx = 1;
-					gbc_lblPlayer3T1.gridy = 8;
-					panel.add(lblPlayer3T1, gbc_lblPlayer3T1);
-				}
-				{
-					textNicknameP3T1 = new JTextField();
-					GridBagConstraints gbc_textNicknameP3T1 = new GridBagConstraints();
-					gbc_textNicknameP3T1.insets = new Insets(0, 0, 5, 0);
-					gbc_textNicknameP3T1.fill = GridBagConstraints.HORIZONTAL;
-					gbc_textNicknameP3T1.gridx = 3;
-					gbc_textNicknameP3T1.gridy = 8;
-					panel.add(textNicknameP3T1, gbc_textNicknameP3T1);
-					textNicknameP3T1.setColumns(10);
-				}
-				{
-					JLabel lblMidT1 = new JLabel("MID");
-					GridBagConstraints gbc_lblMidT1 = new GridBagConstraints();
-					gbc_lblMidT1.insets = new Insets(0, 0, 5, 5);
-					gbc_lblMidT1.gridx = 1;
-					gbc_lblMidT1.gridy = 9;
-					panel.add(lblMidT1, gbc_lblMidT1);
-				}
-				{
-					textChampP3T1 = new JTextField();
-					GridBagConstraints gbc_textChampP3T1 = new GridBagConstraints();
-					gbc_textChampP3T1.insets = new Insets(0, 0, 5, 0);
-					gbc_textChampP3T1.fill = GridBagConstraints.HORIZONTAL;
-					gbc_textChampP3T1.gridx = 3;
-					gbc_textChampP3T1.gridy = 9;
-					panel.add(textChampP3T1, gbc_textChampP3T1);
-					textChampP3T1.setColumns(10);
-				}
-				{
-					JLabel lblPlayer4T1 = new JLabel("Player 4");
-					GridBagConstraints gbc_lblPlayer4T1 = new GridBagConstraints();
-					gbc_lblPlayer4T1.insets = new Insets(0, 0, 5, 5);
-					gbc_lblPlayer4T1.gridx = 1;
-					gbc_lblPlayer4T1.gridy = 11;
-					panel.add(lblPlayer4T1, gbc_lblPlayer4T1);
-				}
-				{
-					textNicknameP4T1 = new JTextField();
-					GridBagConstraints gbc_textNicknameP4T1 = new GridBagConstraints();
-					gbc_textNicknameP4T1.insets = new Insets(0, 0, 5, 0);
-					gbc_textNicknameP4T1.fill = GridBagConstraints.HORIZONTAL;
-					gbc_textNicknameP4T1.gridx = 3;
-					gbc_textNicknameP4T1.gridy = 11;
-					panel.add(textNicknameP4T1, gbc_textNicknameP4T1);
-					textNicknameP4T1.setColumns(10);
-				}
-				{
-					JLabel lblAdcT1 = new JLabel("ADC");
-					GridBagConstraints gbc_lblAdcT1 = new GridBagConstraints();
-					gbc_lblAdcT1.insets = new Insets(0, 0, 5, 5);
-					gbc_lblAdcT1.gridx = 1;
-					gbc_lblAdcT1.gridy = 12;
-					panel.add(lblAdcT1, gbc_lblAdcT1);
-				}
-				{
-					textChampP4T1 = new JTextField();
-					GridBagConstraints gbc_textChampP4T1 = new GridBagConstraints();
-					gbc_textChampP4T1.insets = new Insets(0, 0, 5, 0);
-					gbc_textChampP4T1.fill = GridBagConstraints.HORIZONTAL;
-					gbc_textChampP4T1.gridx = 3;
-					gbc_textChampP4T1.gridy = 12;
-					panel.add(textChampP4T1, gbc_textChampP4T1);
-					textChampP4T1.setColumns(10);
-				}
-				{
-					JLabel lblPlayer5T1 = new JLabel("Player 5");
-					GridBagConstraints gbc_lblPlayer5T1 = new GridBagConstraints();
-					gbc_lblPlayer5T1.insets = new Insets(0, 0, 5, 5);
-					gbc_lblPlayer5T1.gridx = 1;
-					gbc_lblPlayer5T1.gridy = 14;
-					panel.add(lblPlayer5T1, gbc_lblPlayer5T1);
-				}
-				{
-					textNicknameP5T1 = new JTextField();
-					GridBagConstraints gbc_textNicknameP5T1 = new GridBagConstraints();
-					gbc_textNicknameP5T1.insets = new Insets(0, 0, 5, 0);
-					gbc_textNicknameP5T1.fill = GridBagConstraints.HORIZONTAL;
-					gbc_textNicknameP5T1.gridx = 3;
-					gbc_textNicknameP5T1.gridy = 14;
-					panel.add(textNicknameP5T1, gbc_textNicknameP5T1);
-					textNicknameP5T1.setColumns(10);
-				}
-				{
-					JLabel lblSupT1 = new JLabel("SUP");
-					GridBagConstraints gbc_lblSupT1 = new GridBagConstraints();
-					gbc_lblSupT1.insets = new Insets(0, 0, 0, 5);
-					gbc_lblSupT1.gridx = 1;
-					gbc_lblSupT1.gridy = 15;
-					panel.add(lblSupT1, gbc_lblSupT1);
-				}
-				{
-					textChampP5T1 = new JTextField();
-					GridBagConstraints gbc_textChampP5T1 = new GridBagConstraints();
-					gbc_textChampP5T1.fill = GridBagConstraints.HORIZONTAL;
-					gbc_textChampP5T1.gridx = 3;
-					gbc_textChampP5T1.gridy = 15;
-					panel.add(textChampP5T1, gbc_textChampP5T1);
-					textChampP5T1.setColumns(10);
-				}
-			}
-			{
-				JPanel panel = new JPanel();
-				splitPaneTeams.setRightComponent(panel);
-				GridBagLayout gbl_panel = new GridBagLayout();
-				gbl_panel.columnWidths = new int[] { 0, 0, 0, 0, 0 };
-				gbl_panel.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-				gbl_panel.columnWeights = new double[] { 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
-				gbl_panel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-						0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
-				panel.setLayout(gbl_panel);
-				{
-					JLabel lblNewLabel_6 = new JLabel("Red Team");
-					GridBagConstraints gbc_lblNewLabel_6 = new GridBagConstraints();
-					gbc_lblNewLabel_6.insets = new Insets(0, 0, 5, 5);
-					gbc_lblNewLabel_6.gridx = 2;
-					gbc_lblNewLabel_6.gridy = 0;
-					panel.add(lblNewLabel_6, gbc_lblNewLabel_6);
-				}
-				{
-					JLabel lblPlayer1T2 = new JLabel("Player 1");
-					GridBagConstraints gbc_lblPlayer1T2 = new GridBagConstraints();
-					gbc_lblPlayer1T2.insets = new Insets(0, 0, 5, 5);
-					gbc_lblPlayer1T2.gridx = 1;
-					gbc_lblPlayer1T2.gridy = 2;
-					panel.add(lblPlayer1T2, gbc_lblPlayer1T2);
-				}
-				{
-					textNicknameP1T2 = new JTextField();
-					textNicknameP1T2.setColumns(10);
-					GridBagConstraints gbc_textNicknameP1T2 = new GridBagConstraints();
-					gbc_textNicknameP1T2.fill = GridBagConstraints.HORIZONTAL;
-					gbc_textNicknameP1T2.insets = new Insets(0, 0, 5, 0);
-					gbc_textNicknameP1T2.gridx = 3;
-					gbc_textNicknameP1T2.gridy = 2;
-					panel.add(textNicknameP1T2, gbc_textNicknameP1T2);
-				}
-				{
-					JLabel lblTopT2 = new JLabel("TOP");
-					GridBagConstraints gbc_lblTopT2 = new GridBagConstraints();
-					gbc_lblTopT2.insets = new Insets(0, 0, 5, 5);
-					gbc_lblTopT2.gridx = 1;
-					gbc_lblTopT2.gridy = 3;
-					panel.add(lblTopT2, gbc_lblTopT2);
-				}
-				{
-					textChampP1T2 = new JTextField();
-					textChampP1T2.setColumns(10);
-					GridBagConstraints gbc_textChampP1T2 = new GridBagConstraints();
-					gbc_textChampP1T2.fill = GridBagConstraints.HORIZONTAL;
-					gbc_textChampP1T2.insets = new Insets(0, 0, 5, 0);
-					gbc_textChampP1T2.gridx = 3;
-					gbc_textChampP1T2.gridy = 3;
-					panel.add(textChampP1T2, gbc_textChampP1T2);
-				}
-				{
-					JLabel lblPlayer2T2 = new JLabel("Player 2");
-					GridBagConstraints gbc_lblPlayer2T2 = new GridBagConstraints();
-					gbc_lblPlayer2T2.insets = new Insets(0, 0, 5, 5);
-					gbc_lblPlayer2T2.gridx = 1;
-					gbc_lblPlayer2T2.gridy = 5;
-					panel.add(lblPlayer2T2, gbc_lblPlayer2T2);
-				}
-				{
-					textNicknameP2T2 = new JTextField();
-					textNicknameP2T2.setColumns(10);
-					GridBagConstraints gbc_textNicknameP2T2 = new GridBagConstraints();
-					gbc_textNicknameP2T2.fill = GridBagConstraints.HORIZONTAL;
-					gbc_textNicknameP2T2.insets = new Insets(0, 0, 5, 0);
-					gbc_textNicknameP2T2.gridx = 3;
-					gbc_textNicknameP2T2.gridy = 5;
-					panel.add(textNicknameP2T2, gbc_textNicknameP2T2);
-				}
-				{
-					JLabel lblJngT1 = new JLabel("JNG");
-					GridBagConstraints gbc_lblJngT1 = new GridBagConstraints();
-					gbc_lblJngT1.insets = new Insets(0, 0, 5, 5);
-					gbc_lblJngT1.gridx = 1;
-					gbc_lblJngT1.gridy = 6;
-					panel.add(lblJngT1, gbc_lblJngT1);
-				}
-				{
-					textChampP2T2 = new JTextField();
-					textChampP2T2.setColumns(10);
-					GridBagConstraints gbc_textChampP2T2 = new GridBagConstraints();
-					gbc_textChampP2T2.fill = GridBagConstraints.HORIZONTAL;
-					gbc_textChampP2T2.insets = new Insets(0, 0, 5, 0);
-					gbc_textChampP2T2.gridx = 3;
-					gbc_textChampP2T2.gridy = 6;
-					panel.add(textChampP2T2, gbc_textChampP2T2);
-				}
-				{
-					JLabel lblPlayer3T2 = new JLabel("Player 3");
-					GridBagConstraints gbc_lblPlayer3T2 = new GridBagConstraints();
-					gbc_lblPlayer3T2.insets = new Insets(0, 0, 5, 5);
-					gbc_lblPlayer3T2.gridx = 1;
-					gbc_lblPlayer3T2.gridy = 8;
-					panel.add(lblPlayer3T2, gbc_lblPlayer3T2);
-				}
-				{
-					textNicknameP3T2 = new JTextField();
-					textNicknameP3T2.setColumns(10);
-					GridBagConstraints gbc_textNicknameP3T2 = new GridBagConstraints();
-					gbc_textNicknameP3T2.fill = GridBagConstraints.HORIZONTAL;
-					gbc_textNicknameP3T2.insets = new Insets(0, 0, 5, 0);
-					gbc_textNicknameP3T2.gridx = 3;
-					gbc_textNicknameP3T2.gridy = 8;
-					panel.add(textNicknameP3T2, gbc_textNicknameP3T2);
-				}
-				{
-					JLabel lblMidT2 = new JLabel("MID");
-					GridBagConstraints gbc_lblMidT2 = new GridBagConstraints();
-					gbc_lblMidT2.insets = new Insets(0, 0, 5, 5);
-					gbc_lblMidT2.gridx = 1;
-					gbc_lblMidT2.gridy = 9;
-					panel.add(lblMidT2, gbc_lblMidT2);
-				}
-				{
-					textChampP3T2 = new JTextField();
-					textChampP3T2.setColumns(10);
-					GridBagConstraints gbc_textChampP3T2 = new GridBagConstraints();
-					gbc_textChampP3T2.fill = GridBagConstraints.HORIZONTAL;
-					gbc_textChampP3T2.insets = new Insets(0, 0, 5, 0);
-					gbc_textChampP3T2.gridx = 3;
-					gbc_textChampP3T2.gridy = 9;
-					panel.add(textChampP3T2, gbc_textChampP3T2);
-				}
-				{
-					JLabel lblPlayer4T2 = new JLabel("Player 4");
-					GridBagConstraints gbc_lblPlayer4T2 = new GridBagConstraints();
-					gbc_lblPlayer4T2.insets = new Insets(0, 0, 5, 5);
-					gbc_lblPlayer4T2.gridx = 1;
-					gbc_lblPlayer4T2.gridy = 11;
-					panel.add(lblPlayer4T2, gbc_lblPlayer4T2);
-				}
-				{
-					textNicknameP4T2 = new JTextField();
-					textNicknameP4T2.setColumns(10);
-					GridBagConstraints gbc_textNicknameP4T2 = new GridBagConstraints();
-					gbc_textNicknameP4T2.fill = GridBagConstraints.HORIZONTAL;
-					gbc_textNicknameP4T2.insets = new Insets(0, 0, 5, 0);
-					gbc_textNicknameP4T2.gridx = 3;
-					gbc_textNicknameP4T2.gridy = 11;
-					panel.add(textNicknameP4T2, gbc_textNicknameP4T2);
-				}
-				{
-					JLabel lblAdcT2 = new JLabel("ADC");
-					GridBagConstraints gbc_lblAdcT2 = new GridBagConstraints();
-					gbc_lblAdcT2.insets = new Insets(0, 0, 5, 5);
-					gbc_lblAdcT2.gridx = 1;
-					gbc_lblAdcT2.gridy = 12;
-					panel.add(lblAdcT2, gbc_lblAdcT2);
-				}
-				{
-					textChampP4T2 = new JTextField();
-					textChampP4T2.setColumns(10);
-					GridBagConstraints gbc_textChampP4T2 = new GridBagConstraints();
-					gbc_textChampP4T2.fill = GridBagConstraints.HORIZONTAL;
-					gbc_textChampP4T2.insets = new Insets(0, 0, 5, 0);
-					gbc_textChampP4T2.gridx = 3;
-					gbc_textChampP4T2.gridy = 12;
-					panel.add(textChampP4T2, gbc_textChampP4T2);
-				}
-				{
-					JLabel lblPlayer5T2 = new JLabel("Player 5");
-					GridBagConstraints gbc_lblPlayer5T2 = new GridBagConstraints();
-					gbc_lblPlayer5T2.insets = new Insets(0, 0, 5, 5);
-					gbc_lblPlayer5T2.gridx = 1;
-					gbc_lblPlayer5T2.gridy = 14;
-					panel.add(lblPlayer5T2, gbc_lblPlayer5T2);
-				}
-				{
-					textNicknameP5T2 = new JTextField();
-					textNicknameP5T2.setColumns(10);
-					GridBagConstraints gbc_textNicknameP5T2 = new GridBagConstraints();
-					gbc_textNicknameP5T2.insets = new Insets(0, 0, 5, 0);
-					gbc_textNicknameP5T2.fill = GridBagConstraints.HORIZONTAL;
-					gbc_textNicknameP5T2.gridx = 3;
-					gbc_textNicknameP5T2.gridy = 14;
-					panel.add(textNicknameP5T2, gbc_textNicknameP5T2);
-				}
-				{
-					JLabel lblSupT2 = new JLabel("SUP");
-					GridBagConstraints gbc_lblSupT2 = new GridBagConstraints();
-					gbc_lblSupT2.insets = new Insets(0, 0, 5, 5);
-					gbc_lblSupT2.gridx = 1;
-					gbc_lblSupT2.gridy = 15;
-					panel.add(lblSupT2, gbc_lblSupT2);
-				}
-				{
-					textChampP5T2 = new JTextField();
-					textChampP5T2.setColumns(10);
-					GridBagConstraints gbc_textChampP5T2 = new GridBagConstraints();
-					gbc_textChampP5T2.fill = GridBagConstraints.HORIZONTAL;
-					gbc_textChampP5T2.insets = new Insets(0, 0, 5, 0);
-					gbc_textChampP5T2.gridx = 3;
-					gbc_textChampP5T2.gridy = 15;
-					panel.add(textChampP5T2, gbc_textChampP5T2);
-				}
-			}
+			JLabel lblNewLabel_1 = new JLabel("BLUE TEAM");
+			lblNewLabel_1.setForeground(new Color(0, 128, 128));
+			lblNewLabel_1.setFont(new Font("Bahnschrift", Font.BOLD, 26));
+			lblNewLabel_1.setBounds(126, 23, 163, 28);
+			blueTeamPanel.add(lblNewLabel_1);
 		}
 		{
-			JLabel lblDate = new JLabel("Date");
-			GridBagConstraints gbc_lblDate = new GridBagConstraints();
-			gbc_lblDate.insets = new Insets(0, 0, 5, 5);
-			gbc_lblDate.gridx = 8;
-			gbc_lblDate.gridy = 9;
-			contentPanel.add(lblDate, gbc_lblDate);
+			JLabel iconTopBlue = new JLabel("");
+			iconTopBlue.setIcon(new ImageIcon(AddGame.class.getResource("/img/Top_icon.png")));
+			iconTopBlue.setBounds(20, 61, 101, 85);
+			blueTeamPanel.add(iconTopBlue);
 		}
-		{
-			dateChooser = new JDateChooser();
-			dateChooser.setDateFormatString("dd MM yy");
-			GridBagConstraints gbc_dateChooser = new GridBagConstraints();
-			gbc_dateChooser.insets = new Insets(0, 0, 5, 5);
-			gbc_dateChooser.fill = GridBagConstraints.BOTH;
-			gbc_dateChooser.gridx = 11;
-			gbc_dateChooser.gridy = 9;
-			contentPanel.add(dateChooser, gbc_dateChooser);
-		}
-		{
-			JLabel lblDuration = new JLabel("Duration");
-			GridBagConstraints gbc_lblDuration = new GridBagConstraints();
-			gbc_lblDuration.insets = new Insets(0, 0, 5, 5);
-			gbc_lblDuration.gridx = 8;
-			gbc_lblDuration.gridy = 11;
-			contentPanel.add(lblDuration, gbc_lblDuration);
-		}
-		{
-			textDuration = new JTextField();
-			GridBagConstraints gbc_textDuration = new GridBagConstraints();
-			gbc_textDuration.insets = new Insets(0, 0, 5, 5);
-			gbc_textDuration.fill = GridBagConstraints.HORIZONTAL;
-			gbc_textDuration.gridx = 11;
-			gbc_textDuration.gridy = 11;
-			contentPanel.add(textDuration, gbc_textDuration);
-			textDuration.setColumns(10);
-		}
-		{
-			chckbxT1 = new JCheckBox("Blue Team");
-			buttonGroup.add(chckbxT1);
-			GridBagConstraints gbc_chckbxT1 = new GridBagConstraints();
-			gbc_chckbxT1.insets = new Insets(0, 0, 5, 5);
-			gbc_chckbxT1.gridx = 11;
-			gbc_chckbxT1.gridy = 13;
-			contentPanel.add(chckbxT1, gbc_chckbxT1);
-		}
-		{
-			JLabel lblWinner = new JLabel("Winner");
-			GridBagConstraints gbc_lblWinner = new GridBagConstraints();
-			gbc_lblWinner.insets = new Insets(0, 0, 5, 5);
-			gbc_lblWinner.gridx = 8;
-			gbc_lblWinner.gridy = 14;
-			contentPanel.add(lblWinner, gbc_lblWinner);
-		}
-		{
-			chckbxT2 = new JCheckBox("Red Team");
-			buttonGroup.add(chckbxT2);
-			GridBagConstraints gbc_chckbxT2 = new GridBagConstraints();
-			gbc_chckbxT2.insets = new Insets(0, 0, 5, 5);
-			gbc_chckbxT2.gridx = 11;
-			gbc_chckbxT2.gridy = 15;
-			contentPanel.add(chckbxT2, gbc_chckbxT2);
-		}
-		{
-			btnAdd = new JButton("Add");
-			btnAdd.addActionListener(this);
-			GridBagConstraints gbc_btnAdd = new GridBagConstraints();
-			gbc_btnAdd.insets = new Insets(0, 0, 5, 5);
-			gbc_btnAdd.gridx = 11;
-			gbc_btnAdd.gridy = 17;
-			contentPanel.add(btnAdd, gbc_btnAdd);
-		}
-
-		{
-			textChampP1T1.addFocusListener(this);
-			textChampP1T2.addFocusListener(this);
-			textChampP2T1.addFocusListener(this);
-			textChampP2T2.addFocusListener(this);
-			textChampP3T1.addFocusListener(this);
-			textChampP3T2.addFocusListener(this);
-			textChampP4T1.addFocusListener(this);
-			textChampP4T2.addFocusListener(this);
-			textChampP5T1.addFocusListener(this);
-			textChampP5T2.addFocusListener(this);
-			textNicknameP1T1.addFocusListener(this);
-			textNicknameP1T2.addFocusListener(this);
-			textNicknameP2T1.addFocusListener(this);
-			textNicknameP2T2.addFocusListener(this);
-			textNicknameP3T1.addFocusListener(this);
-			textNicknameP3T2.addFocusListener(this);
-			textNicknameP4T1.addFocusListener(this);
-			textNicknameP4T2.addFocusListener(this);
-			textNicknameP5T1.addFocusListener(this);
-			textNicknameP5T2.addFocusListener(this);
-		}
+		
+		textNicknameP1T1 = new JTextField();
+		textNicknameP1T1.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textNicknameP1T1.setToolTipText("Nickname\r\n");
+		textNicknameP1T1.setBounds(145, 79, 163, 27);
+		blueTeamPanel.add(textNicknameP1T1);
+		textNicknameP1T1.setColumns(10);
+		
+		textChampP1T1 = new JTextField();
+		textChampP1T1.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textChampP1T1.setToolTipText("Champ");
+		textChampP1T1.setColumns(10);
+		textChampP1T1.setBounds(145, 119, 163, 27);
+		blueTeamPanel.add(textChampP1T1);
+		
+		JLabel iconJungleBlue = new JLabel("");
+		iconJungleBlue.setIcon(new ImageIcon(AddGame.class.getResource("/img/lol_jungle_icon_by_divoras_degndao-fullview.png")));
+		iconJungleBlue.setBounds(20, 166, 101, 85);
+		blueTeamPanel.add(iconJungleBlue);
+		
+		textNicknameP2T1 = new JTextField();
+		textNicknameP2T1.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textNicknameP2T1.setToolTipText("Nickname\r\n");
+		textNicknameP2T1.setColumns(10);
+		textNicknameP2T1.setBounds(145, 177, 163, 27);
+		blueTeamPanel.add(textNicknameP2T1);
+		
+		textChampP2T1 = new JTextField();
+		textChampP2T1.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textChampP2T1.setToolTipText("Champ");
+		textChampP2T1.setColumns(10);
+		textChampP2T1.setBounds(145, 214, 163, 27);
+		blueTeamPanel.add(textChampP2T1);
+		
+		JLabel iconMidBlue = new JLabel("");
+		iconMidBlue.setIcon(new ImageIcon(AddGame.class.getResource("/img/Middle_icon.png")));
+		iconMidBlue.setBounds(20, 271, 101, 85);
+		blueTeamPanel.add(iconMidBlue);
+		
+		textNicknameP3T1 = new JTextField();
+		textNicknameP3T1.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textNicknameP3T1.setToolTipText("Nickname\r\n");
+		textNicknameP3T1.setColumns(10);
+		textNicknameP3T1.setBounds(145, 282, 163, 27);
+		blueTeamPanel.add(textNicknameP3T1);
+		
+		textChampP3T1 = new JTextField();
+		textChampP3T1.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textChampP3T1.setToolTipText("Champ");
+		textChampP3T1.setColumns(10);
+		textChampP3T1.setBounds(145, 319, 163, 27);
+		blueTeamPanel.add(textChampP3T1);
+		
+		JLabel iconBottonBlue = new JLabel("");
+		iconBottonBlue.setIcon(new ImageIcon(AddGame.class.getResource("/img/Bottom_icon.png")));
+		iconBottonBlue.setBounds(20, 378, 101, 85);
+		blueTeamPanel.add(iconBottonBlue);
+		
+		textNicknameP4T1 = new JTextField();
+		textNicknameP4T1.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textNicknameP4T1.setToolTipText("Nickname\r\n");
+		textNicknameP4T1.setColumns(10);
+		textNicknameP4T1.setBounds(145, 390, 163, 27);
+		blueTeamPanel.add(textNicknameP4T1);
+		
+		textChampP4T1 = new JTextField();
+		textChampP4T1.setToolTipText("Champ");
+		textChampP4T1.setColumns(10);
+		textChampP4T1.setBounds(145, 427, 163, 27);
+		blueTeamPanel.add(textChampP4T1);
+		
+		JLabel iconSupportBlue = new JLabel("");
+		iconSupportBlue.setIcon(new ImageIcon(AddGame.class.getResource("/img/Controller_icon - copia (2).png")));
+		iconSupportBlue.setBounds(20, 499, 101, 85);
+		blueTeamPanel.add(iconSupportBlue);
+		
+		textNicknameP5T1 = new JTextField();
+		textNicknameP5T1.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textNicknameP5T1.setToolTipText("Nickname\r\n");
+		textNicknameP5T1.setColumns(10);
+		textNicknameP5T1.setBounds(145, 509, 163, 27);
+		blueTeamPanel.add(textNicknameP5T1);
+		
+		textChampP5T1 = new JTextField();
+		textChampP5T1.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textChampP5T1.setToolTipText("Champ");
+		textChampP5T1.setColumns(10);
+		textChampP5T1.setBounds(145, 546, 163, 27);
+		blueTeamPanel.add(textChampP5T1);
+		
+		panel = new JPanel();
+		panel.setBackground(new Color(0, 0, 0, 180));
+		panel.setBounds(0, 10, 1280, 676);
+		contentPanel.add(panel);
+		
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setBounds(-27, 10, 1307, 676);
+		lblNewLabel.setIcon(new ImageIcon(AddGame.class.getResource("/img/Summoner27s_Rift_Update_Map1.jpg")));
+		contentPanel.add(lblNewLabel);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		if (e.getSource() == btnAdd) {
-			try {
-				addGame();
-			} catch (PersonalizedException e1) {
-				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, e1.getMessage(), "An unexpected error has occured!",
-						JOptionPane.ERROR_MESSAGE);
-			}
-		}
 	}
 
 	private void addGame() throws PersonalizedException {
@@ -987,6 +776,15 @@ public class AddGame extends JDialog implements ActionListener, FocusListener {
 					textChampP5T2.setText("");
 				}
 
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		
+		if(e.getSource().equals(btnAdd)) {
+			try {
+				addGame();
 			} catch (PersonalizedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

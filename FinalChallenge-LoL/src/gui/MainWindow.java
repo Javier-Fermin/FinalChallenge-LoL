@@ -39,78 +39,91 @@ import java.util.Set;
 import javax.swing.border.EtchedBorder;
 
 import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDayChooser;
+import com.toedter.calendar.JDateChooser;
 
 public class MainWindow extends JFrame implements ActionListener, MouseListener, FocusListener {
 	private JPanel contentPane;
-	private JTextField textFieldNameProfile;
-	private JTextField textFieldNicknameProfile;
-	private JTextField textFieldEmailProfile;
-	private JComboBox comboBoxNationalityProfile;
-	private JButton btnDeleteProfile;
-	private JButton btnModifyProfile;
-	private JTextField textFieldPhoneProfile;
-	private JCalendar jCalendarProfile;
-	private JCalendar jCalendarStartDateProfile;
 	private String nicknameOriginal;
-	private JTextField textFieldAdditionsProfile;
+	private JButton btnModifyPlayer;
+	private JLabel jCalendarStartDateProfile;
+	private JDateChooser jCalendarProfile;
+	private JPanel panelAdmin;
 	private JLabel nicknameProfile;
-	private JTextField textFieldNameAddAdmin;
-	private JTextField textFieldMailAddAdmin;
-	private JTextField textFieldPhoneAddAdmin;
-	private JPasswordField passwordFieldAddAdmin;
-	private JComboBox comboBoxAddAdmin;
-	private JButton btnSendAddAdmin;
 	private JButton btnDeletePlayer;
-	private JTextArea textAreaDeletePlayer;
-	private JCalendar calendarAddAdmin;
-	private JLabel lblPassEyeAddAdmin;
+	private JLabel lblEyeProfile;
 	private User user, userDel;
-	private JComboBox comboBoxSelectUser;
+	private JComboBox comboBoxNationalityProfile;
 	private JPanel champsPlayer = new JPanel();
-	private JButton buttonChampsPlayer_Enter = new JButton("Enter");
-	private JCheckBox checkBoxChampsPlayer = new JCheckBox("List all champs");
-	private JCheckBox checkBoxChampsPlayer_Filtered = new JCheckBox("List champs by filter");
-	private JTextField textFieldChampPlayer_Region;
-	private JTextField textFieldChampPlayer_Position;
+	private JButton buttonChampsPlayer_Enter = new JButton("ENTER");
+	private JCheckBox checkBoxChampsPlayer = new JCheckBox("");
+	private JCheckBox checkBoxChampsPlayer_Filtered = new JCheckBox("");
 	private final ButtonGroup buttonGroup = new ButtonGroup();
-	private JTextField textFieldChampsAdmin_Name;
-	private JComboBox<String> jComboBoxChampAdmin_Positions;
-	private JTextField textFieldChampAdmin_Region;
-	private JTextField textFieldChampAdmin_Passive;
-	private JTextField textFieldChampAdmin_Q;
-	private JTextField textFieldChampAdmin_W;
-	private JTextField textFieldChampAdmin_E;
-	private JTextField textFieldChampAdmin_R;
-	private JTextField textNicknameStats;
 	private JTable stats;
-	private JButton btnUpdateStats;
 	private DefaultTableModel modelStats;
-	private JTextField textNicknameGame;
 	private JTable games;
 	private DefaultTableModel modelGame;
-	private JButton btnUpdateGame;
 	private JCalendar calendar;
-	private JButton btnAddGame;
-	private JPanel panelAdmin;
 	private JPanel champAdmin = new JPanel();
-	private JButton buttonChampsAdmin_Check = new JButton("Check name");
 	private JLabel labeChampAdmin = new JLabel();
-	private JButton buttonChampAdmin_Add = new JButton("Add Champ");
-	private JButton buttonChampAdmin_Modify = new JButton("Modify Champ");
+	private JComboBox comboBoxAddAdmin;
+	private JDateChooser calendarAddAdmin;
+	private JButton btnSendAddAdmin;
+	private JLabel lblPassEyeAddAdmin;
+	private JDateChooser dateChooser_1;
+	private JButton buttonChampsAdmin_Check;
+	private JButton btnModifyChamp;
+	private JButton buttonChampAdd;
+	private JLabel nicknameProfilePicture;
+	private JButton btnDeletePlayerManagement;
 
 	private ChampEditable champEditable;
 	private Statable statable;
 	private GameStorable gameStorable;
 	private UserControllable userControllable;
 	private InputControl control = new InputControl();
+	private JTextField textFieldNicknameProfile;
+	private JTextField textFieldPhoneProfile;
+	private JTextField textFieldEmailProfile;
+	private JTextField textFieldNameProfile;
 	private JPasswordField passwordFieldProfile;
-	private JLabel lblEyeProfile;
+	private JTextField textFieldAdditionsProfile;
+	private JPasswordField passwordFieldAddAdmin;
+	private JTextField textFieldPhoneAddAdmin;
+	private JTextField textFieldMailAddAdmin;
+	private JTextField textFieldNameAddAdmin;
+	private JTextField textField;
+	private JTextField textField_1;
+	private JTextField textField_2;
+	private JTextField textField_3;
+	private JTextField textField_4;
+	private JTextField textField_5;
+	private JButton btnUpdateStats;
+	private JTextField textFieldRegionChamp;
+	private JTextField textFieldPassiveChamp;
+	private JTextField textFieldQChamp;
+	private JTextField textFieldWChamp;
+	private JTextField textFieldRChamp;
+	private JTextField textFieldEChamp;
+	private JTextField textFieldChampName;
+	private JLayeredPane panelHabilidades;
+	private JComboBox comboBoxPosition;
+	private JTextField textFieldChampPlayer_Region;
+	private JTextField textFieldChampPlayer_Position;
+	private JTextField textNicknameStats;
+	private JButton btnUpdateGame;
+	private JButton btnAddGame;
+	private JTextField textNicknameGame;
+	private JComboBox comboBoxSelectUser;
+	private JTextArea textAreaDeletePlayer;
+	private JPanel panelAddModifyChamp;
 
 	/**
 	 * Create the frame.
 	 */
 	public MainWindow(UserControllable userControllable, ChampEditable champEditable, GameStorable gameStorable,
 			Statable statable) {
+		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainWindow.class.getResource("/icon/LoL_icon.svg.png")));
 		this.userControllable = userControllable;
 		this.champEditable = champEditable;
@@ -131,87 +144,119 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		contentPane.add(tabbedPane);
 
 		JPanel profile = new JPanel();
-		profile.setBackground(new Color(240, 230, 140));
+		profile.setBackground(new Color(0, 0, 0));
 		tabbedPane.addTab("PROFILE\r\n", null, profile, null);
-		profile.setLayout(null);
-
-		JPanel panelInfo = new JPanel();
-		panelInfo.setBounds(16, 10, 599, 609);
-		panelInfo.setLayout(null);
-		panelInfo.setBorder(null);
-		panelInfo.setBackground(new Color(255, 255, 255));
-		profile.add(panelInfo);
-
-		JLabel passwordProfile = new JLabel("PASSWORD");
-		passwordProfile.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		passwordProfile.setBounds(65, 232, 95, 21);
-		panelInfo.add(passwordProfile);
-
-		JLabel lblEmailProfile = new JLabel("NAME");
-		lblEmailProfile.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		lblEmailProfile.setBounds(65, 159, 49, 21);
-		panelInfo.add(lblEmailProfile);
-
-		JLabel emailProfile = new JLabel("EMAIL");
-		emailProfile.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		emailProfile.setBounds(65, 289, 51, 21);
-		panelInfo.add(emailProfile);
-
-		textFieldNameProfile = new JTextField();
-		textFieldNameProfile.setToolTipText("");
-		textFieldNameProfile.setColumns(10);
-		textFieldNameProfile.setBounds(215, 160, 199, 19);
-		panelInfo.add(textFieldNameProfile);
-		textFieldNameProfile.addFocusListener(this);
-
-		JLabel birthdateProfile = new JLabel("BIRTHDATE");
-		birthdateProfile.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		birthdateProfile.setBounds(65, 372, 92, 21);
-		panelInfo.add(birthdateProfile);
-
-		JLabel lblNacionalityProfile = new JLabel("NATIONALITY");
-		lblNacionalityProfile.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		lblNacionalityProfile.setBounds(65, 557, 110, 21);
-		panelInfo.add(lblNacionalityProfile);
-
-		nicknameProfile = new JLabel("NICKNAME");
-		nicknameProfile.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		nicknameProfile.setBounds(65, 96, 88, 21);
-		panelInfo.add(nicknameProfile);
 
 		textFieldNicknameProfile = new JTextField();
+		textFieldNicknameProfile.setBounds(260, 165, 199, 27);
+		textFieldNicknameProfile.setBackground(Color.BLACK);
+		textFieldNicknameProfile.setForeground(Color.WHITE);
+		textFieldNicknameProfile.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textFieldNicknameProfile.setToolTipText("");
+		textFieldNicknameProfile.setText((String) null);
 		textFieldNicknameProfile.setColumns(10);
-		textFieldNicknameProfile.setBounds(215, 97, 199, 19);
-		panelInfo.add(textFieldNicknameProfile);
 		textFieldNicknameProfile.addFocusListener(this);
+		profile.setLayout(null);
+		profile.add(textFieldNicknameProfile);
+
+		lblEyeProfile = new JLabel("");
+		lblEyeProfile.setBounds(477, 275, 30, 24);
+		lblEyeProfile.setIcon(
+				new ImageIcon(MainWindow.class.getResource("/img/1200px-OOjs_UI_icon_eye-progressive.svg.png")));
+		lblEyeProfile.addMouseListener(this);
+		profile.add(lblEyeProfile);
+
+		JLabel iconProfile = new JLabel("");
+		iconProfile.setBounds(109, 49, 64, 64);
+		iconProfile.setIcon(new ImageIcon(MainWindow.class.getResource("/img/lolLogo (2).png")));
+		profile.add(iconProfile);
+
+		JLabel pictureProfile = new JLabel("");
+		pictureProfile.setBounds(881, 109, 200, 478);
+		pictureProfile.setIcon(new ImageIcon(MainWindow.class.getResource(
+				"/img/Banner-Gold-keatas-Ranked-Season-LoL-Wild-Rift-700x394-PhotoRoom.png-PhotoRoom (1) (1).png")));
+		profile.add(pictureProfile);
+
+		nicknameProfilePicture = new JLabel("New label");
+		nicknameProfilePicture.setBounds(915, 378, 135, 16);
+		profile.add(nicknameProfilePicture);
+
+		JLabel passwordProfile = new JLabel("PASSWORD");
+		passwordProfile.setBounds(119, 274, 121, 21);
+		passwordProfile.setForeground(new Color(255, 255, 255));
+		passwordProfile.setFont(new Font("Bahnschrift", Font.BOLD, 20));
+		profile.add(passwordProfile);
+
+		JLabel lblEmailProfile = new JLabel("NAME");
+		lblEmailProfile.setBounds(119, 221, 92, 21);
+		lblEmailProfile.setForeground(new Color(255, 255, 255));
+		lblEmailProfile.setFont(new Font("Bahnschrift", Font.BOLD, 20));
+		profile.add(lblEmailProfile);
+
+		JLabel emailProfile = new JLabel("EMAIL");
+		emailProfile.setBounds(119, 343, 114, 21);
+		emailProfile.setForeground(new Color(255, 255, 255));
+		emailProfile.setFont(new Font("Bahnschrift", Font.BOLD, 20));
+		profile.add(emailProfile);
+
+		JLabel birthdateProfile = new JLabel("BIRTHDATE");
+		birthdateProfile.setBounds(119, 448, 145, 21);
+		profile.add(birthdateProfile);
+		birthdateProfile.setForeground(new Color(255, 255, 255));
+		birthdateProfile.setFont(new Font("Bahnschrift", Font.BOLD, 20));
+
+		JLabel lblNacionalityProfile = new JLabel("NATIONALITY");
+		lblNacionalityProfile.setBounds(119, 511, 168, 21);
+		lblNacionalityProfile.setForeground(new Color(255, 255, 255));
+		lblNacionalityProfile.setFont(new Font("Bahnschrift", Font.BOLD, 20));
+		profile.add(lblNacionalityProfile);
+
+		nicknameProfile = new JLabel("NICKNAME");
+		nicknameProfile.setBounds(119, 165, 135, 21);
+		nicknameProfile.setForeground(new Color(255, 255, 255));
+		nicknameProfile.setFont(new Font("Bahnschrift", Font.BOLD, 20));
+		nicknameProfile.addFocusListener(this);
+		profile.add(nicknameProfile);
+
+		textFieldPhoneProfile = new JTextField();
+		textFieldPhoneProfile.setBounds(260, 394, 199, 27);
+		textFieldPhoneProfile.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textFieldPhoneProfile.setForeground(new Color(255, 255, 255));
+		textFieldPhoneProfile.setBackground(new Color(0, 0, 0));
+		textFieldPhoneProfile.setColumns(10);
+		textFieldPhoneProfile.addFocusListener(this);
+		profile.add(textFieldPhoneProfile);
 
 		textFieldEmailProfile = new JTextField();
+		textFieldEmailProfile.setBounds(260, 336, 199, 27);
+		textFieldEmailProfile.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textFieldEmailProfile.setForeground(new Color(255, 255, 255));
+		textFieldEmailProfile.setBackground(new Color(0, 0, 0));
 		textFieldEmailProfile.setToolTipText("");
+		textFieldEmailProfile.setText((String) null);
 		textFieldEmailProfile.setColumns(10);
-		textFieldEmailProfile.setBounds(215, 290, 199, 19);
 		textFieldEmailProfile.addFocusListener(this);
-		panelInfo.add(textFieldEmailProfile);
+		profile.add(textFieldEmailProfile);
 
-		JLabel lblPersonalDataProfile = new JLabel("PERSONAL DATA");
-		lblPersonalDataProfile.setFont(new Font("Bahnschrift", Font.BOLD, 21));
-		lblPersonalDataProfile.setBounds(192, 37, 206, 26);
-		panelInfo.add(lblPersonalDataProfile);
+		btnModifyPlayer = new JButton("MODIFY ");
+		btnModifyPlayer.setForeground(new Color(255, 255, 255));
+		btnModifyPlayer.setBounds(597, 524, 92, 26);
+		btnModifyPlayer.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
+		btnModifyPlayer.setBackground(new Color(0, 128, 128));
+		btnModifyPlayer.addActionListener(this);
+		profile.add(btnModifyPlayer);
 
-		btnModifyProfile = new JButton("MODIFY ");
-		btnModifyProfile.setBackground(new Color(64, 224, 208));
-		btnModifyProfile.setBounds(468, 116, 92, 67);
-		panelInfo.add(btnModifyProfile);
-		btnModifyProfile.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnModifyProfile.addActionListener(this);
-
-		btnDeleteProfile = new JButton("DELETE");
-		btnDeleteProfile.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnDeleteProfile.setBackground(new Color(64, 224, 208));
-		btnDeleteProfile.setBounds(468, 289, 95, 67);
-		panelInfo.add(btnDeleteProfile);
-		btnDeleteProfile.addActionListener(this);
+		btnDeletePlayer = new JButton("DELETE");
+		btnDeletePlayer.setForeground(new Color(255, 255, 255));
+		btnDeletePlayer.setBounds(717, 524, 95, 26);
+		btnDeletePlayer.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
+		btnDeletePlayer.setBackground(new Color(0, 128, 128));
+		btnDeletePlayer.addActionListener(this);
+		btnDeletePlayer.setVisible(false);
+		profile.add(btnDeletePlayer);
 
 		comboBoxNationalityProfile = new JComboBox();
+		comboBoxNationalityProfile.setBounds(260, 510, 205, 21);
 		comboBoxNationalityProfile.setModel(new DefaultComboBoxModel(new String[] { "Afghan", "Albanian", "Algerian",
 				"American", "Andorran", "Angolan", "Antiguans", "Argentinean", "Armenian", "Australian", "Austrian",
 				"Azerbaijani", "Bahamian", "Bahraini", "Bangladeshi", "Barbadian", "Barbudans", "Batswana",
@@ -238,168 +283,478 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 				"Tanzanian", "Thai", "Togolese", "Tongan", "Trinidadian or Tobagonian", "Tunisian", "Turkish",
 				"Tuvaluan", "Ugandan", "Ukrainian", "Uruguayan", "Uzbekistani", "Venezuelan", "Vietnamese", "Welsh",
 				"Yemenite", "Zambian", "Zimbabwean" }));
-		comboBoxNationalityProfile.setBounds(215, 557, 199, 21);
-		panelInfo.add(comboBoxNationalityProfile);
-
-		jCalendarProfile = new JCalendar();
-		jCalendarProfile.setBounds(215, 331, 199, 152);
-		panelInfo.add(jCalendarProfile);
+		comboBoxNationalityProfile.setSelectedIndex(-1);
+		profile.add(comboBoxNationalityProfile);
 
 		JLabel phoneProfile = new JLabel("PHONE");
-		phoneProfile.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		phoneProfile.setBounds(65, 504, 92, 21);
-		panelInfo.add(phoneProfile);
+		phoneProfile.setBounds(119, 396, 92, 21);
+		phoneProfile.setForeground(new Color(255, 255, 255));
+		phoneProfile.setFont(new Font("Bahnschrift", Font.BOLD, 20));
+		profile.add(phoneProfile);
 
-		textFieldPhoneProfile = new JTextField();
-		textFieldPhoneProfile.setBounds(215, 505, 199, 19);
-		panelInfo.add(textFieldPhoneProfile);
-
-		textFieldPhoneProfile.setColumns(9);
+		textFieldNameProfile = new JTextField();
+		textFieldNameProfile.setBounds(260, 218, 199, 27);
+		textFieldNameProfile.setForeground(Color.WHITE);
+		textFieldNameProfile.setBackground(Color.BLACK);
+		textFieldNameProfile.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textFieldNameProfile.setText((String) null);
+		textFieldNameProfile.setColumns(9);
+		textFieldNameProfile.addFocusListener(this);
+		profile.add(textFieldNameProfile);
 
 		passwordFieldProfile = new JPasswordField();
-		passwordFieldProfile.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		passwordFieldProfile.setBounds(260, 275, 199, 27);
+		passwordFieldProfile.setForeground(new Color(255, 255, 255));
+		passwordFieldProfile.setBackground(new Color(0, 0, 0));
+		passwordFieldProfile.setText((String) null);
+		passwordFieldProfile.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
 		passwordFieldProfile.setEchoChar('·');
-		passwordFieldProfile.setBounds(215, 226, 199, 19);
-		panelInfo.add(passwordFieldProfile);
-		
-		lblEyeProfile = new JLabel("");
-		lblEyeProfile.setIcon(new ImageIcon(MainWindow.class.getResource("/img/pass_eye_25_17.jpg")));
-		lblEyeProfile.setBounds(424, 232, 30, 13);
-		lblEyeProfile.addMouseListener(this);
-		panelInfo.add(lblEyeProfile);
-		textFieldPhoneProfile.addFocusListener(this);
+		passwordFieldProfile.addFocusListener(this);
+		profile.add(passwordFieldProfile);
+
+		jCalendarProfile = new JDateChooser();
+		jCalendarProfile.setBounds(260, 444, 202, 22);
+		jCalendarProfile.setDateFormatString("dd MM yy");
+		profile.add(jCalendarProfile);
 
 		panelAdmin = new JPanel();
-		panelAdmin.setBounds(625, 10, 556, 609);
-		panelAdmin.setBackground(new Color(255, 255, 255));
+		panelAdmin.setBounds(551, 153, 297, 309);
+		panelAdmin.setBackground(new Color(0, 0, 0, 180));
+		panelAdmin.setForeground(new Color(0, 0, 0));
+		panelAdmin.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(218, 165, 32), null));
 		profile.add(panelAdmin);
 		panelAdmin.setLayout(null);
 
-		JLabel lblAdministratorAreaProfile = new JLabel("ADMINISTRATOR AREA");
-		lblAdministratorAreaProfile.setBounds(156, 29, 249, 26);
-		lblAdministratorAreaProfile.setFont(new Font("Bahnschrift", Font.BOLD, 21));
-		panelAdmin.add(lblAdministratorAreaProfile);
+		JLabel personalDataProfile_1_1 = new JLabel("ADMINISTRATOR AREA");
+		personalDataProfile_1_1.setBounds(30, 10, 267, 83);
+		personalDataProfile_1_1.setForeground(new Color(0, 139, 139));
+		personalDataProfile_1_1.setFont(new Font("Bahnschrift", Font.BOLD, 22));
+		panelAdmin.add(personalDataProfile_1_1);
 
-		JLabel startDateProfile = new JLabel("START DATE");
-		startDateProfile.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		startDateProfile.setBounds(48, 231, 132, 21);
-		panelAdmin.add(startDateProfile);
+		JLabel startDate = new JLabel("START DATE");
+		startDate.setForeground(new Color(255, 255, 255));
+		startDate.setFont(new Font("Bahnschrift", Font.BOLD, 20));
+		startDate.setBounds(23, 87, 133, 21);
+		panelAdmin.add(startDate);
 
-		jCalendarStartDateProfile = new JCalendar();
-		jCalendarStartDateProfile.setBounds(177, 150, 199, 152);
-		panelAdmin.add(jCalendarStartDateProfile);
+		dateChooser_1 = new JDateChooser();
+		dateChooser_1.setBounds(166, 87, 101, 22);
+		panelAdmin.add(dateChooser_1);
 
 		JLabel additionsProfile = new JLabel("ADDITIONS");
-		additionsProfile.setFont(new Font("Bahnschrift", Font.BOLD, 17));
-		additionsProfile.setBounds(48, 415, 92, 21);
-		additionsProfile.addFocusListener(this);
+		additionsProfile.setForeground(new Color(255, 255, 255));
+		additionsProfile.setFont(new Font("Bahnschrift", Font.BOLD, 20));
+		additionsProfile.setBounds(30, 183, 126, 21);
 		panelAdmin.add(additionsProfile);
 
 		textFieldAdditionsProfile = new JTextField();
-		textFieldAdditionsProfile.setBounds(177, 416, 199, 19);
-		panelAdmin.add(textFieldAdditionsProfile);
+		textFieldAdditionsProfile.setForeground(new Color(255, 255, 255));
+		textFieldAdditionsProfile.setBackground(new Color(0, 0, 0));
 		textFieldAdditionsProfile.setColumns(10);
+		textFieldAdditionsProfile.setBounds(212, 181, 55, 22);
 		textFieldAdditionsProfile.addFocusListener(this);
-		;
+		panelAdmin.add(textFieldAdditionsProfile);
 
+		JLabel personalDataProfile1 = new JLabel("PERSONAL DATA");
+		personalDataProfile1.setBounds(260, 49, 579, 89);
+		personalDataProfile1.setForeground(new Color(0, 139, 139));
+		personalDataProfile1.setFont(new Font("Bahnschrift", Font.BOLD, 69));
+		profile.add(personalDataProfile1);
+
+		JLabel personalDataProfile = new JLabel("PERSONAL DATA");
+		personalDataProfile.setBounds(257, 50, 579, 89);
+		personalDataProfile.setFont(new Font("Bahnschrift", Font.BOLD, 69));
+		personalDataProfile.setForeground(new Color(218, 165, 32, 150));
+		profile.add(personalDataProfile);
+
+		JPanel panelTransparenteProfile = new JPanel();
+		panelTransparenteProfile.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(184, 134, 11), null));
+		panelTransparenteProfile.setBackground(new Color(0, 0, 0, 180));
+		panelTransparenteProfile.setBounds(49, 34, 1059, 553);
+		profile.add(panelTransparenteProfile);
+
+		JLabel fondoPictureProfile = new JLabel("New label");
+		fondoPictureProfile.setBounds(-393, -13, 1574, 675);
+		fondoPictureProfile.setIcon(new ImageIcon(MainWindow.class.getResource("/img/LOL_PROMOART_14.jpg")));
+		profile.add(fondoPictureProfile);
 
 		tabbedPane.addTab("CHAMPS", null, champsPlayer, null);
 		champsPlayer.setLayout(null);
-
-		JLabel labelChampsPlayer_Title = new JLabel("List Champs");
-		labelChampsPlayer_Title.setFont(new Font("Arial Black", Font.BOLD, 22));
-		labelChampsPlayer_Title.setBounds(501, 21, 301, 117);
-		champsPlayer.add(labelChampsPlayer_Title);
-
 		// Create a gorup and add each checkbox to it so only one can be selected
 		ButtonGroup buttonGroupChampsPlayer = new ButtonGroup();
 
-		buttonGroupChampsPlayer.add(checkBoxChampsPlayer);
-		checkBoxChampsPlayer.setBounds(275, 139, 128, 23);
-		champsPlayer.add(checkBoxChampsPlayer);
+		JPanel panelTransparente = new JPanel();
+		panelTransparente.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(218, 165, 32), null));
+		panelTransparente.setBackground(new Color(0, 0, 0, 180));
+		panelTransparente.setBounds(59, 37, 1059, 553);
+		champsPlayer.add(panelTransparente);
+		panelTransparente.setLayout(null);
+
+		JLabel lblChamps = new JLabel("CHAMPS");
+		lblChamps.setBounds(375, 10, 328, 83);
+		lblChamps.setForeground(new Color(0, 139, 139));
+		lblChamps.setFont(new Font("Bahnschrift", Font.BOLD, 69));
+		panelTransparente.add(lblChamps);
+
+		JLabel lblChamps_1 = new JLabel("CHAMPS");
+		lblChamps_1.setForeground(new Color(218, 165, 32));
+		lblChamps_1.setFont(new Font("Bahnschrift", Font.BOLD, 69));
+		lblChamps_1.setBounds(372, 10, 328, 83);
+		panelTransparente.add(lblChamps_1);
+
+		JLabel lblNewLabel_1 = new JLabel("");
+		lblNewLabel_1.setIcon(new ImageIcon(MainWindow.class.getResource("/img/lolLogo (2).png")));
+		lblNewLabel_1.setBounds(10, 10, 64, 64);
+		panelTransparente.add(lblNewLabel_1);
+
+		JLabel lblNewLabel_2 = new JLabel("");
+		lblNewLabel_2.setIcon(new ImageIcon(MainWindow.class.getResource("/img/Controller_icon - copia (2).png")));
+		lblNewLabel_2.setBounds(916, 8, 87, 131);
+		panelTransparente.add(lblNewLabel_2);
 
 		buttonGroupChampsPlayer.add(checkBoxChampsPlayer_Filtered);
-		checkBoxChampsPlayer_Filtered.setBounds(275, 193, 217, 23);
-		champsPlayer.add(checkBoxChampsPlayer_Filtered);
+		checkBoxChampsPlayer_Filtered.setBackground(new Color(0, 0, 0, 180));
+		checkBoxChampsPlayer_Filtered.setBounds(116, 145, 21, 23);
+		panelTransparente.add(checkBoxChampsPlayer_Filtered);
+		checkBoxChampsPlayer_Filtered.setForeground(new Color(255, 255, 255));
+		checkBoxChampsPlayer_Filtered.setFont(new Font("Bahnschrift", Font.PLAIN, 20));
+		checkBoxChampsPlayer.setBackground(new Color(0, 0, 0));
+		checkBoxChampsPlayer.setBounds(116, 184, 21, 25);
+		panelTransparente.add(checkBoxChampsPlayer);
+		checkBoxChampsPlayer.setForeground(new Color(255, 255, 255));
+		checkBoxChampsPlayer.setFont(new Font("Bahnschrift", Font.PLAIN, 20));
 
-		JLabel labelChampsPlayer_Region = new JLabel("Region");
-		labelChampsPlayer_Region.setBounds(342, 247, 61, 16);
-		champsPlayer.add(labelChampsPlayer_Region);
+		buttonGroupChampsPlayer.add(checkBoxChampsPlayer);
 
-		JLabel labelChampsPlayer_Position = new JLabel("Position");
-		labelChampsPlayer_Position.setBounds(342, 288, 61, 16);
-		champsPlayer.add(labelChampsPlayer_Position);
+		JLabel lblListChampsByFilter = new JLabel("LIST CAMPS BY FILTER");
+		lblListChampsByFilter.setForeground(new Color(255, 255, 255));
+		lblListChampsByFilter.setFont(new Font("Bahnschrift", Font.PLAIN, 20));
+		lblListChampsByFilter.setBounds(161, 142, 223, 36);
+		panelTransparente.add(lblListChampsByFilter);
+		buttonChampsPlayer_Enter.setForeground(new Color(255, 255, 255));
+		buttonChampsPlayer_Enter.setBackground(new Color(0, 128, 128));
+		buttonChampsPlayer_Enter.setBounds(185, 244, 117, 29);
+		panelTransparente.add(buttonChampsPlayer_Enter);
+		buttonChampsPlayer_Enter.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+
+		JLabel lblListAllChamps = new JLabel("LIST ALL CHAMPS");
+		lblListAllChamps.setForeground(new Color(255, 255, 255));
+		lblListAllChamps.setFont(new Font("Bahnschrift", Font.PLAIN, 20));
+		lblListAllChamps.setBounds(161, 184, 209, 36);
+		panelTransparente.add(lblListAllChamps);
+
+		JLabel iconBottonChamps = new JLabel("");
+		iconBottonChamps.setIcon(new ImageIcon(MainWindow.class.getResource("/img/Bottom_icon.png")));
+		iconBottonChamps.setBounds(916, 135, 65, 57);
+		panelTransparente.add(iconBottonChamps);
+
+		JLabel iconJungleChamps = new JLabel("");
+		iconJungleChamps.setIcon(
+				new ImageIcon(MainWindow.class.getResource("/img/lol_jungle_icon_by_divoras_degndao-fullview.png")));
+		iconJungleChamps.setBounds(916, 225, 74, 83);
+		panelTransparente.add(iconJungleChamps);
+
+		JLabel iconMiddleChamps = new JLabel("");
+		iconMiddleChamps.setIcon(new ImageIcon(MainWindow.class.getResource("/img/Middle_icon.png")));
+		iconMiddleChamps.setBounds(920, 342, 74, 64);
+		panelTransparente.add(iconMiddleChamps);
+
+		JLabel iconTopChamps = new JLabel("");
+		iconTopChamps.setIcon(new ImageIcon(MainWindow.class.getResource("/img/Top_icon.png")));
+		iconTopChamps.setBounds(920, 444, 87, 64);
+		panelTransparente.add(iconTopChamps);
+
+		JLayeredPane selectRegionPosition = new JLayeredPane();
+		selectRegionPosition.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(218, 165, 32), null));
+		selectRegionPosition.setBounds(418, 103, 426, 159);
+		panelTransparente.add(selectRegionPosition);
+		selectRegionPosition.setLayout(null);
+
+		JLabel labelChampsPlayer_Region = new JLabel("REGION");
+		labelChampsPlayer_Region.setBounds(36, 40, 117, 36);
+		labelChampsPlayer_Region.setForeground(Color.WHITE);
+		labelChampsPlayer_Region.setFont(new Font("Bahnschrift", Font.PLAIN, 20));
+		selectRegionPosition.add(labelChampsPlayer_Region);
 
 		textFieldChampPlayer_Region = new JTextField();
 		textFieldChampPlayer_Region.setToolTipText("Leave it in blank for no filter");
-		textFieldChampPlayer_Region.setBounds(428, 242, 130, 26);
-		champsPlayer.add(textFieldChampPlayer_Region);
+		textFieldChampPlayer_Region.setForeground(Color.WHITE);
+		textFieldChampPlayer_Region.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
 		textFieldChampPlayer_Region.setColumns(10);
+		textFieldChampPlayer_Region.setBackground(Color.BLACK);
+		textFieldChampPlayer_Region.setBounds(190, 40, 202, 26);
+		selectRegionPosition.add(textFieldChampPlayer_Region);
+
+		JLabel labelChampsPlayer_Position = new JLabel("POSITION");
+		labelChampsPlayer_Position.setBounds(36, 105, 135, 26);
+		selectRegionPosition.add(labelChampsPlayer_Position);
+		labelChampsPlayer_Position.setForeground(new Color(255, 255, 255));
+		labelChampsPlayer_Position.setFont(new Font("Bahnschrift", Font.PLAIN, 20));
 
 		textFieldChampPlayer_Position = new JTextField();
 		textFieldChampPlayer_Position.setToolTipText("Leave it in blank for no filter");
-		textFieldChampPlayer_Position.setBounds(428, 283, 130, 26);
-		champsPlayer.add(textFieldChampPlayer_Position);
+		textFieldChampPlayer_Position.setForeground(Color.WHITE);
+		textFieldChampPlayer_Position.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
 		textFieldChampPlayer_Position.setColumns(10);
-
-		// Confirmation button
-		buttonChampsPlayer_Enter.setBounds(441, 340, 117, 29);
+		textFieldChampPlayer_Position.setBackground(Color.BLACK);
+		textFieldChampPlayer_Position.setBounds(190, 107, 202, 26);
+		selectRegionPosition.add(textFieldChampPlayer_Position);
 		buttonChampsPlayer_Enter.addActionListener(this);
-		champsPlayer.add(buttonChampsPlayer_Enter);
+
+		JLabel panelChampPlayer = new JLabel("");
+		panelChampPlayer.setBackground(new Color(0, 0, 0, 180));
+		panelChampPlayer.setIcon(new ImageIcon(MainWindow.class.getResource("/img/RuneterraMap.png")));
+		panelChampPlayer.setBounds(-420, -35, 1601, 714);
+		champsPlayer.add(panelChampPlayer);
 
 		// Champs admin
 		tabbedPane.addTab("CHAMPS", null, champAdmin, null);
 		champAdmin.setLayout(null);
-		ChampAdminTabConstruction();
+
+		panelHabilidades = new JLayeredPane();
+		panelHabilidades.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(218, 165, 32), null));
+		panelHabilidades.setBounds(621, 58, 428, 513);
+		champAdmin.add(panelHabilidades);
+		panelHabilidades.setLayout(null);
+		panelHabilidades.setVisible(false);
+
+		JLabel Region = new JLabel("REGION");
+		Region.setForeground(new Color(255, 255, 255));
+		Region.setFont(new Font("Bahnschrift", Font.BOLD, 20));
+		Region.setBounds(25, 118, 108, 25);
+		panelHabilidades.add(Region);
+
+		textFieldRegionChamp = new JTextField();
+		textFieldRegionChamp.setToolTipText("Leave it in blank for no filter");
+		textFieldRegionChamp.setForeground(Color.WHITE);
+		textFieldRegionChamp.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textFieldRegionChamp.setColumns(10);
+		textFieldRegionChamp.setBackground(Color.BLACK);
+		textFieldRegionChamp.setBounds(169, 117, 202, 26);
+		panelHabilidades.add(textFieldRegionChamp);
+
+		JLabel lblPosition = new JLabel("POSITION");
+		lblPosition.setForeground(Color.WHITE);
+		lblPosition.setFont(new Font("Bahnschrift", Font.BOLD, 20));
+		lblPosition.setBounds(25, 55, 108, 25);
+		panelHabilidades.add(lblPosition);
+
+		JLabel lblPassive = new JLabel("PASSIVE");
+		lblPassive.setForeground(Color.WHITE);
+		lblPassive.setFont(new Font("Bahnschrift", Font.BOLD, 20));
+		lblPassive.setBounds(25, 193, 108, 25);
+		panelHabilidades.add(lblPassive);
+
+		textFieldPassiveChamp = new JTextField();
+		textFieldPassiveChamp.setToolTipText("Leave it in blank for no filter");
+		textFieldPassiveChamp.setForeground(Color.WHITE);
+		textFieldPassiveChamp.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textFieldPassiveChamp.setColumns(10);
+		textFieldPassiveChamp.setBackground(Color.BLACK);
+		textFieldPassiveChamp.setBounds(169, 180, 202, 26);
+		panelHabilidades.add(textFieldPassiveChamp);
+
+		JLabel lblQ = new JLabel("Q");
+		lblQ.setForeground(Color.WHITE);
+		lblQ.setFont(new Font("Bahnschrift", Font.BOLD, 20));
+		lblQ.setBounds(25, 252, 108, 25);
+		panelHabilidades.add(lblQ);
+
+		textFieldQChamp = new JTextField();
+		textFieldQChamp.setToolTipText("Leave it in blank for no filter");
+		textFieldQChamp.setForeground(Color.WHITE);
+		textFieldQChamp.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textFieldQChamp.setColumns(10);
+		textFieldQChamp.setBackground(Color.BLACK);
+		textFieldQChamp.setBounds(169, 237, 202, 26);
+		panelHabilidades.add(textFieldQChamp);
+
+		JLabel lblW = new JLabel("W");
+		lblW.setForeground(Color.WHITE);
+		lblW.setFont(new Font("Bahnschrift", Font.BOLD, 20));
+		lblW.setBounds(25, 301, 108, 25);
+		panelHabilidades.add(lblW);
+
+		textFieldWChamp = new JTextField();
+		textFieldWChamp.setToolTipText("Leave it in blank for no filter");
+		textFieldWChamp.setForeground(Color.WHITE);
+		textFieldWChamp.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textFieldWChamp.setColumns(10);
+		textFieldWChamp.setBackground(Color.BLACK);
+		textFieldWChamp.setBounds(169, 300, 202, 26);
+		panelHabilidades.add(textFieldWChamp);
+
+		JLabel lblR = new JLabel("R");
+		lblR.setForeground(Color.WHITE);
+		lblR.setFont(new Font("Bahnschrift", Font.BOLD, 20));
+		lblR.setBounds(25, 347, 108, 25);
+		panelHabilidades.add(lblR);
+
+		JLabel lblE = new JLabel("E");
+		lblE.setForeground(Color.WHITE);
+		lblE.setFont(new Font("Bahnschrift", Font.BOLD, 20));
+		lblE.setBounds(25, 396, 108, 25);
+		panelHabilidades.add(lblE);
+
+		textFieldRChamp = new JTextField();
+		textFieldRChamp.setToolTipText("Leave it in blank for no filter");
+		textFieldRChamp.setForeground(Color.WHITE);
+		textFieldRChamp.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textFieldRChamp.setColumns(10);
+		textFieldRChamp.setBackground(Color.BLACK);
+		textFieldRChamp.setBounds(169, 350, 202, 26);
+		panelHabilidades.add(textFieldRChamp);
+
+		textFieldEChamp = new JTextField();
+		textFieldEChamp.setToolTipText("Leave it in blank for no filter");
+		textFieldEChamp.setForeground(Color.WHITE);
+		textFieldEChamp.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textFieldEChamp.setColumns(10);
+		textFieldEChamp.setBackground(Color.BLACK);
+		textFieldEChamp.setBounds(169, 399, 202, 26);
+		panelHabilidades.add(textFieldEChamp);
+
+		comboBoxPosition = new JComboBox();
+		comboBoxPosition.setModel(new DefaultComboBoxModel(new String[] { "TOP", "JNG", "MID", "ADC", "SUP" }));
+		comboBoxPosition.setBounds(169, 57, 202, 27);
+		comboBoxPosition.setSelectedIndex(-1);
+		panelHabilidades.add(comboBoxPosition);
+
+		buttonChampAdd = new JButton("ADD");
+		buttonChampAdd.setForeground(new Color(255, 255, 255));
+		buttonChampAdd.setBackground(new Color(0, 128, 128));
+		buttonChampAdd.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		buttonChampAdd.setBounds(214, 460, 85, 25);
+		buttonChampAdd.addActionListener(this);
+		buttonChampAdd.setVisible(false);
+		panelHabilidades.add(buttonChampAdd);
+
+		btnModifyChamp = new JButton("MODIFY");
+		btnModifyChamp.setForeground(new Color(255, 255, 255));
+		btnModifyChamp.setBackground(new Color(0, 128, 128));
+		btnModifyChamp.setVerticalAlignment(SwingConstants.TOP);
+		btnModifyChamp.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		btnModifyChamp.setBounds(214, 461, 100, 25);
+		btnModifyChamp.addActionListener(this);
+		btnModifyChamp.setVisible(false);
+		panelHabilidades.add(btnModifyChamp);
+
+		panelAddModifyChamp = new JPanel();
+		panelAddModifyChamp.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(184, 134, 11), null));
+		panelAddModifyChamp.setBackground(new Color(0, 0, 0, 180));
+		panelAddModifyChamp.setBounds(59, 28, 1059, 566);
+		champAdmin.add(panelAddModifyChamp);
+		panelAddModifyChamp.setLayout(null);
+
+		JLabel lblNewLabel_16 = new JLabel("MODIFY OR ADD CHAMPS");
+		lblNewLabel_16.setForeground(new Color(0, 128, 128));
+		lblNewLabel_16.setBackground(new Color(0, 128, 128));
+		lblNewLabel_16.setFont(new Font("Bahnschrift", Font.PLAIN, 25));
+		lblNewLabel_16.setBounds(109, 188, 311, 31);
+		panelAddModifyChamp.add(lblNewLabel_16);
+
+		JLabel lblChamps_2_1 = new JLabel("CHAMPS");
+		lblChamps_2_1.setBounds(231, 24, 286, 83);
+		panelAddModifyChamp.add(lblChamps_2_1);
+		lblChamps_2_1.setForeground(new Color(218, 165, 32));
+		lblChamps_2_1.setFont(new Font("Bahnschrift", Font.BOLD, 69));
+
+		JLabel lblChamps_2 = new JLabel("CHAMPS");
+		lblChamps_2.setBounds(229, 24, 328, 83);
+		panelAddModifyChamp.add(lblChamps_2);
+		lblChamps_2.setForeground(new Color(0, 139, 139));
+		lblChamps_2.setFont(new Font("Bahnschrift", Font.BOLD, 69));
+
+		JLabel lblNewLabel_4 = new JLabel("");
+		lblNewLabel_4.setIcon(new ImageIcon(MainWindow.class.getResource("/img/lolLogo (2).png")));
+		lblNewLabel_4.setBounds(10, 10, 64, 64);
+		panelAddModifyChamp.add(lblNewLabel_4);
+
+		textFieldChampName = new JTextField();
+		textFieldChampName.setBounds(251, 255, 202, 26);
+		panelAddModifyChamp.add(textFieldChampName);
+		textFieldChampName.setToolTipText("Champ's name");
+		textFieldChampName.setForeground(Color.WHITE);
+		textFieldChampName.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textFieldChampName.setColumns(10);
+		textFieldChampName.setBackground(Color.BLACK);
+
+		JLabel lblNewLabel_4_1_1 = new JLabel("CHAMP");
+		lblNewLabel_4_1_1.setForeground(new Color(218, 165, 32));
+		lblNewLabel_4_1_1.setFont(new Font("Bahnschrift", Font.PLAIN, 41));
+		lblNewLabel_4_1_1.setBounds(35, 243, 242, 61);
+		panelAddModifyChamp.add(lblNewLabel_4_1_1);
+
+		buttonChampsAdmin_Check = new JButton("SEARCH");
+		buttonChampsAdmin_Check.setForeground(new Color(255, 255, 255));
+		buttonChampsAdmin_Check.setBackground(new Color(0, 128, 128));
+		buttonChampsAdmin_Check.setBounds(181, 316, 131, 25);
+		panelAddModifyChamp.add(buttonChampsAdmin_Check);
+		buttonChampsAdmin_Check.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		buttonChampsAdmin_Check.addActionListener(this);
+
+		JLabel fondoPictureChampsAdmin = new JLabel("");
+		fondoPictureChampsAdmin.setBackground(new Color(0, 0, 0));
+		fondoPictureChampsAdmin.setBounds(-283, -144, 1655, 837);
+		fondoPictureChampsAdmin.setIcon(new ImageIcon(MainWindow.class.getResource("/img/LOL_PROMOART_14.jpg")));
+		champAdmin.add(fondoPictureChampsAdmin);
 
 		JPanel game = new JPanel();
 		tabbedPane.addTab("GAME", null, game, null);
-		GridBagLayout gbl_game = new GridBagLayout();
-		gbl_game.columnWidths = new int[] { 0, 0, 0, 0, 0 };
-		gbl_game.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0 };
-		gbl_game.columnWeights = new double[] { 0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE };
-		gbl_game.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
-		game.setLayout(gbl_game);
+		game.setLayout(null);
 
-		JLabel lblNicknameGame = new JLabel("Nickname");
-		GridBagConstraints gbc_gNicknamelbl = new GridBagConstraints();
-		gbc_gNicknamelbl.insets = new Insets(0, 0, 5, 5);
-		gbc_gNicknamelbl.gridx = 1;
-		gbc_gNicknamelbl.gridy = 1;
-		game.add(lblNicknameGame, gbc_gNicknamelbl);
+		JLayeredPane addGamePanel = new JLayeredPane();
+		addGamePanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(218, 165, 32), null));
+		addGamePanel.setBounds(122, 103, 419, 148);
+		game.add(addGamePanel);
+		addGamePanel.setLayout(null);
+
+		btnAddGame = new JButton("ADD");
+		btnAddGame.setForeground(new Color(255, 255, 255));
+		btnAddGame.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		btnAddGame.setBackground(new Color(0, 128, 128));
+		btnAddGame.setBounds(85, 111, 85, 27);
+		btnAddGame.addActionListener(this);
 
 		textNicknameGame = new JTextField();
-		GridBagConstraints gbc_gNicknametxt = new GridBagConstraints();
-		gbc_gNicknametxt.insets = new Insets(0, 0, 5, 0);
-		gbc_gNicknametxt.fill = GridBagConstraints.HORIZONTAL;
-		gbc_gNicknametxt.gridx = 3;
-		gbc_gNicknametxt.gridy = 1;
-		game.add(textNicknameGame, gbc_gNicknametxt);
+		textNicknameGame.setForeground(new Color(255, 255, 255));
+		textNicknameGame.setBackground(new Color(0, 0, 0));
+		textNicknameGame.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textNicknameGame.setBounds(85, 48, 198, 27);
+		addGamePanel.add(textNicknameGame);
 		textNicknameGame.setColumns(10);
+		addGamePanel.add(btnAddGame);
 
-		btnUpdateGame = new JButton("Update");
+		JLabel lblNewLabel_14 = new JLabel("NEW GAME?");
+		lblNewLabel_14.setForeground(new Color(0, 128, 128));
+		lblNewLabel_14.setBackground(new Color(0, 128, 128));
+		lblNewLabel_14.setFont(new Font("Bahnschrift", Font.PLAIN, 20));
+		lblNewLabel_14.setBounds(130, 13, 132, 25);
+		addGamePanel.add(lblNewLabel_14);
+
+		btnUpdateGame = new JButton("UPDATE");
+		btnUpdateGame.setForeground(new Color(255, 255, 255));
+		btnUpdateGame.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		btnUpdateGame.setBackground(new Color(0, 128, 128));
+		btnUpdateGame.setBounds(225, 111, 106, 27);
 		btnUpdateGame.addActionListener(this);
-		GridBagConstraints gbc_gUpdatebtn = new GridBagConstraints();
-		gbc_gUpdatebtn.insets = new Insets(0, 0, 5, 5);
-		gbc_gUpdatebtn.gridx = 1;
-		gbc_gUpdatebtn.gridy = 3;
-		game.add(btnUpdateGame, gbc_gUpdatebtn);
+		addGamePanel.add(btnUpdateGame);
 
-		btnAddGame = new JButton("Add");
-		btnAddGame.addActionListener(this);
-		GridBagConstraints gbc_btnAddGame = new GridBagConstraints();
-		gbc_btnAddGame.insets = new Insets(0, 0, 5, 0);
-		gbc_btnAddGame.gridx = 3;
-		gbc_btnAddGame.gridy = 3;
-		game.add(btnAddGame, gbc_btnAddGame);
+		JLabel lblGame_1 = new JLabel("GAME");
+		lblGame_1.setForeground(new Color(0, 139, 139));
+		lblGame_1.setFont(new Font("Bahnschrift", Font.BOLD, 70));
+		lblGame_1.setBounds(457, 30, 214, 89);
+		game.add(lblGame_1);
+
+		JLabel lblGame = new JLabel("GAME");
+		lblGame.setForeground(new Color(218, 165, 32));
+		lblGame.setFont(new Font("Bahnschrift", Font.BOLD, 69));
+		lblGame.setBounds(455, 32, 286, 83);
+		game.add(lblGame);
 
 		JScrollPane scrollPaneGame = new JScrollPane();
-		GridBagConstraints gbc_gscrollPane = new GridBagConstraints();
-		gbc_gscrollPane.insets = new Insets(0, 0, 0, 5);
-		gbc_gscrollPane.fill = GridBagConstraints.BOTH;
-		gbc_gscrollPane.gridx = 1;
-		gbc_gscrollPane.gridy = 5;
-		game.add(scrollPaneGame, gbc_gscrollPane);
+		scrollPaneGame.setBounds(52, 270, 670, 307);
+		game.add(scrollPaneGame);
 
 		games = new JTable();
 		games.addMouseListener(this);
@@ -411,236 +766,306 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		scrollPaneGame.setViewportView(games);
 
 		calendar = new JCalendar();
+		calendar.setBounds(730, 151, 367, 367);
 		calendar.setEnabled(false);
-		GridBagConstraints gbc_calendar = new GridBagConstraints();
-		gbc_calendar.fill = GridBagConstraints.BOTH;
-		gbc_calendar.gridx = 3;
-		gbc_calendar.gridy = 5;
-		game.add(calendar, gbc_calendar);
+		game.add(calendar);
+
+		JPanel panelFondoGame = new JPanel();
+		panelFondoGame.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(184, 134, 11), null));
+		panelFondoGame.setBackground(new Color(0, 0, 0, 180));
+		panelFondoGame.setBounds(42, 32, 1059, 553);
+		game.add(panelFondoGame);
+		panelFondoGame.setLayout(null);
+
+		JLabel lblNewLabel_15 = new JLabel("");
+		lblNewLabel_15.setIcon(new ImageIcon(MainWindow.class.getResource("/img/lolLogo (2).png")));
+		lblNewLabel_15.setBounds(10, 10, 64, 64);
+		panelFondoGame.add(lblNewLabel_15);
+
+		JLabel fondoPictureGame = new JLabel("");
+		fondoPictureGame.setIcon(new ImageIcon(MainWindow.class.getResource("/img/LOL_PROMOART_14.jpg")));
+		fondoPictureGame.setBounds(-100, 0, 1280, 647);
+		game.add(fondoPictureGame);
 
 		JPanel stadistics = new JPanel();
 		tabbedPane.addTab("STADISTICS", null, stadistics, null);
-		GridBagLayout gbl_stadistics = new GridBagLayout();
-		gbl_stadistics.columnWidths = new int[]{248, 66, 96, 65, 452, 0};
-		gbl_stadistics.rowHeights = new int[]{402, 0};
-		gbl_stadistics.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_stadistics.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-		stadistics.setLayout(gbl_stadistics);
-				
-						JLabel lblNickStats = new JLabel("Nickname");
-						lblNickStats.setFont(new Font("Tahoma", Font.PLAIN, 15));
-						GridBagConstraints gbc_lblNickStats = new GridBagConstraints();
-						gbc_lblNickStats.anchor = GridBagConstraints.WEST;
-						gbc_lblNickStats.insets = new Insets(0, 0, 0, 5);
-						gbc_lblNickStats.gridx = 1;
-						gbc_lblNickStats.gridy = 0;
-						stadistics.add(lblNickStats, gbc_lblNickStats);
-		
-				textNicknameStats = new JTextField();
-				GridBagConstraints gbc_textNicknameStats = new GridBagConstraints();
-				gbc_textNicknameStats.anchor = GridBagConstraints.WEST;
-				gbc_textNicknameStats.insets = new Insets(0, 0, 0, 5);
-				gbc_textNicknameStats.gridx = 2;
-				gbc_textNicknameStats.gridy = 0;
-				stadistics.add(textNicknameStats, gbc_textNicknameStats);
-				textNicknameStats.setColumns(10);
-		
-				btnUpdateStats = new JButton("Update");
-				btnUpdateStats.addActionListener(this);
-				GridBagConstraints gbc_btnUpdateStats = new GridBagConstraints();
-				gbc_btnUpdateStats.anchor = GridBagConstraints.WEST;
-				gbc_btnUpdateStats.insets = new Insets(0, 0, 0, 5);
-				gbc_btnUpdateStats.gridx = 3;
-				gbc_btnUpdateStats.gridy = 0;
-				stadistics.add(btnUpdateStats, gbc_btnUpdateStats);
+		stadistics.setLayout(null);
+
+		JPanel panelStadistics = new JPanel();
+		panelStadistics.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(218, 165, 32), null));
+		panelStadistics.setBackground(new Color(0, 0, 0, 180));
+		panelStadistics.setBounds(59, 37, 1059, 553);
+		stadistics.add(panelStadistics);
+		panelStadistics.setLayout(null);
+
+		JLabel lblStadistics = new JLabel("STADISTICS");
+		lblStadistics.setBounds(295, 10, 495, 83);
+		lblStadistics.setForeground(new Color(0, 139, 139));
+		lblStadistics.setFont(new Font("Bahnschrift", Font.BOLD, 69));
+		panelStadistics.add(lblStadistics);
+
+		JLabel lblStadistics_1 = new JLabel("STADISTICS");
+		lblStadistics_1.setForeground(new Color(218, 165, 32));
+		lblStadistics_1.setFont(new Font("Bahnschrift", Font.BOLD, 69));
+		lblStadistics_1.setBounds(292, 10, 495, 83);
+		panelStadistics.add(lblStadistics_1);
+
+		JLabel labelChampsAdmin_Name = new JLabel("NICKNAME");
+		labelChampsAdmin_Name.setForeground(new Color(218, 165, 32));
+		labelChampsAdmin_Name.setFont(new Font("Bahnschrift", Font.PLAIN, 60));
+		labelChampsAdmin_Name.setBounds(87, 141, 341, 83);
+		panelStadistics.add(labelChampsAdmin_Name);
+
+		btnUpdateStats = new JButton("UPDATE");
+		btnUpdateStats.setForeground(new Color(255, 255, 255));
+		btnUpdateStats.setBackground(new Color(0, 128, 128));
+		btnUpdateStats.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		btnUpdateStats.setBounds(182, 326, 105, 30);
+		btnUpdateStats.addActionListener(this);
+		panelStadistics.add(btnUpdateStats);
+
+		JScrollPane scrollPaneStats = new JScrollPane();
+		scrollPaneStats.setBounds(528, 85, 501, 421);
+		panelStadistics.add(scrollPaneStats);
+
+		stats = new JTable();
+		stats.setModel(new DefaultTableModel(new Object[][] {}, new String[] {}));
+		scrollPaneStats.setViewportView(stats);
+
+		JLabel lblNewLabel_5 = new JLabel("");
+		lblNewLabel_5.setIcon(new ImageIcon(MainWindow.class.getResource("/img/lolLogo (2).png")));
+		lblNewLabel_5.setBounds(10, 10, 64, 64);
+		panelStadistics.add(lblNewLabel_5);
+
+		JLabel labelChampsAdmin_Name_1 = new JLabel("NICKNAME");
+		labelChampsAdmin_Name_1.setForeground(new Color(0, 139, 139));
+		labelChampsAdmin_Name_1.setFont(new Font("Bahnschrift", Font.PLAIN, 60));
+		labelChampsAdmin_Name_1.setBounds(90, 141, 341, 83);
+		panelStadistics.add(labelChampsAdmin_Name_1);
+
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setBackground(new Color(218, 165, 32));
+		separator_1.setOrientation(SwingConstants.VERTICAL);
+		separator_1.setBounds(455, 129, 3, 320);
+		panelStadistics.add(separator_1);
+
+		textNicknameStats = new JTextField();
+		textNicknameStats.setToolTipText("");
+		textNicknameStats.setText((String) null);
+		textNicknameStats.setForeground(Color.WHITE);
+		textNicknameStats.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textNicknameStats.setColumns(10);
+		textNicknameStats.setBackground(Color.BLACK);
+		textNicknameStats.setBounds(134, 244, 199, 27);
+		panelStadistics.add(textNicknameStats);
 		modelStats = new DefaultTableModel();
 		modelStats.addColumn("ID");
 		modelStats.addColumn("Nickname");
 		modelStats.addColumn("Name");
 		modelStats.addColumn("Position");
 		modelStats.addColumn("Win/Lose");
-		
-				JScrollPane scrollPaneStats = new JScrollPane();
-				GridBagConstraints gbc_scrollPaneStats = new GridBagConstraints();
-				gbc_scrollPaneStats.anchor = GridBagConstraints.NORTHWEST;
-				gbc_scrollPaneStats.gridx = 4;
-				gbc_scrollPaneStats.gridy = 0;
-				stadistics.add(scrollPaneStats, gbc_scrollPaneStats);
-				
-						stats = new JTable();
-						stats.setModel(modelStats);
-						scrollPaneStats.setViewportView(stats);
+
+		JLabel fondoPictureManagement = new JLabel("");
+		fondoPictureManagement.setIcon(new ImageIcon(MainWindow.class.getResource("/img/LOL_PROMOART_14.jpg")));
+		fondoPictureManagement.setBounds(-104, 0, 1312, 619);
+		stadistics.add(fondoPictureManagement);
 
 		JPanel management = new JPanel();
 		management.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		tabbedPane.addTab("MANAGEMENT", null, management, null);
-		management.setLayout(new GridLayout(0, 2, 0, 0));
 
-		JPanel addAdmin = new JPanel();
-		addAdmin.setForeground(new Color(255, 255, 255));
-		addAdmin.setBackground(new Color(255, 255, 255));
-		addAdmin.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		management.add(addAdmin);
+		lblPassEyeAddAdmin = new JLabel("");
+		lblPassEyeAddAdmin.setBounds(491, 247, 30, 24);
+		lblPassEyeAddAdmin.setIcon(
+				new ImageIcon(MainWindow.class.getResource("/img/1200px-OOjs_UI_icon_eye-progressive.svg.png")));
+		lblPassEyeAddAdmin.addMouseListener(this);
+		management.setLayout(null);
 
-		JLabel lblNameAddAdmin = new JLabel("NAME");
-		lblNameAddAdmin.setForeground(new Color(0, 0, 0));
-		lblNameAddAdmin.setBounds(54, 137, 56, 19);
-		lblNameAddAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
+		JLayeredPane deletePlayerManagement = new JLayeredPane();
+		deletePlayerManagement.setBounds(677, 113, 389, 452);
+		management.add(deletePlayerManagement);
+		deletePlayerManagement.setLayout(null);
 
-		btnSendAddAdmin = new JButton("SEND");
-		btnSendAddAdmin.setBounds(258, 584, 80, 27);
-		btnSendAddAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
-		btnSendAddAdmin.addActionListener(this);
+		btnDeletePlayerManagement = new JButton("DELETE");
+		btnDeletePlayerManagement.setForeground(new Color(255, 255, 255));
+		btnDeletePlayerManagement.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		btnDeletePlayerManagement.setBackground(new Color(0, 128, 128));
+		btnDeletePlayerManagement.setBounds(144, 425, 106, 27);
+		btnDeletePlayerManagement.addActionListener(this);
+		deletePlayerManagement.add(btnDeletePlayerManagement);
 
-		textFieldNameAddAdmin = new JTextField();
-		textFieldNameAddAdmin.setBounds(341, 137, 199, 25);
-		textFieldNameAddAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
-		textFieldNameAddAdmin.setColumns(10);
-		textFieldNameAddAdmin.addFocusListener(this);
+		textAreaDeletePlayer = new JTextArea();
+		textAreaDeletePlayer.setForeground(Color.WHITE);
+		textAreaDeletePlayer.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
+		textAreaDeletePlayer.setBackground(Color.BLACK);
+		textAreaDeletePlayer.setBounds(43, 116, 311, 291);
+		deletePlayerManagement.add(textAreaDeletePlayer);
 
-		JLabel lblPasswordAddAdmin = new JLabel("PASSWORD");
-		lblPasswordAddAdmin.setForeground(new Color(0, 0, 0));
-		lblPasswordAddAdmin.setBounds(54, 177, 91, 19);
-		lblPasswordAddAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
+		comboBoxSelectUser = new JComboBox();
+		comboBoxSelectUser.setBounds(98, 75, 199, 21);
+		deletePlayerManagement.add(comboBoxSelectUser);
+		management.add(lblPassEyeAddAdmin);
 
-		JLabel lblMailAddAdmin = new JLabel("MAIL");
-		lblMailAddAdmin.setForeground(new Color(0, 0, 0));
-		lblMailAddAdmin.setBounds(54, 220, 45, 19);
-		lblMailAddAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
+		JLabel passwordAddAmin = new JLabel("PASSWORD");
+		passwordAddAmin.setBounds(125, 247, 158, 21);
+		passwordAddAmin.setForeground(Color.WHITE);
+		passwordAddAmin.setFont(new Font("Bahnschrift", Font.BOLD, 20));
+		management.add(passwordAddAmin);
+
+		passwordFieldAddAdmin = new JPasswordField();
+		passwordFieldAddAdmin.setBounds(272, 244, 199, 27);
+		passwordFieldAddAdmin.setForeground(new Color(255, 255, 255));
+		passwordFieldAddAdmin.setBackground(new Color(0, 0, 0));
+		passwordFieldAddAdmin.setText((String) null);
+		passwordFieldAddAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
+		passwordFieldAddAdmin.setEchoChar('·');
+		passwordFieldAddAdmin.addFocusListener(this);
+		management.add(passwordFieldAddAdmin);
+		JLabel lblName = new JLabel("NAME");
+		lblName.setBounds(128, 187, 95, 21);
+		lblName.setForeground(Color.WHITE);
+		lblName.setFont(new Font("Bahnschrift", Font.BOLD, 20));
+		management.add(lblName);
+
+		JLabel lblEmail = new JLabel("EMAIL");
+		lblEmail.setBounds(125, 309, 95, 21);
+		lblEmail.setForeground(Color.WHITE);
+		lblEmail.setFont(new Font("Bahnschrift", Font.BOLD, 20));
+		management.add(lblEmail);
+
+		JLabel lblPhone = new JLabel("PHONE");
+		lblPhone.setBounds(125, 374, 95, 21);
+		lblPhone.setForeground(Color.WHITE);
+		lblPhone.setFont(new Font("Bahnschrift", Font.BOLD, 20));
+		management.add(lblPhone);
+
+		JLabel lblBirthDay = new JLabel("BIRTHDATE");
+		lblBirthDay.setBounds(125, 432, 158, 21);
+		lblBirthDay.setForeground(Color.WHITE);
+		lblBirthDay.setFont(new Font("Bahnschrift", Font.BOLD, 20));
+		management.add(lblBirthDay);
+
+		JLabel lblNationality = new JLabel("NATIONALITY");
+		lblNationality.setBounds(125, 485, 193, 21);
+		lblNationality.setForeground(Color.WHITE);
+		lblNationality.setFont(new Font("Bahnschrift", Font.BOLD, 20));
+		management.add(lblNationality);
+
+		textFieldPhoneAddAdmin = new JTextField();
+		textFieldPhoneAddAdmin.setBounds(272, 371, 199, 27);
+		textFieldPhoneAddAdmin.setForeground(new Color(255, 255, 255));
+		textFieldPhoneAddAdmin.setBackground(new Color(0, 0, 0));
+		textFieldPhoneAddAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textFieldPhoneAddAdmin.addFocusListener(this);
+		management.add(textFieldPhoneAddAdmin);
+		textFieldPhoneAddAdmin.setColumns(10);
 
 		textFieldMailAddAdmin = new JTextField();
-		textFieldMailAddAdmin.setBounds(341, 220, 199, 25);
+		textFieldMailAddAdmin.setBounds(272, 308, 199, 27);
+		textFieldMailAddAdmin.setBackground(new Color(0, 0, 0));
+		textFieldMailAddAdmin.setForeground(new Color(255, 255, 255));
 		textFieldMailAddAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
 		textFieldMailAddAdmin.setColumns(10);
 		textFieldMailAddAdmin.addFocusListener(this);
+		management.add(textFieldMailAddAdmin);
 
-		JLabel lblBDateAddAdmin = new JLabel("BIRTH DATE");
-		lblBDateAddAdmin.setForeground(new Color(0, 0, 0));
-		lblBDateAddAdmin.setBounds(54, 344, 98, 19);
-		lblBDateAddAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
+		textFieldNameAddAdmin = new JTextField();
+		textFieldNameAddAdmin.setBounds(272, 184, 199, 27);
+		textFieldNameAddAdmin.setForeground(new Color(255, 255, 255));
+		textFieldNameAddAdmin.setBackground(new Color(0, 0, 0));
+		textFieldNameAddAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		textFieldNameAddAdmin.setColumns(10);
+		textFieldNameAddAdmin.addFocusListener(this);
+		management.add(textFieldNameAddAdmin);
 
-		JLabel lblPhoneAdmin = new JLabel("PHONE");
-		lblPhoneAdmin.setForeground(new Color(0, 0, 0));
-		lblPhoneAdmin.setBounds(54, 451, 56, 19);
-		lblPhoneAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
+		JLabel titleBlueAdmin = new JLabel("MANAGEMENT");
+		titleBlueAdmin.setBounds(386, 41, 531, 89);
+		titleBlueAdmin.setForeground(new Color(0, 139, 139));
+		titleBlueAdmin.setFont(new Font("Bahnschrift", Font.BOLD, 70));
+		management.add(titleBlueAdmin);
 
-		textFieldPhoneAddAdmin = new JTextField();
-		textFieldPhoneAddAdmin.setBounds(341, 448, 199, 25);
-		textFieldPhoneAddAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
-		textFieldPhoneAddAdmin.setColumns(10);
-		textFieldPhoneAddAdmin.addFocusListener(this);
+		JLabel titleYellowAdmin = new JLabel("MANAGEMENT");
+		titleYellowAdmin.setBounds(383, 41, 513, 89);
+		titleYellowAdmin.setForeground(new Color(218, 165, 32));
+		titleYellowAdmin.setFont(new Font("Bahnschrift", Font.BOLD, 70));
+		management.add(titleYellowAdmin);
 
-		JLabel lblNationalityAddAdmin = new JLabel("NATIONALITY");
-		lblNationalityAddAdmin.setForeground(new Color(0, 0, 0));
-		lblNationalityAddAdmin.setBounds(54, 494, 108, 19);
-		lblNationalityAddAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
+		JLabel iconAdmin = new JLabel("");
+		iconAdmin.setBounds(96, 41, 64, 64);
+		iconAdmin.setIcon(new ImageIcon(MainWindow.class.getResource("/img/lolLogo (2).png")));
+		management.add(iconAdmin);
+
+		JLabel personalDataProfile_1_2_2 = new JLabel("ADD ADMINISTRATOR");
+		personalDataProfile_1_2_2.setBounds(196, 98, 365, 89);
+		personalDataProfile_1_2_2.setForeground(new Color(0, 139, 139));
+		personalDataProfile_1_2_2.setFont(new Font("Bahnschrift", Font.BOLD, 28));
+		management.add(personalDataProfile_1_2_2);
+
+		JSeparator separator = new JSeparator();
+		separator.setBounds(599, 125, 12, 418);
+		separator.setBackground(new Color(218, 165, 32));
+		separator.setOrientation(SwingConstants.VERTICAL);
+		management.add(separator);
+
+		calendarAddAdmin = new JDateChooser();
+		calendarAddAdmin.setBounds(268, 432, 203, 19);
+		management.add(calendarAddAdmin);
 
 		comboBoxAddAdmin = new JComboBox();
-		comboBoxAddAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
-		comboBoxAddAdmin.setBounds(341, 495, 199, 25);
+		comboBoxAddAdmin.setBounds(272, 485, 205, 21);
 		comboBoxAddAdmin.setModel(new DefaultComboBoxModel(new String[] { "Afghan", "Albanian", "Algerian", "American",
 				"Andorran", "Angolan", "Antiguans", "Argentinean", "Armenian", "Australian", "Austrian", "Azerbaijani",
 				"Bahamian", "Bahraini", "Bangladeshi", "Barbadian", "Barbudans", "Batswana", "Belarusian", "Belgian",
 				"Belizean", "Beninese", "Bhutanese", "Bolivian", "Bosnian", "Brazilian", "British", "Bruneian",
 				"Bulgarian", "Burkinabe", "Burmese", "Burundian", "Cambodian", "Cameroonian", "Canadian",
 				"Cape Verdean", "Central African", "Chadian", "Chilean", "Chinese", "Colombian", "Comoran", "Congolese",
-				"Congolese", "Costa Rican", "Croatian", "Cuban", "Cypriot", "Czech", "Danish", "Djibouti", "Dominican",
-				"Dominican", "Dutch", "Dutchman", "Dutchwoman", "East Timorese", "Ecuadorean", "Egyptian", "Emirian",
-				"Equatorial Guinean", "Eritrean", "Estonian", "Ethiopian", "Fijian", "Filipino", "Finnish", "French",
-				"Gabonese", "Gambian", "Georgian", "German", "Ghanaian", "Greek", "Grenadian", "Guatemalan",
-				"Guinea-Bissauan", "Guinean", "Guyanese", "Haitian", "Herzegovinian", "Honduran", "Hungarian",
-				"I-Kiribati", "Icelander", "Indian", "Indonesian", "Iranian", "Iraqi", "Irish", "Irish", "Israeli",
-				"Italian", "Ivorian", "Jamaican", "Japanese", "Jordanian", "Kazakhstani", "Kenyan",
-				"Kittian and Nevisian", "Kuwaiti", "Kyrgyz", "Laotian", "Latvian", "Lebanese", "Liberian", "Libyan",
-				"Liechtensteiner", "Lithuanian", "Luxembourger", "Macedonian", "Malagasy", "Malawian", "Malaysian",
-				"Maldivan", "Malian", "Maltese", "Marshallese", "Mauritanian", "Mauritian", "Mexican", "Micronesian",
-				"Moldovan", "Monacan", "Mongolian", "Moroccan", "Mosotho", "Motswana", "Mozambican", "Namibian",
-				"Nauruan", "Nepalese", "Netherlander", "New Zealander", "Ni-Vanuatu", "Nicaraguan", "Nigerian",
-				"Nigerien", "North Korean", "Northern Irish", "Norwegian", "Omani", "Pakistani", "Palauan",
-				"Panamanian", "Papua New Guinean", "Paraguayan", "Peruvian", "Polish", "Portuguese", "Qatari",
-				"Romanian", "Russian", "Rwandan", "Saint Lucian", "Salvadoran", "Samoan", "San Marinese", "Sao Tomean",
-				"Saudi", "Scottish", "Senegalese", "Serbian", "Seychellois", "Sierra Leonean", "Singaporean",
-				"Slovakian", "Slovenian", "Solomon Islander", "Somali", "South African", "South Korean", "Spanish",
-				"Sri Lankan", "Sudanese", "Surinamer", "Swazi", "Swedish", "Swiss", "Syrian", "Taiwanese", "Tajik",
-				"Tanzanian", "Thai", "Togolese", "Tongan", "Trinidadian or Tobagonian", "Tunisian", "Turkish",
-				"Tuvaluan", "Ugandan", "Ukrainian", "Uruguayan", "Uzbekistani", "Venezuelan", "Vietnamese", "Welsh",
-				"Welsh", "Yemenite", "Zambian", "Zimbabwean" }));
+				"Costa Rican", "Croatian", "Cuban", "Cypriot", "Czech", "Danish", "Djibouti", "Dominican", "Dutch",
+				"East Timorese", "Ecuadorean", "Egyptian", "Emirian", "Equatorial Guinean", "Eritrean", "Estonian",
+				"Ethiopian", "Fijian", "Filipino", "Finnish", "French", "Gabonese", "Gambian", "Georgian", "German",
+				"Ghanaian", "Greek", "Grenadian", "Guatemalan", "Guinea-Bissauan", "Guinean", "Guyanese", "Haitian",
+				"Herzegovinian", "Honduran", "Hungarian", "I-Kiribati", "Icelander", "Indian", "Indonesian", "Iranian",
+				"Iraqi", "Irish", "Israeli", "Italian", "Ivorian", "Jamaican", "Japanese", "Jordanian", "Kazakhstani",
+				"Kenyan", "Kittian and Nevisian", "Kuwaiti", "Kyrgyz", "Laotian", "Latvian", "Lebanese", "Liberian",
+				"Libyan", "Liechtensteiner", "Lithuanian", "Luxembourger", "Macedonian", "Malagasy", "Malawian",
+				"Malaysian", "Maldivian", "Malian", "Maltese", "Marshallese", "Mauritanian", "Mauritian", "Mexican",
+				"Micronesian", "Moldovan", "Monacan", "Mongolian", "Moroccan", "Mosotho", "Motswana", "Mozambican",
+				"Namibian", "Nauruan", "Nepalese", "New Zealander", "Ni-Vanuatu", "Nicaraguan", "Nigerian", "Nigerien",
+				"North Korean", "Northern Irish", "Norwegian", "Omani", "Pakistani", "Palauan", "Panamanian",
+				"Papua New Guinean", "Paraguayan", "Peruvian", "Polish", "Portuguese", "Qatari", "Romanian", "Russian",
+				"Rwandan", "Saint Lucian", "Salvadoran", "Samoan", "San Marinese", "Sao Tomean", "Saudi", "Scottish",
+				"Senegalese", "Serbian", "Seychellois", "Sierra Leonean", "Singaporean", "Slovakian", "Slovenian",
+				"Solomon Islander", "Somali", "South African", "South Korean", "Spanish", "Sri Lankan", "Sudanese",
+				"Surinamer", "Swazi", "Swedish", "Swiss", "Syrian", "Taiwanese", "Tajik", "Tanzanian", "Thai",
+				"Togolese", "Tongan", "Trinidadian or Tobagonian", "Tunisian", "Turkish", "Tuvaluan", "Ugandan",
+				"Ukrainian", "Uruguayan", "Uzbekistani", "Venezuelan", "Vietnamese", "Welsh", "Yemenite", "Zambian",
+				"Zimbabwean" }));
 		comboBoxAddAdmin.setSelectedIndex(-1);
-		addAdmin.setLayout(null);
+		management.add(comboBoxAddAdmin);
 
-		lblPassEyeAddAdmin = new JLabel("");
-		lblPassEyeAddAdmin.addMouseListener(this);
-		lblPassEyeAddAdmin.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPassEyeAddAdmin.setVerticalAlignment(SwingConstants.TOP);
-		lblPassEyeAddAdmin.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblPassEyeAddAdmin.setIcon(new ImageIcon(MainWindow.class.getResource("/img/pass_eye_25_17.jpg")));
-		lblPassEyeAddAdmin.setBounds(546, 180, 31, 22);
-		addAdmin.add(lblPassEyeAddAdmin);
-		addAdmin.add(lblMailAddAdmin);
-		addAdmin.add(textFieldMailAddAdmin);
-		addAdmin.add(lblBDateAddAdmin);
-		addAdmin.add(lblNationalityAddAdmin);
-		addAdmin.add(lblPhoneAdmin);
-		addAdmin.add(comboBoxAddAdmin);
-		addAdmin.add(textFieldPhoneAddAdmin);
-		addAdmin.add(lblPasswordAddAdmin);
-		addAdmin.add(lblNameAddAdmin);
-		addAdmin.add(textFieldNameAddAdmin);
-		addAdmin.add(btnSendAddAdmin);
+		JLabel personalDataProfile_1_2_2_1 = new JLabel("DELETE PLAYER");
+		personalDataProfile_1_2_2_1.setBounds(755, 98, 244, 89);
+		personalDataProfile_1_2_2_1.setForeground(new Color(0, 139, 139));
+		personalDataProfile_1_2_2_1.setFont(new Font("Bahnschrift", Font.BOLD, 28));
+		management.add(personalDataProfile_1_2_2_1);
 
-		passwordFieldAddAdmin = new JPasswordField();
-		passwordFieldAddAdmin.setEchoChar('·');
-		passwordFieldAddAdmin.setBounds(341, 177, 199, 25);
-		passwordFieldAddAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
-		addAdmin.add(passwordFieldAddAdmin);
+		btnSendAddAdmin = new JButton("SEND");
+		btnSendAddAdmin.setForeground(new Color(255, 255, 255));
+		btnSendAddAdmin.setBounds(317, 527, 85, 27);
+		btnSendAddAdmin.setBackground(new Color(0, 128, 128));
+		btnSendAddAdmin.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		btnSendAddAdmin.addActionListener(this);
+		management.add(btnSendAddAdmin);
 
-		JLabel lblAddAdminTitle = new JLabel("ADD AMINISTRATOR");
-		lblAddAdminTitle.setHorizontalAlignment(SwingConstants.CENTER);
-		lblAddAdminTitle.setFont(new Font("Bahnschrift", Font.PLAIN, 20));
-		lblAddAdminTitle.setBounds(197, 25, 193, 25);
-		addAdmin.add(lblAddAdminTitle);
+		JPanel panelTransparenteManagement = new JPanel();
+		panelTransparenteManagement.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(184, 134, 11), null));
+		panelTransparenteManagement.setBackground(new Color(0, 0, 0, 180));
+		panelTransparenteManagement.setBounds(50, 24, 1059, 553);
+		management.add(panelTransparenteManagement);
 
-		calendarAddAdmin = new JCalendar();
-		calendarAddAdmin.setBounds(341, 265, 198, 153);
-		addAdmin.add(calendarAddAdmin);
-
-		JPanel playerDelete = new JPanel();
-		playerDelete.setBackground(new Color(255, 255, 255));
-		playerDelete.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		management.add(playerDelete);
-
-		btnDeletePlayer = new JButton("DELETE");
-		btnDeletePlayer.setBounds(246, 584, 95, 27);
-		btnDeletePlayer.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
-		btnDeletePlayer.addActionListener(this);
-
-		JLabel lblSelectUser = new JLabel("SELECT A USER");
-		lblSelectUser.setForeground(new Color(0, 0, 0));
-		lblSelectUser.setBounds(232, 137, 122, 19);
-		lblSelectUser.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
-
-		comboBoxSelectUser = new JComboBox();
-		comboBoxSelectUser.setBounds(193, 214, 201, 27);
-		comboBoxSelectUser.setFont(new Font("Tahoma", Font.PLAIN, 15));
-
-		textAreaDeletePlayer = new JTextArea();
-		textAreaDeletePlayer.setForeground(new Color(0, 0, 0));
-		textAreaDeletePlayer.setBackground(new Color(255, 255, 255));
-		textAreaDeletePlayer.setBounds(196, 272, 201, 251);
-		textAreaDeletePlayer.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		textAreaDeletePlayer.setEditable(false);
-		textAreaDeletePlayer.setVisible(false);
-		playerDelete.setLayout(null);
-		playerDelete.add(lblSelectUser);
-		playerDelete.add(comboBoxSelectUser);
-		playerDelete.add(textAreaDeletePlayer);
-		playerDelete.add(btnDeletePlayer);
-
-		JLabel lblDeletePlayerTitle = new JLabel("DELETE PLAYERS");
-		lblDeletePlayerTitle.setHorizontalAlignment(SwingConstants.CENTER);
-		lblDeletePlayerTitle.setFont(new Font("Bahnschrift", Font.PLAIN, 20));
-		lblDeletePlayerTitle.setBounds(197, 27, 193, 25);
-		playerDelete.add(lblDeletePlayerTitle);
+		JLabel pictureFondoManagement = new JLabel("");
+		pictureFondoManagement.setBounds(-129, 0, 1325, 738);
+		pictureFondoManagement.setIcon(new ImageIcon(MainWindow.class.getResource("/img/LOL_PROMOART_14.jpg")));
+		management.add(pictureFondoManagement);
 
 		try {
 			cargarUsers(userControllable);
@@ -697,7 +1122,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
-		if (e.getSource().equals(btnDeletePlayer)) {
+		if (e.getSource().equals(btnDeletePlayerManagement)) {
 			try {
 				deletePlayerAdmin();
 			} catch (PersonalizedException e1) {
@@ -707,7 +1132,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 			}
 		}
 
-		if (e.getSource().equals(btnModifyProfile)) {
+		if (e.getSource().equals(btnModifyPlayer)) {
 			try {
 				modifyPlayer(userControllable);
 			} catch (PersonalizedException e1) {
@@ -717,7 +1142,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 			}
 		}
 
-		if (e.getSource().equals(btnDeleteProfile)) {
+		if (e.getSource().equals(btnDeletePlayer)) {
 			try {
 				deletePlayer(userControllable);
 			} catch (PersonalizedException e1) {
@@ -744,7 +1169,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
-		if (e.getSource().equals(buttonChampAdmin_Add)) {
+		if (e.getSource().equals(buttonChampAdd)) {
 			try {
 				addChampAdmin();
 			} catch (PersonalizedException e1) {
@@ -753,9 +1178,10 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
-		if (e.getSource().equals(buttonChampAdmin_Modify)) {
+		if (e.getSource().equals(btnModifyChamp)) {
 			try {
 				executeModificationChampAdmin();
+
 			} catch (PersonalizedException e1) {
 				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "An unexpected error has occured!",
@@ -766,6 +1192,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 
 	private void deletePlayerAdmin() throws PersonalizedException {
 		// TODO Auto-generated method stub
+		int chooseConnection;
 		int option;
 		if (comboBoxSelectUser.getSelectedIndex() != -1) {
 			try {
@@ -780,8 +1207,12 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 			textAreaDeletePlayer.setVisible(true);
 			option = JOptionPane.showConfirmDialog(this, "Do you want to delete " + userDel.getName() + "?");
 			if (option == 0) {
+				if (userDel instanceof Player)
+					chooseConnection = 2;
+				else
+					chooseConnection = 0;
 				userControllable.delete(userDel);
-				JOptionPane.showMessageDialog(this, userDel.getName() + " correctly deleted");
+				JOptionPane.showMessageDialog(this, userDel.getName() + " eliminado correctamente.");
 				comboBoxSelectUser.setSelectedIndex(-1);
 				textAreaDeletePlayer.setText("");
 				textAreaDeletePlayer.setVisible(false);
@@ -820,6 +1251,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 			user.setBirthDate(LocalDate.now());
 			user.setPhone(textFieldPhoneAddAdmin.getText());
 			user.setNationality(comboBoxAddAdmin.getSelectedItem().toString());
+
 			userControllable.addUser(user);
 
 			JOptionPane.showMessageDialog(getParent(), "Successfully sent.");
@@ -828,7 +1260,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 			textFieldMailAddAdmin.setText("");
 			textFieldPhoneAddAdmin.setText("");
 			comboBoxAddAdmin.setSelectedIndex(-1);
-			calendarAddAdmin.setDate(Date.valueOf(LocalDate.now()));
+			calendarAddAdmin.setDate(null);
 
 		} else {
 			JOptionPane.showMessageDialog(this, "ERROR. Fill in all fields.");
@@ -876,8 +1308,10 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 			JOptionPane.showMessageDialog(this, "Insert a nickname");
 		}
 	}
+
 	/**
 	 * Method to create the user with the information writen in the profile tab
+	 * 
 	 * @return User
 	 */
 	public User loadUser() {
@@ -893,8 +1327,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 			((Player) user).setNickname(textFieldNicknameProfile.getText());
 		} else {
 			textFieldNicknameProfile.setVisible(false);
-			LocalDate dateStart = jCalendarStartDateProfile.getDate().toInstant().atZone(ZoneId.systemDefault())
-					.toLocalDate();
+			LocalDate dateStart = dateChooser_1.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 			((Administrator) user).setStartDate(dateStart);
 			((Administrator) user).setAddtions(Integer.parseInt(textFieldAdditionsProfile.getText()));
 
@@ -903,8 +1336,10 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		return user;
 
 	}
+
 	/**
 	 * Method to load the data from the database to the profile tab
+	 * 
 	 * @param userControllable
 	 */
 	public void loadData(UserControllable userControllable) {
@@ -916,23 +1351,19 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		passwordFieldProfile.setText(user.getPassword());
 
 		if (user instanceof Player) {
-
+			textFieldNicknameProfile.setText(((Player) user).getNickname());
 			// We save the original nickname so that if the user changes his nickname the
 			// query will be done with the original nickname.
 			nicknameOriginal = ((Player) user).getNickname();
 			// Panel with the admin information isn't visible
 			panelAdmin.setVisible(false);
-			textFieldNicknameProfile.setText(((Player) user).getNickname());
-
+			btnDeletePlayer.setVisible(true);
 		} else {
 			textFieldNicknameProfile.setVisible(false);
-			btnDeleteProfile.setVisible(false);
+			btnDeletePlayer.setVisible(false);
 			nicknameProfile.setVisible(false);
-			// Change the btnModify location to panelAdmin
-			panelAdmin.add(btnModifyProfile);
-			btnModifyProfile.setBounds(249, 483, 92, 67);
 			textFieldAdditionsProfile.setText(String.valueOf(((Administrator) user).getAddtions()));
-			jCalendarStartDateProfile.setDate(Date.valueOf(((Administrator) user).getStartDate()));
+			dateChooser_1.setDate(Date.valueOf(((Administrator) user).getStartDate()));
 		}
 	}
 
@@ -951,9 +1382,10 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 	public void focusGained(FocusEvent e) {
 
 	}
-	
+
 	/**
 	 * Method to modify player's account information
+	 * 
 	 * @param userControllable
 	 * @throws PersonalizedException
 	 */
@@ -965,24 +1397,25 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		} else {
 			user = userControllable.findUser(user.getId());
 		}
-		
-		if(checkFieldsModify()) {
+
+		if (checkFieldsModify()) {
 			if (userControllable.modifyUser(user)) {
 				JOptionPane.showMessageDialog(this, "PERSONAL DATA MODIFIED");
 			} else {
 				JOptionPane.showMessageDialog(this, "NO MODIFICATION");
 			}
 		}
-		
 
 	}
 
 	/**
 	 * Method to delete the player's account
+	 * 
 	 * @param userControllable
 	 * @throws PersonalizedException
 	 */
 	public void deletePlayer(UserControllable userControllable) throws PersonalizedException {
+		int chooseConnection;
 		boolean correct = false;
 		int aceptar;
 		User user = null;
@@ -992,6 +1425,10 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		aceptar = JOptionPane.showConfirmDialog(this, "WARNING: do you want to delete your account?");
 		// Yes --> 0 so If the user accepts the message, his account will be deleted.
 		if (aceptar == 0) {
+			if (userDel instanceof Player)
+				chooseConnection = 2;
+			else
+				chooseConnection = 0;
 			correct = userControllable.delete(user);
 			clear();
 		}
@@ -1013,129 +1450,44 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		}
 	}
 
-	public void ChampAdminTabConstruction() {
-		JLabel labelChampsAdmin_Title = new JLabel("Add or modify champ");
-		labelChampsAdmin_Title.setFont(new Font("Arial Black", Font.BOLD, 22));
-		labelChampsAdmin_Title.setBounds(363, 47, 555, 27);
-		champAdmin.add(labelChampsAdmin_Title);
-
-		JLabel labelChampsAdmin_Name = new JLabel("Name");
-		labelChampsAdmin_Name.setBounds(346, 122, 61, 16);
-		champAdmin.add(labelChampsAdmin_Name);
-
-		textFieldChampsAdmin_Name = new JTextField();
-		textFieldChampsAdmin_Name.setBounds(459, 117, 130, 26);
-		champAdmin.add(textFieldChampsAdmin_Name);
-		textFieldChampsAdmin_Name.setColumns(10);
-
-		buttonChampsAdmin_Check.setBounds(479, 226, 117, 29);
-		buttonChampsAdmin_Check.addActionListener(this);
-		buttonChampsAdmin_Check.setVisible(true);
-		champAdmin.add(buttonChampsAdmin_Check);
-	}
-
 	public void checkChampAdmin() throws PersonalizedException {
-		if (textFieldChampsAdmin_Name.getText().isEmpty())
+		if (textFieldChampName.getText().isEmpty())
 			JOptionPane.showMessageDialog(null, "Añade un nombre correcto", "Alert", JOptionPane.WARNING_MESSAGE);
 		else
 			addOrModifyChamp();
 	}
 
 	public void addOrModifyChamp() throws PersonalizedException {
-		buttonChampsAdmin_Check.setVisible(false);
-		JLabel labelChampsAdmin_Position = new JLabel("Position");
-		labelChampsAdmin_Position.setBounds(346, 162, 61, 16);
-		champAdmin.add(labelChampsAdmin_Position);
 
-		String[] positions = { "TOP", "JNG", "MID", "ADC", "SUP" };
-		jComboBoxChampAdmin_Positions = new JComboBox<String>(positions);
-		jComboBoxChampAdmin_Positions.setBounds(459, 157, 130, 26);
-		jComboBoxChampAdmin_Positions.setSelectedIndex(-1);
-		champAdmin.add(jComboBoxChampAdmin_Positions);
-
-		JLabel labelChampsAdmin_Region = new JLabel("Region");
-		labelChampsAdmin_Region.setBounds(346, 204, 61, 16);
-		champAdmin.add(labelChampsAdmin_Region);
-
-		textFieldChampAdmin_Region = new JTextField();
-		textFieldChampAdmin_Region.setColumns(10);
-		textFieldChampAdmin_Region.setBounds(459, 197, 130, 26);
-		champAdmin.add(textFieldChampAdmin_Region);
-
-		JLabel labelChampsAdmin_Passive = new JLabel("Passive");
-		labelChampsAdmin_Passive.setBounds(346, 244, 61, 16);
-		champAdmin.add(labelChampsAdmin_Passive);
-
-		textFieldChampAdmin_Passive = new JTextField();
-		textFieldChampAdmin_Passive.setColumns(10);
-		textFieldChampAdmin_Passive.setBounds(459, 237, 130, 26);
-		champAdmin.add(textFieldChampAdmin_Passive);
-
-		JLabel labelChampsAdmin_Q = new JLabel("Q");
-		labelChampsAdmin_Q.setBounds(346, 284, 61, 16);
-		champAdmin.add(labelChampsAdmin_Q);
-
-		textFieldChampAdmin_Q = new JTextField();
-		textFieldChampAdmin_Q.setColumns(10);
-		textFieldChampAdmin_Q.setBounds(459, 277, 130, 26);
-		champAdmin.add(textFieldChampAdmin_Q);
-
-		JLabel labelChampsAdmin_W = new JLabel("W");
-		labelChampsAdmin_W.setBounds(346, 324, 61, 16);
-		champAdmin.add(labelChampsAdmin_W);
-
-		textFieldChampAdmin_W = new JTextField();
-		textFieldChampAdmin_W.setColumns(10);
-		textFieldChampAdmin_W.setBounds(459, 317, 130, 26);
-		champAdmin.add(textFieldChampAdmin_W);
-
-		JLabel labelChampsAdmin_E = new JLabel("E");
-		labelChampsAdmin_E.setBounds(346, 364, 61, 16);
-		champAdmin.add(labelChampsAdmin_E);
-
-		textFieldChampAdmin_E = new JTextField();
-		textFieldChampAdmin_E.setColumns(10);
-		textFieldChampAdmin_E.setBounds(459, 357, 130, 26);
-		champAdmin.add(textFieldChampAdmin_E);
-
-		JLabel labelChampsAdmin_R = new JLabel("R");
-		labelChampsAdmin_R.setBounds(346, 404, 61, 16);
-		champAdmin.add(labelChampsAdmin_R);
-
-		textFieldChampAdmin_R = new JTextField();
-		textFieldChampAdmin_R.setColumns(10);
-		textFieldChampAdmin_R.setBounds(459, 397, 130, 26);
-		champAdmin.add(textFieldChampAdmin_R);
-
-		textFieldChampsAdmin_Name.setEditable(false);
-
-		Champ champ = champEditable.checkChampName(textFieldChampsAdmin_Name.getText());
+		Champ champ = champEditable.checkChampName(textFieldChampName.getText());
+		panelHabilidades.setVisible(true);
 		if (champ.getName() == null) {
-			buttonChampAdmin_Add.setBounds(459, 500, 117, 29);
-			buttonChampAdmin_Add.addActionListener(this);
-			champAdmin.add(buttonChampAdmin_Add);
-		} else
+			buttonChampAdd.setVisible(true);
+
+		} else {
+			btnModifyChamp.setVisible(true);
 			modifyChampAdmin(champ);
+		}
 	}
 
 	public Champ fillChamp(Champ champ) {
-		champ.setName(textFieldChampsAdmin_Name.getText());
-		champ.setPosition(jComboBoxChampAdmin_Positions.getItemAt(jComboBoxChampAdmin_Positions.getSelectedIndex()));
-		champ.setRegion(textFieldChampAdmin_Region.getText());
-		champ.setPassive(textFieldChampAdmin_Passive.getText());
-		champ.setQ(textFieldChampAdmin_Q.getText());
-		champ.setW(textFieldChampAdmin_W.getText());
-		champ.setE(textFieldChampAdmin_E.getText());
-		champ.setR(textFieldChampAdmin_R.getText());
+		champ.setName(textFieldChampName.getText());
+		champ.setPosition(comboBoxPosition.getSelectedItem().toString());
+		champ.setRegion(textFieldRegionChamp.getText());
+		champ.setPassive(textFieldPassiveChamp.getText());
+		champ.setQ(textFieldQChamp.getText());
+		champ.setW(textFieldWChamp.getText());
+		champ.setE(textFieldEChamp.getText());
+		champ.setR(textFieldRChamp.getText());
 
 		return (champ);
 	}
 
 	public boolean checkFieldsChampAdmin() {
-		if (jComboBoxChampAdmin_Positions.getSelectedIndex() == -1 || textFieldChampAdmin_Region.getText().isBlank()
-				|| textFieldChampAdmin_Passive.getText().isBlank() || textFieldChampAdmin_Q.getText().isBlank()
-				|| textFieldChampAdmin_W.getText().isBlank() || textFieldChampAdmin_E.getText().isBlank()
-				|| textFieldChampAdmin_R.getText().isBlank()) {
+		if (comboBoxPosition.getSelectedIndex() == -1 || textFieldRegionChamp.getText().isBlank()
+				|| textFieldPassiveChamp.getText().isBlank() || textFieldQChamp.getText().isBlank()
+				|| textFieldWChamp.getText().isBlank() || textFieldEChamp.getText().isBlank()
+				|| textFieldRChamp.getText().isBlank()) {
 			JOptionPane.showMessageDialog(null, "Please fill all the fields", "Alert", JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
@@ -1155,18 +1507,14 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 	}
 
 	public void modifyChampAdmin(Champ champ) {
-		textFieldChampsAdmin_Name.setText(champ.getName());
-		jComboBoxChampAdmin_Positions.setSelectedItem(champ.getPosition());
-		textFieldChampAdmin_Region.setText(champ.getRegion());
-		textFieldChampAdmin_Passive.setText(champ.getPassive());
-		textFieldChampAdmin_Q.setText(champ.getQ());
-		textFieldChampAdmin_W.setText(champ.getW());
-		textFieldChampAdmin_E.setText(champ.getE());
-		textFieldChampAdmin_R.setText(champ.getR());
-
-		buttonChampAdmin_Modify.setBounds(459, 500, 117, 29);
-		buttonChampAdmin_Modify.addActionListener(this);
-		champAdmin.add(buttonChampAdmin_Modify);
+		textFieldChampName.setText(champ.getName());
+		comboBoxPosition.setSelectedItem(champ.getPosition());
+		textFieldRegionChamp.setText(champ.getRegion());
+		textFieldPassiveChamp.setText(champ.getPassive());
+		textFieldQChamp.setText(champ.getQ());
+		textFieldWChamp.setText(champ.getW());
+		textFieldEChamp.setText(champ.getE());
+		textFieldRChamp.setText(champ.getR());
 	}
 
 	public void executeModificationChampAdmin() throws PersonalizedException {
@@ -1174,9 +1522,10 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		if (checkFieldsChampAdmin() == false)
 			return;
 		champ = fillChamp(champ);
-		if (champEditable.modifyChamp(champ))
+		if (champEditable.modifyChamp(champ)) {
 			JOptionPane.showMessageDialog(null, "Champ modified successfully", "Alert",
 					JOptionPane.INFORMATION_MESSAGE);
+		}
 		else
 			JOptionPane.showMessageDialog(null, "Champ couldn't be modified", "Alert", JOptionPane.WARNING_MESSAGE);
 		removeChampAdminTab();
@@ -1184,7 +1533,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 
 	public void removeChampAdminTab() {
 		champAdmin.removeAll();
-		ChampAdminTabConstruction();
+		// ChampAdminTabConstruction();
 	}
 
 	public void listChampPlayer() throws PersonalizedException {
@@ -1194,7 +1543,8 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 			if (checkBoxChampsPlayer.isSelected()) {
 				// Get an array of all champs
 				list = champEditable.listChamp();
-				// convert champs list to a bidimensional array
+				textFieldChampPlayer_Region.setText("");
+				textFieldChampPlayer_Position.setText("");
 			} else if (checkBoxChampsPlayer_Filtered.isSelected()) {
 				// Show champs by filter
 				String region = textFieldChampPlayer_Region.getText();
@@ -1223,9 +1573,8 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		}
 		;
 		JScrollPane scrollPaneChampPlayer = new JScrollPane();
-		scrollPaneChampPlayer.setBounds(175, 400, 700, 200);
+		scrollPaneChampPlayer.setBounds(190, 355, 684, 100);
 		champsPlayer.add(scrollPaneChampPlayer);
-
 		String[] columnNames = { "Name", "Region", "Passive", "Position", "Q", "W", "E", "R" };
 		JTable table = new JTable(data, columnNames);
 		scrollPaneChampPlayer.setViewportView(table);
@@ -1255,7 +1604,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		if (e.getSource().equals(lblPassEyeAddAdmin)) {
 			passwordFieldAddAdmin.setEchoChar((char) 0);
 		}
-		if(e.getSource().equals(lblEyeProfile)) {
+		if (e.getSource().equals(lblEyeProfile)) {
 			passwordFieldProfile.setEchoChar((char) 0);
 		}
 	}
@@ -1265,10 +1614,11 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		if (e.getSource().equals(lblPassEyeAddAdmin)) {
 			passwordFieldAddAdmin.setEchoChar('·');
 		}
-		if(e.getSource().equals(lblEyeProfile)) {
+		if (e.getSource().equals(lblEyeProfile)) {
 			passwordFieldProfile.setEchoChar('·');
 		}
 	}
+
 	/**
 	 * Method to check if the user exist and check that the user only inserts one
 	 * word as nickname
@@ -1292,8 +1642,10 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 			textFieldNicknameProfile.setText(((Player) user).getNickname());
 		}
 	}
+
 	/**
 	 * Method to validate that the text inserted in the email textField is correct
+	 * 
 	 * @param email
 	 */
 
@@ -1306,8 +1658,10 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		}
 
 	}
+
 	/**
-	 *  Method to validate that the text inserted by the user is a string
+	 * Method to validate that the text inserted by the user is a string
+	 * 
 	 * @param name
 	 */
 	public void checkName(String name) {
@@ -1319,23 +1673,26 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		}
 
 	}
+
 	/**
 	 * Method to validate that the phone only consists of 9 numbers
+	 * 
 	 * @param phone
 	 */
 
 	public void checkPhone(String phone) {
-		if ((phone.length()!= 9 || !control.validateInteger(phone)) && !phone.isEmpty()) {
+		if ((phone.length() != 9 || !control.validateInteger(phone)) && !phone.isEmpty()) {
 			JOptionPane.showMessageDialog(this, "The telephone must have a lenght of 9 numbers", "League of legends",
 					JOptionPane.ERROR_MESSAGE);
 			textFieldPhoneProfile.setText(user.getPhone());
 			textFieldPhoneAddAdmin.setText("");
 		}
 	}
+
 	public void checkNumber(String number) {
-		if(!control.validateInteger(textFieldAdditionsProfile.getText()) && !textFieldAdditionsProfile.getText().isBlank()){
-			JOptionPane.showMessageDialog(this, "Only numbers", "League of legends",
-					JOptionPane.ERROR_MESSAGE);
+		if (!control.validateInteger(textFieldAdditionsProfile.getText())
+				&& !textFieldAdditionsProfile.getText().isBlank()) {
+			JOptionPane.showMessageDialog(this, "Only numbers", "League of legends", JOptionPane.ERROR_MESSAGE);
 			textFieldAdditionsProfile.setText(String.valueOf(((Administrator) user).getAddtions()));
 		}
 	}
@@ -1349,32 +1706,37 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 	public void mouseExited(MouseEvent e) {
 		// Not used.
 	}
+
 	/**
 	 * Method to check if any all the fields have changed to do the modification
+	 * 
 	 * @return correct
 	 */
 	public boolean checkFieldsModify() {
 		boolean correct = false;
-		if(!textFieldEmailProfile.getText().equals(user.getEmail()) || !textFieldNameProfile.getText().equals(user.getName()) || !textFieldPhoneProfile.getText().equals(user.getPhone())
+		if (!textFieldEmailProfile.getText().equals(user.getEmail())
+				|| !textFieldNameProfile.getText().equals(user.getName())
+				|| !textFieldPhoneProfile.getText().equals(user.getPhone())
 				|| !comboBoxNationalityProfile.getSelectedItem().equals(user.getNationality())) {
-				correct= true;
+			correct = true;
 		}
-		if(user instanceof Player) {
-			if(!textFieldNicknameProfile.getText().equals(((Player) user).getNickname())) {
-				correct= true;
+		if (user instanceof Player) {
+			if (!textFieldNicknameProfile.getText().equals(((Player) user).getNickname())) {
+				correct = true;
 			}
 		}
-		if(user instanceof Administrator) {
-			if(Integer.parseInt(textFieldAdditionsProfile.getText()) != ((Administrator) user).getAddtions()){
-				correct= true;
+		if (user instanceof Administrator) {
+			if (Integer.parseInt(textFieldAdditionsProfile.getText()) != ((Administrator) user).getAddtions()) {
+				correct = true;
 			}
 		}
-		if(!correct) {
+		if (!correct) {
 			JOptionPane.showMessageDialog(this, "No changes in any field", "League of legends",
 					JOptionPane.ERROR_MESSAGE);
 		}
 		return correct;
 	}
+
 	@Override
 	public void focusLost(FocusEvent e) {
 		if (e.getSource().equals(textFieldNameProfile))
@@ -1403,10 +1765,9 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 
 		if (e.getSource().equals(textFieldPhoneAddAdmin))
 			checkPhone(textFieldPhoneAddAdmin.getText());
-		
-		if(e.getSource().equals(textFieldAdditionsProfile)) {
+
+		if (e.getSource().equals(textFieldAdditionsProfile)) {
 			checkNumber(textFieldAdditionsProfile.getText());
 		}
 	}
-
 }
