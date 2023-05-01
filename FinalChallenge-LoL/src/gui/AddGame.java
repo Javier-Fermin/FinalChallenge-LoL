@@ -407,9 +407,7 @@ public class AddGame extends JDialog implements ActionListener, FocusListener {
 		contentPanel.add(lblNewLabel);
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	}
+	
 
 	private void addGame() throws PersonalizedException {
 		// TODO Auto-generated method stub
@@ -480,6 +478,17 @@ public class AddGame extends JDialog implements ActionListener, FocusListener {
 			}
 
 		}
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource().equals(btnAdd)) {
+			try {
+				addGame();
+			} catch (PersonalizedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	}
 	}
 	/**
 	 * Method to check if the user exists
@@ -782,13 +791,6 @@ public class AddGame extends JDialog implements ActionListener, FocusListener {
 			}
 		}
 		
-		if(e.getSource().equals(btnAdd)) {
-			try {
-				addGame();
-			} catch (PersonalizedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+		
 		}
-	}
 }
