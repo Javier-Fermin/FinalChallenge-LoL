@@ -16,11 +16,12 @@ public class StatableDBImplementation implements Statable {
 	private Connection con;
 	private PreparedStatement stmt;
 	private ResultSet rs;
-	private ConnectionOpenClose connection = new ConnectionOpenClose();
+	private ConnectionOpenClose connection;
 
 	@Override
 	// RECORDAR CAMBIAR LUEGO A THROWS
 	public Set<Played> stadistics(String nickname) throws PersonalizedException {
+		connection = new ConnectionOpenClose(2);
 		// TODO Auto-generated method stub
 		Set<Played> stats = null;
 		try {

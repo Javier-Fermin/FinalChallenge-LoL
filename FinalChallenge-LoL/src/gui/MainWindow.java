@@ -59,11 +59,18 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 	private JCheckBox checkBoxChampsPlayer = new JCheckBox("");
 	private JCheckBox checkBoxChampsPlayer_Filtered = new JCheckBox("");
 	private final ButtonGroup buttonGroup = new ButtonGroup();
+	private JComboBox comboBoxSelectUser;
+
+	//private final ButtonGroup buttonGroup = new ButtonGroup();
+	
+	private JTextField textNicknameStats;
+
 	private JTable stats;
 	private DefaultTableModel modelStats;
 	private JTable games;
 	private DefaultTableModel modelGame;
 	private JCalendar calendar;
+
 	private JPanel champAdmin = new JPanel();
 	private JLabel labeChampAdmin = new JLabel();
 	private JComboBox comboBoxAddAdmin;
@@ -76,6 +83,15 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 	private JButton buttonChampAdd;
 	private JLabel nicknameProfilePicture;
 	private JButton btnDeletePlayerManagement;
+
+	private JButton btnAddGame;
+	private JPanel panelAdmin;
+	private JPanel champAdmin;
+	private JButton buttonChampsAdmin_Check;
+	//private JLabel labeChampAdmin  = new JLabel();
+	private JButton buttonChampAdmin_Add;
+	private JButton buttonChampAdmin_Modify;
+  
 
 	private ChampEditable champEditable;
 	private Statable statable;
@@ -236,6 +252,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		textFieldEmailProfile.setText((String) null);
 		textFieldEmailProfile.setColumns(10);
 		textFieldEmailProfile.addFocusListener(this);
+
 		profile.add(textFieldEmailProfile);
 
 		btnModifyPlayer = new JButton("MODIFY ");
@@ -254,6 +271,8 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		btnDeletePlayer.addActionListener(this);
 		btnDeletePlayer.setVisible(false);
 		profile.add(btnDeletePlayer);
+
+
 
 		comboBoxNationalityProfile = new JComboBox();
 		comboBoxNationalityProfile.setBounds(260, 510, 205, 21);
@@ -378,10 +397,12 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		fondoPictureProfile.setIcon(new ImageIcon(MainWindow.class.getResource("/img/LOL_PROMOART_14.jpg")));
 		profile.add(fondoPictureProfile);
 
+		champsPlayer = new JPanel();
 		tabbedPane.addTab("CHAMPS", null, champsPlayer, null);
 		champsPlayer.setLayout(null);
 		// Create a gorup and add each checkbox to it so only one can be selected
 		ButtonGroup buttonGroupChampsPlayer = new ButtonGroup();
+
 
 		JPanel panelTransparente = new JPanel();
 		panelTransparente.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(218, 165, 32), null));
@@ -412,6 +433,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		lblNewLabel_2.setBounds(916, 8, 87, 131);
 		panelTransparente.add(lblNewLabel_2);
 
+		checkBoxChampsPlayer_Filtered = new JCheckBox("List champs by filter");
 		buttonGroupChampsPlayer.add(checkBoxChampsPlayer_Filtered);
 		checkBoxChampsPlayer_Filtered.setBackground(new Color(0, 0, 0, 180));
 		checkBoxChampsPlayer_Filtered.setBounds(116, 145, 21, 23);
@@ -499,6 +521,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		textFieldChampPlayer_Position.setBackground(Color.BLACK);
 		textFieldChampPlayer_Position.setBounds(190, 107, 202, 26);
 		selectRegionPosition.add(textFieldChampPlayer_Position);
+
 		buttonChampsPlayer_Enter.addActionListener(this);
 
 		JLabel panelChampPlayer = new JLabel("");
@@ -508,6 +531,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		champsPlayer.add(panelChampPlayer);
 
 		// Champs admin
+		champAdmin = new JPanel();
 		tabbedPane.addTab("CHAMPS", null, champAdmin, null);
 		champAdmin.setLayout(null);
 
@@ -1199,7 +1223,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		int option;
 		if (comboBoxSelectUser.getSelectedIndex() != -1) {
 			try {
-				userDel = userControllable.findUser(comboBoxSelectUser.getSelectedItem().toString());
+				userDel = userControllable.findUser(comboBoxSelectUser.getSelectedItem().toString(), 1);
 			} catch (PersonalizedException e) {
 				// TODO Auto-generated catch block
 
@@ -1215,6 +1239,9 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 				else
 					chooseConnection = 0;
 				userControllable.delete(userDel);
+				else 
+					chooseConnection = 0;
+				userControllable.delete(userDel, chooseConnection);
 				JOptionPane.showMessageDialog(this, userDel.getName() + " eliminado correctamente.");
 				comboBoxSelectUser.setSelectedIndex(-1);
 				textAreaDeletePlayer.setText("");
@@ -1255,7 +1282,9 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 			user.setPhone(textFieldPhoneAddAdmin.getText());
 			user.setNationality(comboBoxAddAdmin.getSelectedItem().toString());
 
-			userControllable.addUser(user);
+
+			userControllable.addUser(user, 0);
+
 
 			JOptionPane.showMessageDialog(getParent(), "Successfully sent.");
 			textFieldNameAddAdmin.setText("");
@@ -1396,9 +1425,9 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 
 		// If the user is instance as player we use the original nickname saved before
 		if (user instanceof Player) {
-			user = userControllable.findUser(nicknameOriginal);
+			user = userControllable.findUser(nicknameOriginal, 2);
 		} else {
-			user = userControllable.findUser(user.getId());
+			user = userControllable.findUser(user.getId(), 0);
 		}
 
 		if (checkFieldsModify()) {
@@ -1423,7 +1452,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		int aceptar;
 		User user = null;
 		// Find the user
-		user = userControllable.findUser(textFieldNicknameProfile.getText());
+		user = userControllable.findUser(textFieldNicknameProfile.getText(), 1);
 		// Show a confirmation dialog
 		aceptar = JOptionPane.showConfirmDialog(this, "WARNING: do you want to delete your account?");
 		// Yes --> 0 so If the user accepts the message, his account will be deleted.
@@ -1433,6 +1462,9 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 			else
 				chooseConnection = 0;
 			correct = userControllable.delete(user);
+			else 
+				chooseConnection = 0;
+			correct = userControllable.delete(user, chooseConnection);
 			clear();
 		}
 		if (correct) {
@@ -1462,6 +1494,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 
 	public void addOrModifyChamp() throws PersonalizedException {
 
+
 		Champ champ = champEditable.checkChampName(textFieldChampName.getText());
 		panelHabilidades.setVisible(true);
 		if (champ.getName() == null) {
@@ -1469,6 +1502,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 
 		} else {
 			btnModifyChamp.setVisible(true);
+
 			modifyChampAdmin(champ);
 		}
 	}
@@ -1492,6 +1526,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 				|| textFieldWChamp.getText().isBlank() || textFieldEChamp.getText().isBlank()
 				|| textFieldRChamp.getText().isBlank()) {
 			JOptionPane.showMessageDialog(null, "Please fill all the fields", "Alert", JOptionPane.WARNING_MESSAGE);
+
 			return false;
 		}
 		return true;
@@ -1518,6 +1553,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		textFieldWChamp.setText(champ.getW());
 		textFieldEChamp.setText(champ.getE());
 		textFieldRChamp.setText(champ.getR());
+
 	}
 
 	public void executeModificationChampAdmin() throws PersonalizedException {

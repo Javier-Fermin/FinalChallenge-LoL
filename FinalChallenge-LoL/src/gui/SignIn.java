@@ -27,6 +27,7 @@ import javax.swing.JOptionPane;
 
 import java.awt.Choice;
 import javax.swing.JComboBox;
+import javax.lang.model.util.ElementScanner14;
 import javax.swing.DefaultComboBoxModel;
 
 import java.awt.event.ActionEvent;
@@ -38,6 +39,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 
 import model.User;
+import model.Administrator;
 import model.Player;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -230,6 +232,7 @@ public class SignIn extends JDialog implements ActionListener, FocusListener, Mo
 	 */
 	public void openMainWindow() throws PersonalizedException {
 		// TODO Auto-generated method stub
+		int chooseConnection;
 		// Pass from date to localDate
 		LocalDate date = jCalendar.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 		String password = new String(passwordField.getPassword());
@@ -241,10 +244,14 @@ public class SignIn extends JDialog implements ActionListener, FocusListener, Mo
 					JOptionPane.ERROR_MESSAGE);
 		} else {
 			User user = setInformation();
-			controller.addUser(user);
-			parent.setUser(user);
-			parent.setVisible(true);
-			this.dispose();
+			//if user is instace of player
+			if (user instanceof Player)
+				chooseConnection = 2;
+			else 
+				chooseConnection = 0;
+			controller.addUser(user, chooseConnection);
+			JOptionPane.showMessageDialog(null, "CORRECTO", "League of legends", JOptionPane.INFORMATION_MESSAGE);
+			// OPEN MAIN WINDOW
 		}
 	}
 
@@ -313,7 +320,7 @@ public class SignIn extends JDialog implements ActionListener, FocusListener, Mo
 		// TODO Auto-generated method stub
 		// Check that the inserted nickname doesn't exists
 		User userComprobar = null;
-		userComprobar = controller.findUser(textFieldNickname.getText());
+		userComprobar = controller.findUser(textFieldNickname.getText(), 1);
 
 		if (userComprobar != null) {
 			JOptionPane.showMessageDialog(this, "Nickname already exists", "League of legends",
