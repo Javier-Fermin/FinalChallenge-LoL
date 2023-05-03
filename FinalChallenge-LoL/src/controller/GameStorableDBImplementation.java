@@ -22,6 +22,7 @@ public class GameStorableDBImplementation implements GameStorable {
 	private ResultSet rs;
 	private ConnectionOpenClose connection;
 
+	//  This method inserts a new Game into the DB
 	@Override
 	public int addGame(Game game) throws PersonalizedException {
 		try {
@@ -44,6 +45,7 @@ public class GameStorableDBImplementation implements GameStorable {
 
 	}
 
+	// This method gets all the Games related to a Player by using its Nickname
 	@Override
 	public Set<Game> searchGames(String nickname) throws PersonalizedException {
 		try {
@@ -73,6 +75,7 @@ public class GameStorableDBImplementation implements GameStorable {
 		}
 	}
 
+	// This method inserts a new Played game into the DB
 	@Override
 	public void completeGame(int id, String nickname, String name, boolean win, String position)
 			throws PersonalizedException {

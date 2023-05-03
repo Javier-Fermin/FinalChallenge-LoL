@@ -11,6 +11,7 @@ import model.User;
  * 
  * @author Irati Garzón
  * @author Alex Salinero
+ * @version 1.0
  *
  */
 public interface UserControllable {

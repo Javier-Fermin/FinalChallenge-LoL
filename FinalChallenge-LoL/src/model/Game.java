@@ -2,6 +2,7 @@ package model;
 
 import java.time.LocalDate;
 
+// This is the Game class
 public class Game {
  private int id;
  private LocalDate dateGame;

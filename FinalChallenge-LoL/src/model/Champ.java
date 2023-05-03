@@ -1,5 +1,6 @@
 package model;
 
+// This is the Champ class
 public class Champ {
 	private String name;
 	private String region;

@@ -13,6 +13,8 @@ public class ConnectionOpenClose {
 	private String pass;
 
 	// CONSTRUCTOR
+	// Method to open connection with MySQL, gets the info from config.properties file, 
+	// receives an int to choose the user to connect with
 	public ConnectionOpenClose(int chooseConection) {
 		configFile = ResourceBundle.getBundle("model.config");
 		url = configFile.getString("URL");
@@ -25,6 +27,7 @@ public class ConnectionOpenClose {
 		pass = configFile.getString("PASSWORD");
 	}
 
+	// Method that opens the connection with MySQL
 	public Connection openConnection() throws SQLException {
 		Connection con = null;
 		try {
@@ -36,6 +39,7 @@ public class ConnectionOpenClose {
 		return con;
 	}
 
+	// Method that closes the connection with MySQL
 	public void closeConnection(PreparedStatement stmt, Connection con) throws SQLException {
 		if (stmt != null) {
 			stmt.close();

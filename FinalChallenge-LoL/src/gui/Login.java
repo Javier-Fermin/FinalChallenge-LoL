@@ -194,7 +194,7 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 		}
 	}
 
-	@Override
+	@Override 
 	public void mouseExited(MouseEvent e) {
 		if (e.getSource().equals(signIn)) {
 			// When mouse exists the "signIn" label area, font decreases back to original size.

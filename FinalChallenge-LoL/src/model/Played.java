@@ -1,5 +1,6 @@
 package model;
 
+// This is the Played class
 public class Played {
 	private int id;
 	private boolean win;

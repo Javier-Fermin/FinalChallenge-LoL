@@ -1111,6 +1111,8 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 	}
 
 	// -----------------------Methods for tab Profile----------------------------
+
+	// 
 	public User loadUser() {
 		String password = new String(passwordFieldProfile.getPassword());
 		user.setName(textFieldNameProfile.getText());
@@ -1134,6 +1136,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 
 	}
 
+	// Load the information of the user in the tab profile
 	public void loadData(UserControllable userControllable) {
 		textFieldNameProfile.setText(user.getName());
 		textFieldEmailProfile.setText(user.getEmail());
@@ -1171,6 +1174,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		comboBoxNationalityProfile.setSelectedIndex(-1);
 	}
 
+	// Modify player method 
 	public void modifyPlayer(UserControllable userControllable) throws PersonalizedException {
 
 		// If the user is instance as player we use the original nickname saved before
@@ -1179,7 +1183,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		} else {
 			user = userControllable.findUser(user.getId(), 0);
 		}
-
+		// We check if the fields are modified
 		if (checkFieldsModify()) {
 			if (userControllable.modifyUser(user)) {
 				JOptionPane.showMessageDialog(this, "PERSONAL DATA MODIFIED");
@@ -1190,6 +1194,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 
 	}
 
+	// Delete player method
 	public void deletePlayer(UserControllable userControllable) throws PersonalizedException {
 		int chooseConnection;
 		boolean correct = false;
@@ -1216,6 +1221,8 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 	}
 
 	// --------------------Methods for tab Champ(User)-------------------------
+
+	// Method to list champs on a table
 	public void listChampPlayer() throws PersonalizedException {
 		if (checkBoxChampsPlayer.isSelected() || checkBoxChampsPlayer_Filtered.isSelected()) {
 
@@ -1241,7 +1248,8 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 			createChampPlayerTable(list);
 		}
 	}
-
+	
+	// Method to create a table with the champs
 	public void createChampPlayerTable(List<Champ> list) {
 		String[][] data = null;
 		data = new String[list.size()][];
@@ -1263,10 +1271,12 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		scrollPaneChampPlayer.setViewportView(champs);
 
 		JTableHeader tableHeaderChampPlayer = champs.getTableHeader();
-		tableHeaderChampPlayer.setBackground(new Color(225, 223, 225));
+		tableHeaderChampPlayer.setBackground(new Color(212, 175, 55));
 	}
 
 	// ------------------Methods for tab Champ(Admin)-------------------------
+
+	// Method to check  if the champ is already in the database
 	public void checkChampAdmin() throws PersonalizedException {
 		if (textFieldChampName.getText().isEmpty())
 			JOptionPane.showMessageDialog(null, "Add a valid name", "Alert", JOptionPane.WARNING_MESSAGE);
@@ -1274,6 +1284,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 			addOrModifyChamp();
 	}
 
+	// Method to show the design of the tab to add or modify a champ
 	public void addOrModifyChamp() throws PersonalizedException {
 
 		Champ champ = champEditable.checkChampName(textFieldChampName.getText());
@@ -1290,6 +1301,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		btnCancelChamp.setVisible(true);
 	}
 
+	// Method to add champ 
 	public void addChampAdmin() throws PersonalizedException {
 		Champ champ = new Champ();
 		if (checkFieldsChampAdmin() == false)
@@ -1302,6 +1314,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		removeChampAdminTab();
 	}
 
+	// Method that shows the current info of the champ that  will be modified
 	public void modifyChampAdmin(Champ champ) {
 		textFieldChampName.setText(champ.getName());
 		comboBoxPosition.setSelectedItem(champ.getPosition());
@@ -1314,6 +1327,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 
 	}
 
+	// Removes all the current design of the tab so it can start over with a new champ
 	public void removeChampAdminTab() {
 		textFieldChampName.setText("");
 		comboBoxPosition.setSelectedIndex(-1);
@@ -1326,9 +1340,9 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		panelHabilidades.setVisible(false);
 		textFieldChampName.setEditable(true);
 		textFieldChampName.setText("");
-		// ChampAdminTabConstruction();
 	}
 
+	// Executes the modification of the champ
 	public void executeModificationChampAdmin() throws PersonalizedException {
 		Champ champ = new Champ();
 		if (checkFieldsChampAdmin() != false) {
@@ -1342,6 +1356,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		}
 	}
 
+	// Method that loads the champ with the current info on the tab
 	public Champ fillChamp(Champ champ) {
 		champ.setName(textFieldChampName.getText());
 		champ.setPosition(comboBoxPosition.getSelectedItem().toString());
@@ -1358,6 +1373,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 	// -----------------------Methods for tab Game----------------------------
 	// NOTE: There is a button that creates the JDialog addGame, to see it go to the
 	// actionPerformed method
+	// This method is to update the table of the tab Game
 	private void updateGame() throws PersonalizedException {
 		// TODO Auto-generated method stub
 		if (!textNicknameGame.getText().isEmpty()) {
@@ -1377,6 +1393,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 	}
 
 	// -----------------------Methods for tab Stadistics----------------------------
+	// This method is to update the table of the tab Stadistics
 	public void updateStats() throws PersonalizedException {
 		if (!textNicknameStats.getText().isEmpty()) {
 			modelStats.setRowCount(0);
@@ -1401,6 +1418,8 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		}
 	}
 
+	// -----------------------Methods for tab Management----------------------------
+	// This method is  to load the user that will be added
 	private void sendAddAdmin() throws PersonalizedException {
 		// TODO Auto-generated method stub
 		char[] pass = passwordFieldAddAdmin.getPassword();
@@ -1433,7 +1452,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		}
 	}
 
-	// -----------------------Methods for tab Management----------------------------
+	// This method makes an Admin delete a Player
 	private void deletePlayerAdmin() throws PersonalizedException {
 		// TODO Auto-generated method stub
 		int chooseConnection;
@@ -1479,6 +1498,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		}
 	}
 
+	// This methods adds current Users to a comboBox so the Admin can choose
 	private void cargarUsers(UserControllable control) throws PersonalizedException {
 		Set<User> users = control.listPlayers();
 
@@ -1491,6 +1511,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 	}
 
 	// ---------------------Methods to validate information-------------------------
+	// 	This method checks if all fields on Admin Champs tab are filled correctly
 	public boolean checkFieldsChampAdmin() {
 		if (comboBoxPosition.getSelectedIndex() == -1 || textFieldRegionChamp.getText().isBlank()
 				|| textFieldPassiveChamp.getText().isBlank() || textFieldQChamp.getText().isBlank()
@@ -1502,7 +1523,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		}
 		return true;
 	}
-
+	// 	This method checks if all fields on Profile tab are filled correctly
 	public boolean checkFieldsModify() {
 		boolean correct = false;
 		if (!textFieldEmailProfile.getText().equals(user.getEmail())
@@ -1528,6 +1549,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		return correct;
 	}
 
+	// This methods checks if the email is valid
 	public void checkEmail(String email) {
 		if (!control.validateEmail(email) && !email.isEmpty()) {
 			JOptionPane.showMessageDialog(this, "Email format incorrect. Example: ____@____.com", "League of legends",
@@ -1538,6 +1560,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 
 	}
 
+	// This  method checks if the nickname doesnt exists and is valid
 	private boolean checkUser() throws PersonalizedException {
 		// TODO Auto-generated method stub
 		// Check that the inserted nickname doesn't exists
@@ -1560,6 +1583,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		return correct;
 	}
 
+	// This  method checks if the name is written correctly
 	public void checkName(String name) {
 		if (!control.validateString(name) && !name.isEmpty()) {
 			JOptionPane.showMessageDialog(this, "This field can't contain numbers", "League of legends",
@@ -1570,6 +1594,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 
 	}
 
+	// This  method checks if the phone number is written correctly
 	public void checkPhone(String phone) {
 		if ((phone.length() != 9 || !control.validateInteger(phone)) && !phone.isEmpty()) {
 			JOptionPane.showMessageDialog(this, "The telephone must have a lenght of 9 numbers", "League of legends",
@@ -1579,6 +1604,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		}
 	}
 
+	// This  method checks if the number is written correctly
 	public void checkNumber(String number) {
 		if (!control.validateInteger(textFieldAdditionsProfile.getText())
 				&& !textFieldAdditionsProfile.getText().isBlank()) {
@@ -1593,21 +1619,27 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 
 	// Action Listener
 	@Override
+	// This method checks which button or action is perfomed and the following step of it
 	public void actionPerformed(ActionEvent e) {
 		try {
+			// If textFieldChampPlayer_Region  or textFieldChampPlayer_Position is pressed, 
+			// buttonChampsPlayer_Enter is enabled if any of both is not blank
 			if(e.getSource().equals(textFieldChampPlayer_Region)||e.getSource().equals(textFieldChampPlayer_Position)) {
 				if(!(textFieldChampPlayer_Region.getText().isBlank()&&textFieldChampPlayer_Position.getText().isBlank())) {
 					buttonChampsPlayer_Enter.setEnabled(true);
 				}
 			}
+			// If btnLogOut is pressed, it disposes current window and opens a new main window
 			if (e.getSource().equals(btnLogOut)) {
 				this.dispose();
 				MainWindow newMain = new MainWindow(userControllable, champEditable, gameStorable, statable);
 				newMain.setVisible(true);
 			}
+			// If textFieldChampName is pressed, buttonChampsAdmin_Check is called
 			if (e.getSource().equals(textFieldChampName)) {
 				buttonChampsAdmin_Check.setEnabled(true);
 			}
+			// If checkBoxChampsPlayer_Filtered is pressed, the textFields for filter list are enabled
 			if (e.getSource().equals(checkBoxChampsPlayer_Filtered)) {
 				textFieldChampPlayer_Region.setEnabled(true);
 				textFieldChampPlayer_Region.setEditable(true);
@@ -1615,6 +1647,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 				textFieldChampPlayer_Position.setEditable(true);
 				buttonChampsPlayer_Enter.setEnabled(false);
 			}
+			// If checkBoxChampsPlayer is pressed, the textFields for filter list are disabled
 			if (e.getSource().equals(checkBoxChampsPlayer)) {
 				textFieldChampPlayer_Region.setText("");
 				textFieldChampPlayer_Position.setText("");
@@ -1624,45 +1657,56 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 				textFieldChampPlayer_Position.setEditable(false);
 				buttonChampsPlayer_Enter.setEnabled(true);
 			}
+			// If btnCancelChamp is pressed, removeChampAdminTab is called 
+			// and buttonChampsAdmin_Check set  to false
 			if (e.getSource() == btnCancelChamp) {
 				removeChampAdminTab();
 				buttonChampsAdmin_Check.setEnabled(false);
 			}
+			// If btnUpdateStats is pressed, updateStats is called
 			if (e.getSource() == btnUpdateStats) {
 				updateStats();
 			}
+			// If btnUpdateGame is pressed, updateGame is called
 			if (e.getSource() == btnUpdateGame) {
 				updateGame();
 			}
+			// If btnAddGame is pressed, addGame is shown
 			if (e.getSource() == btnAddGame) {
 				AddGame addGame = new AddGame(this, true, gameStorable, userControllable, champEditable);
 				addGame.setVisible(true);
 			}
+			// If btnSendAddAdmin is pressed, the method sendAddAdmin is called
 			if (e.getSource().equals(btnSendAddAdmin)) {
 				sendAddAdmin();
 			}
+			// If btnModifyPlayerManagement is pressed, the method deletePlayerAdmin is called
 			if (e.getSource().equals(btnDeletePlayerManagement)) {
 				deletePlayerAdmin();
 			}
-
+			// If btnModifyPlayer is pressed and checkUser returns true, the method modifyPlayer is called
 			if (e.getSource().equals(btnModifyPlayer)) {
 				if (checkUser()) {
 					modifyPlayer(userControllable);
 				}
 			}
-
+			// If btnDeletePlayer is pressed, the method deletePlayer is called
 			if (e.getSource().equals(btnDeletePlayer)) {
 				deletePlayer(userControllable);
 			}
+			// If buttonChampsPlayer_Enter is pressed, the method listChampPlayer is called
 			if (e.getSource().equals(buttonChampsPlayer_Enter)) {
 				listChampPlayer();
 			}
+			// If buttonChampCheck is pressed, the method checkChampAdmin is called
 			if (e.getSource().equals(buttonChampsAdmin_Check)) {
 				checkChampAdmin();
 			}
+			// If buttonChampAdd is pressed, the method addChampAdmin is called
 			if (e.getSource().equals(buttonChampAdd)) {
 				addChampAdmin();
 			}
+			// If btnModifyChamp is pressed, the method executeModificationChampAdmin is called
 			if (e.getSource().equals(btnModifyChamp)) {
 				executeModificationChampAdmin();
 			}
@@ -1674,6 +1718,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 	}
 
 	// Mouse Listener
+	//  If  mouse is clicked on games table, the date is set to the calendar
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() == games) {
@@ -1681,7 +1726,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		}
 		calendar.setEnabled(false);
 	}
-
+	// If mouse is pressed on lblPassEyeAddAdmin or lblEyeProfile, the password is shown
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if (e.getSource().equals(lblPassEyeAddAdmin)) {
@@ -1692,6 +1737,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		}
 	}
 
+	// If mouse is released on lblPassEyeAddAdmin or lblEyeProfile, the password is hidden
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (e.getSource().equals(lblPassEyeAddAdmin)) {
@@ -1718,6 +1764,8 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 
 	}
 
+	// If focus is lost on any of the following 
+	// it will check that the input is correct
 	@Override
 	public void focusLost(FocusEvent e) {
 		if (e.getSource().equals(textFieldNameProfile))

@@ -20,7 +20,6 @@ public interface Statable {
 	 * 
 	 * @param nickname
 	 * @return
-	 * @throws SQLException
 	 * @throws PersonalizedException
 	 */
 	public Set<Played> stadistics(String nickname) throws PersonalizedException;

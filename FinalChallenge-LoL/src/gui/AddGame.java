@@ -398,6 +398,7 @@ public class AddGame extends JDialog implements ActionListener, PropertyChangeLi
 		}
 	}
 
+	// Loads the next comboBox 
 	private void loadComboBox(JComboBox comboBoxPlayer, JComboBox comboBoxChamp, List<String> playersSelected,
 			List<String> champsSelected) throws PersonalizedException {
 		// TODO Auto-generated method stub
@@ -440,6 +441,7 @@ public class AddGame extends JDialog implements ActionListener, PropertyChangeLi
 		comboBoxPlayer.addActionListener(this);
 	}
 
+	//Method to add a game getting the data from the tab
 	private void addGame() throws PersonalizedException {
 		// TODO Auto-generated method stub
 		Game aux = new Game();
@@ -507,6 +509,7 @@ public class AddGame extends JDialog implements ActionListener, PropertyChangeLi
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		try {
+			// When pressed any of both buttons loads the next comboBox
 			if (e.getSource().equals(comboBoxC1B) || e.getSource().equals(comboBoxP1B)) {
 				if (comboBoxC1B.getSelectedIndex() != -1 && comboBoxP1B.getSelectedIndex() != -1) {
 					champsSelected.add((String) comboBoxC1B.getSelectedItem());
@@ -518,6 +521,7 @@ public class AddGame extends JDialog implements ActionListener, PropertyChangeLi
 					loadComboBox(comboBoxP2B, comboBoxC2B, playersSelected, champsSelected);
 				}
 			}
+			// When pressed any of both buttons loads the next comboBox
 			if (e.getSource().equals(comboBoxC2B) || e.getSource().equals(comboBoxP2B)) {
 				if (comboBoxC2B.getSelectedIndex() != -1 && comboBoxP2B.getSelectedIndex() != -1) {
 					champsSelected.add((String) comboBoxC2B.getSelectedItem());
@@ -529,6 +533,7 @@ public class AddGame extends JDialog implements ActionListener, PropertyChangeLi
 					loadComboBox(comboBoxP3B, comboBoxC3B, playersSelected, champsSelected);
 				}
 			}
+			// When pressed any of both buttons loads the next comboBox
 			if (e.getSource().equals(comboBoxC3B) || e.getSource().equals(comboBoxP3B)) {
 				if (comboBoxC3B.getSelectedIndex() != -1 && comboBoxP3B.getSelectedIndex() != -1) {
 					champsSelected.add((String) comboBoxC3B.getSelectedItem());
@@ -540,6 +545,7 @@ public class AddGame extends JDialog implements ActionListener, PropertyChangeLi
 					loadComboBox(comboBoxP4B, comboBoxC4B, playersSelected, champsSelected);
 				}
 			}
+			// When pressed any of both buttons loads the next comboBox
 			if (e.getSource().equals(comboBoxC4B) || e.getSource().equals(comboBoxP4B)) {
 				if (comboBoxC4B.getSelectedIndex() != -1 && comboBoxP4B.getSelectedIndex() != -1) {
 					champsSelected.add((String) comboBoxC4B.getSelectedItem());
@@ -551,6 +557,7 @@ public class AddGame extends JDialog implements ActionListener, PropertyChangeLi
 					loadComboBox(comboBoxP5B, comboBoxC5B, playersSelected, champsSelected);
 				}
 			}
+			// When pressed any of both buttons loads the next comboBox
 			if (e.getSource().equals(comboBoxC5B) || e.getSource().equals(comboBoxP5B)) {
 				if (comboBoxC5B.getSelectedIndex() != -1 && comboBoxP5B.getSelectedIndex() != -1) {
 					champsSelected.add((String) comboBoxC5B.getSelectedItem());
@@ -562,7 +569,7 @@ public class AddGame extends JDialog implements ActionListener, PropertyChangeLi
 					loadComboBox(comboBoxP1R, comboBoxC1R, playersSelected, champsSelected);
 				}
 			}
-
+			// When pressed any of both buttons loads the next comboBox
 			if (e.getSource().equals(comboBoxC1R) || e.getSource().equals(comboBoxP1R)) {
 				if (comboBoxC1R.getSelectedIndex() != -1 && comboBoxP1R.getSelectedIndex() != -1) {
 					champsSelected.add((String) comboBoxC1R.getSelectedItem());
@@ -574,6 +581,7 @@ public class AddGame extends JDialog implements ActionListener, PropertyChangeLi
 					loadComboBox(comboBoxP2R, comboBoxC2R, playersSelected, champsSelected);
 				}
 			}
+			// When pressed any of both buttons loads the next comboBox
 			if (e.getSource().equals(comboBoxC2R) || e.getSource().equals(comboBoxP2R)) {
 				if (comboBoxC2R.getSelectedIndex() != -1 && comboBoxP2R.getSelectedIndex() != -1) {
 					champsSelected.add((String) comboBoxC2R.getSelectedItem());
@@ -585,6 +593,7 @@ public class AddGame extends JDialog implements ActionListener, PropertyChangeLi
 					loadComboBox(comboBoxP3R, comboBoxC3R, playersSelected, champsSelected);
 				}
 			}
+			// When pressed any of both buttons loads the next comboBox
 			if (e.getSource().equals(comboBoxC3R) || e.getSource().equals(comboBoxP3R)) {
 				if (comboBoxC3R.getSelectedIndex() != -1 && comboBoxP3R.getSelectedIndex() != -1) {
 					champsSelected.add((String) comboBoxC3R.getSelectedItem());
@@ -596,6 +605,7 @@ public class AddGame extends JDialog implements ActionListener, PropertyChangeLi
 					loadComboBox(comboBoxP4R, comboBoxC4R, playersSelected, champsSelected);
 				}
 			}
+			// When pressed any of both buttons loads the next comboBox
 			if (e.getSource().equals(comboBoxC4R) || e.getSource().equals(comboBoxP4R)) {
 				if (comboBoxC4R.getSelectedIndex() != -1 && comboBoxP4R.getSelectedIndex() != -1) {
 					champsSelected.add((String) comboBoxC4R.getSelectedItem());
@@ -607,6 +617,7 @@ public class AddGame extends JDialog implements ActionListener, PropertyChangeLi
 					loadComboBox(comboBoxP5R, comboBoxC5R, playersSelected, champsSelected);
 				}
 			}
+			// When pressed any of both buttons enables dateChooser
 			if (e.getSource().equals(comboBoxC5R) || e.getSource().equals(comboBoxP5R)) {
 				if (comboBoxC5R.getSelectedIndex() != -1 && comboBoxP5R.getSelectedIndex() != -1) {
 					champsSelected.add((String) comboBoxC5R.getSelectedItem());
@@ -616,10 +627,12 @@ public class AddGame extends JDialog implements ActionListener, PropertyChangeLi
 					dateChooser.setEnabled(true);
 				}
 			}
+			// When pressed btnAdd adds newgame
 			if (e.getSource().equals(btnAdd)) {
 				addGame();
 				this.dispose();
 			}
+			// When pressed enables chckbxT1 and chckbxT2
 			if (e.getSource().equals(textDuration)) {
 				if (!textDuration.getText().isBlank()) {
 					chckbxT1.setEnabled(true);
@@ -627,6 +640,7 @@ public class AddGame extends JDialog implements ActionListener, PropertyChangeLi
 					textDuration.setEnabled(false);
 				}
 			}
+			// When pressed any of both buttons btnAdd  is enabled
 			if (e.getSource().equals(chckbxT1) || e.getSource().equals(chckbxT2)) {
 				btnAdd.setEnabled(true);
 			}
@@ -676,6 +690,7 @@ public class AddGame extends JDialog implements ActionListener, PropertyChangeLi
 		return correct;
 	}
 
+	// When PropertyChangeEvent changes enables text duration
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		// TODO Auto-generated method stub

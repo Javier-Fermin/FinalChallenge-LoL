@@ -18,8 +18,8 @@ public class StatableDBImplementation implements Statable {
 	private ResultSet rs;
 	private ConnectionOpenClose connection;
 
+	// This method gets all the Played info related to a Player by using its Nickname
 	@Override
-	// RECORDAR CAMBIAR LUEGO A THROWS
 	public Set<Played> stadistics(String nickname) throws PersonalizedException {
 		try {
 			connection = new ConnectionOpenClose(2);

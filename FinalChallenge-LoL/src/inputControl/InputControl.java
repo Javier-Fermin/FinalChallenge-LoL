@@ -5,6 +5,8 @@ import java.util.regex.Pattern;
 
 public class InputControl {
 	private boolean correct;
+
+	// Method to validate mails
 	public boolean validateEmail(String email) {
 		correct = true;
 		Pattern pattern = Pattern
@@ -18,7 +20,8 @@ public class InputControl {
         
         return correct;
 	}
-	
+
+	// Method to validate nicknames
 	public boolean validateNickname(String nickname) {
 		correct = true;
 		if(nickname.split("\\s+").length != 1) {
@@ -26,6 +29,8 @@ public class InputControl {
 		}
 		return correct;
 	}
+
+	// Method to validate strings
 	public boolean validateString(String string) {
 		correct = true;
 		if(!string.matches("[A-Z a-z]+")){
@@ -34,6 +39,7 @@ public class InputControl {
 		return correct;
 	}
 	
+	// Method to validate numbers
 	public boolean validateInteger(String number) {
 		correct= false;
 		if(number.matches("[0-9]+")) {

@@ -3,6 +3,7 @@ package model;
 import java.time.LocalDate;
 import java.time.Period;
 
+// This is the User class
 public class User {
 	private String id;
 	private String email;

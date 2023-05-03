@@ -3,6 +3,7 @@ package model;
 import java.time.LocalDate;
 import java.time.Period;
 
+// This is the Administrator class, which extends from User
 public class Administrator extends User{
 	private int addtions;
 	private LocalDate startDate;

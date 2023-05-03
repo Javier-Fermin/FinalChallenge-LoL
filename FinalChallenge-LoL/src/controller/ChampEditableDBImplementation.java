@@ -20,6 +20,7 @@ public class ChampEditableDBImplementation implements ChampEditable {
 	private ConnectionOpenClose connection;
 	private ResultSet rs;
 
+	// This method adds a new Champ to the DB
 	@Override
 	public boolean addChamp(Champ champ) throws PersonalizedException {
 		try {
@@ -55,6 +56,7 @@ public class ChampEditableDBImplementation implements ChampEditable {
 		}
 	}
 
+	// This method modifies a Champ by using its name
 	@Override
 	public boolean modifyChamp(Champ champ) throws PersonalizedException {
 		try {
@@ -91,6 +93,7 @@ public class ChampEditableDBImplementation implements ChampEditable {
 		}
 	}
 
+	// This method is to list all the champs
 	@Override
 	public List<Champ> listChamp() throws PersonalizedException {
 		try {
@@ -129,6 +132,7 @@ public class ChampEditableDBImplementation implements ChampEditable {
 		}
 	}
 
+	// We use this method to list all champs with a filter on position and/or region
 	@Override
 	public List<Champ> listChamp(String filterPosition, String filterRegion) throws PersonalizedException {
 		try {
@@ -176,6 +180,8 @@ public class ChampEditableDBImplementation implements ChampEditable {
 
 	}
 
+	// This method is used to check if a champ already exists in the database
+	// by its name and returns it
 	@Override
 	public Champ checkChampName(String name) throws PersonalizedException {
 		try {
