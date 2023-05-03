@@ -250,8 +250,9 @@ public class SignIn extends JDialog implements ActionListener, FocusListener, Mo
 			else 
 				chooseConnection = 0;
 			controller.addUser(user, chooseConnection);
-			JOptionPane.showMessageDialog(null, "CORRECTO", "League of legends", JOptionPane.INFORMATION_MESSAGE);
-			// OPEN MAIN WINDOW
+			parent.setUser(user);
+            parent.setVisible(true);
+            this.dispose();
 		}
 	}
 
