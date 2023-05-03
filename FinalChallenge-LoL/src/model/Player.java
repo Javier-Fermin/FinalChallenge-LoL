@@ -1,5 +1,6 @@
 package model;
 
+// This is the Player class, which extends from User
 public class Player extends User{
 	private String nickname;
 

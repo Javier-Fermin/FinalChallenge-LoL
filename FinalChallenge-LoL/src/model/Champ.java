@@ -1,12 +1,11 @@
 package model;
 
-import java.util.ArrayList;
-
+// This is the Champ class
 public class Champ {
 	private String name;
 	private String region;
 	private String passive;
-	private String a;
+	private String q;
 	private String w;
 	private String r;
 	private String e;
@@ -30,11 +29,11 @@ public class Champ {
 	public void setPassive(String passive) {
 		this.passive = passive;
 	}
-	public String getA() {
-		return a;
+	public String getQ() {
+		return q;
 	}
-	public void setA(String a) {
-		this.a = a;
+	public void setQ(String q) {
+		this.q = q;
 	}
 	public String getW() {
 		return w;

@@ -2,15 +2,16 @@ package model;
 
 import java.time.LocalDate;
 
+// This is the Game class
 public class Game {
- private String id;
+ private int id;
  private LocalDate dateGame;
  private Float duration;
-public String getId() {
+public int getId() {
 	return id;
 }
-public void setId(String id) {
-	this.id = id;
+public void setId(int i) {
+	this.id = i;
 }
 public LocalDate getDateGame() {
 	return dateGame;

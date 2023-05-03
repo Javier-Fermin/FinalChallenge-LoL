@@ -1,9 +1,12 @@
 package model;
 
+// This is the Played class
 public class Played {
+	private int id;
 	private boolean win;
-	private String position;
-	private final String[] postions = {"TOP","JNG","MID","ADC","SUP"}; 
+	private String position,name,nickname;
+
+	private final String[] postions = {"TOP","JNG","MID","ADC","SUP"};
 	
 	public boolean isWin() {
 		return win;
@@ -19,5 +22,23 @@ public class Played {
 	}
 	public void setPosition(String position) {
 		this.position = position;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 }
