@@ -21,10 +21,10 @@ public class StatableDBImplementation implements Statable {
 	@Override
 	// RECORDAR CAMBIAR LUEGO A THROWS
 	public Set<Played> stadistics(String nickname) throws PersonalizedException {
-		connection = new ConnectionOpenClose(2);
-		// TODO Auto-generated method stub
-		Set<Played> stats = null;
 		try {
+			connection = new ConnectionOpenClose(2);
+			// TODO Auto-generated method stub
+			Set<Played> stats = null;
 			con = connection.openConnection();
 			stmt = con.prepareStatement("SELECT * FROM Play WHERE Nickname = ?");
 			stmt.setString(1, nickname);
@@ -42,12 +42,11 @@ public class StatableDBImplementation implements Statable {
 			rs.close();
 
 			connection.closeConnection(stmt, con);
+			return stats;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new PersonalizedException(e.getMessage());
 		}
-
-		return stats;
 	}
 
 }

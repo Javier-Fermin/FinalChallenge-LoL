@@ -22,43 +22,42 @@ public class GameStorableDBImplementation implements GameStorable {
 	private ResultSet rs;
 	private ConnectionOpenClose connection;
 
-	
-	
 	@Override
-	public int addGame(Game game) throws PersonalizedException{
-		connection = new ConnectionOpenClose(2);
-		// TODO Auto-generated method stub
-		int id=0;
+	public int addGame(Game game) throws PersonalizedException {
 		try {
+			connection = new ConnectionOpenClose(2);
+			// TODO Auto-generated method stub
+			int id = 0;
 			con = connection.openConnection();
 			stmt = con.prepareCall("{CALL addGame(?,?,?)}");
-			stmt.setDate(2,Date.valueOf(game.getDateGame()));
-			stmt.setFloat(3,game.getDuration());
-			((CallableStatement) stmt).registerOutParameter(1,Types.INTEGER);
+			((CallableStatement) stmt).registerOutParameter(1, Types.INTEGER);
+			stmt.setDate(2, Date.valueOf(game.getDateGame()));
+			stmt.setFloat(3, game.getDuration());
 			stmt.executeUpdate();
 			id = ((CallableStatement) stmt).getInt(1);
-			System.out.println(id);
 			connection.closeConnection(stmt, con);
+			return id;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new PersonalizedException(e.getMessage());
 		}
-		return id;
+
 	}
 
 	@Override
-	public Set<Game> searchGames(String nickname) throws PersonalizedException{
-		connection = new ConnectionOpenClose(2);
-		// TODO Auto-generated method stub
-		Set<Game> games=null;
+	public Set<Game> searchGames(String nickname) throws PersonalizedException {
 		try {
+			connection = new ConnectionOpenClose(2);
+			// TODO Auto-generated method stub
+			Set<Game> games = null;
+
 			con = connection.openConnection();
 			stmt = con.prepareStatement("SELECT g.* FROM Game g JOIN Play p ON g.id = p.id WHERE p.nickname = ?");
-			stmt.setString(1,nickname);
+			stmt.setString(1, nickname);
 			rs = stmt.executeQuery();
 			games = new HashSet<Game>();
-			while(rs.next()) {
-				Game aux=new Game();
+			while (rs.next()) {
+				Game aux = new Game();
 				aux.setId(rs.getInt("id"));
 				aux.setDateGame(rs.getDate("DateGame").toLocalDate());
 				aux.setDuration(rs.getFloat("Duration"));
@@ -66,20 +65,22 @@ public class GameStorableDBImplementation implements GameStorable {
 			}
 			rs.close();
 			connection.closeConnection(stmt, con);
+
+			return games;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new PersonalizedException(e.getMessage());
 		}
-		return games;
 	}
 
 	@Override
-	public void completeGame(int id,String nickname, String name, boolean win, String position) throws PersonalizedException{
+	public void completeGame(int id, String nickname, String name, boolean win, String position)
+			throws PersonalizedException {
 		connection = new ConnectionOpenClose(2);
 		// TODO Auto-generated method stub
 		try {
 			con = connection.openConnection();
-			stmt = con.prepareCall("{CALL completeGame(?,?,?,?,?)}");
+			stmt = con.prepareCall("INSERT INTO Play VALUES (?,?,?,?,?)");
 			stmt.setInt(1, id);
 			stmt.setString(2, nickname);
 			stmt.setString(3, name);
@@ -89,9 +90,9 @@ public class GameStorableDBImplementation implements GameStorable {
 			connection.closeConnection(stmt, con);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new PersonalizedException(e.getMessage());
 		}
-		
+
 	}
 
 }

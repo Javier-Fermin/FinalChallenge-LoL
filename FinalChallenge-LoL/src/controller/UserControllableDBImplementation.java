@@ -17,42 +17,25 @@ import model.Player;
 import model.User;
 
 public class UserControllableDBImplementation implements UserControllable {
-	/**
-	 * @author Irati Garzón
-	 * @author Alex Salinero
-	 * @version 5- 25/04/2023
-	 */
 	private Connection con;
 	private PreparedStatement stmt;
 	private ConnectionOpenClose connection;
 
 	@Override
-	/**
-	 * Method use to check if the information related to the logIn is correct
-	 * 
-	 * @param usr
-	 * @param passwd
-	 * @return correct
-	 */
-	public boolean logIn(String usr, String passwd)  throws PersonalizedException{
-		connection = new ConnectionOpenClose(1);
-		User user = null;
-		boolean correct = false;
-		ResultSet rs = null;
-		// Query to search which id has a player knowing his nickname
-		final String SELECT = "Select id FROM player where nickname= ?";
-		// Query to search the password linked to the id
-		final String SELECTId = "Select Password FROM user where id=?";
-
-		// Open connection
+	public boolean logIn(String usr, String passwd) throws PersonalizedException {
 		try {
+			connection = new ConnectionOpenClose(1);
+			User user = null;
+			boolean correct = false;
+			ResultSet rs = null;
+			// Query to search which id has a player knowing his nickname
+			final String SELECT = "Select id FROM player where nickname= ?";
+			// Query to search the password linked to the id
+			final String SELECTId = "Select Password FROM user where id=?";
+
+			// Open connection
+
 			con = connection.openConnection();
-		} catch (SQLException e1) {
-			//
-			e1.printStackTrace();
-		}
-
-		try {
 			// Prepare the query
 			stmt = con.prepareStatement(SELECT);
 			// Establish the nickname for the query
@@ -90,45 +73,33 @@ public class UserControllableDBImplementation implements UserControllable {
 			} else {
 				correct = false;
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
-		// Close ResultSet
+			// Close ResultSet
 
-		if (rs != null) {
-			try {
+			if (rs != null) {
 				rs.close();
-			} catch (SQLException ex) {
 			}
-		}
-		try {
 			connection.closeConnection(stmt, con);
+
+			return correct;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new PersonalizedException(e.getMessage());
 		}
-		return correct;
 	}
 
 	@Override
-	public boolean delete(User user, int chooseConnection)  throws PersonalizedException{
-		connection = new ConnectionOpenClose(chooseConnection);
-		// To check that the modification has been carried out correctly
-		boolean correct = false;
-		// Sentence to delete user.
-		final String DELETEusr = "delete from user where id=?";
-
-		// Open connection with DB.
+	public boolean delete(User user, int chooseConnection) throws PersonalizedException {
 		try {
+			connection = new ConnectionOpenClose(chooseConnection);
+			// To check that the modification has been carried out correctly
+			boolean correct = false;
+			// Sentence to delete user.
+			final String DELETEusr = "delete from user where id=?";
+
+			// Open connection with DB.
+
 			con = connection.openConnection();
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		try {
 			// Prepare query, set the id as parameter.
 			stmt = con.prepareStatement(DELETEusr);
 			stmt.setString(1, user.getId());
@@ -137,43 +108,31 @@ public class UserControllableDBImplementation implements UserControllable {
 			if (stmt.executeUpdate() != 0) {
 				correct = true;
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		// Close the connection
-
-		try {
+			// Close the connection
 			connection.closeConnection(stmt, con);
+			return correct;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new PersonalizedException(e.getMessage());
 		}
-
-		return correct;
 	}
 
 	@Override
 	public User findUser(String usr, int chooseConnection) throws PersonalizedException {
-		connection = new ConnectionOpenClose(chooseConnection);
-		User user = null;
-		ResultSet rs = null;
-		// Sentence to get the player with the received nickname for player table.
-		final String SELECTplayer = "Select * FROM player where nickname=?";
-		// Sentence to get the user info with the obtained id.
-		final String SELECTuser = "Select * FROM user where id=?";
-		// Sentence to get the administrator info with the obtained id.
-		final String SELECTadmin = "Select * FROM Administrator where id=?";
-
-		// Open connection with DB.
 		try {
+			connection = new ConnectionOpenClose(chooseConnection);
+			User user = null;
+			ResultSet rs = null;
+			// Sentence to get the player with the received nickname for player table.
+			final String SELECTplayer = "Select * FROM player where nickname=?";
+			// Sentence to get the user info with the obtained id.
+			final String SELECTuser = "Select * FROM user where id=?";
+			// Sentence to get the administrator info with the obtained id.
+			final String SELECTadmin = "Select * FROM Administrator where id=?";
+
+			// Open connection with DB.
 			con = connection.openConnection();
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 
-		try {
 			// Prepare the first query, set the received usr String as parameter.
 			stmt = con.prepareStatement(SELECTplayer);
 			stmt.setString(1, usr);
@@ -188,7 +147,7 @@ public class UserControllableDBImplementation implements UserControllable {
 				((Player) user).setNickname(rs.getString("nickname"));
 
 				// Set player id as parameter for next query.
-				//stmt.setString(1, rs.getString("id"));
+				// stmt.setString(1, rs.getString("id"));
 			} else {
 				stmt = con.prepareStatement(SELECTadmin);
 				stmt.setString(1, usr);
@@ -205,8 +164,8 @@ public class UserControllableDBImplementation implements UserControllable {
 				}
 
 			}
-			
-			//If the user isn't null we execute the query
+
+			// If the user isn't null we execute the query
 			if (user != null) {
 				user.setId(rs.getString("id"));
 				stmt = con.prepareStatement(SELECTuser);
@@ -224,55 +183,43 @@ public class UserControllableDBImplementation implements UserControllable {
 
 				}
 			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		if (rs != null) {
-			try {
+			if (rs != null) {
 				rs.close();
-			} catch (SQLException ex) {
 			}
-		}
 
-		// Close the connection
+			// Close the connection
 
-		try {
 			connection.closeConnection(stmt, con);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
-		// Return the user with the info from the DB.
-		// null means there was no user in DB with received usr String.
-		return user;
+			// Return the user with the info from the DB.
+			// null means there was no user in DB with received usr String.
+			return user;
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			throw new PersonalizedException(e1.getMessage());
+		}
 	}
 
 	@Override
-	public void addUser(User user, int chooseConnection)  throws PersonalizedException{
-		connection = new ConnectionOpenClose(chooseConnection);
-		final String CALLUser = "CALL insertUser(?,?,?,?,?,?,?,?)";
-
-		// Open connection with DB.
+	public void addUser(User user, int chooseConnection) throws PersonalizedException {
 		try {
+			connection = new ConnectionOpenClose(chooseConnection);
+			final String CALLUser = "CALL insertUser(?,?,?,?,?,?,?,?)";
+
+			// Open connection with DB.
+
 			con = connection.openConnection();
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 
-		// Prepare sentence for query adding all the items to the stmt.
-		try {
+			// Prepare sentence for query adding all the items to the stmt.
 			stmt = con.prepareStatement(CALLUser);
 			if (user instanceof Player) {
 				stmt.setString(1, "P");
 				stmt.setString(8, ((Player) user).getNickname());
-				
+
 			} else {
 				stmt.setString(1, "A");
 				stmt.setString(8, null);
-				
+
 			}
 
 			stmt.setString(2, user.getEmail());
@@ -284,36 +231,28 @@ public class UserControllableDBImplementation implements UserControllable {
 
 			// Execute query.
 			stmt.executeUpdate();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
 			connection.closeConnection(stmt, con);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new PersonalizedException(e.getMessage());
 		}
 	}
 
 	@Override
-	public boolean modifyUser(User user)  throws PersonalizedException{
-		connection = new ConnectionOpenClose(2);
-		// Creation of the three statements needed to make the modification
-		final String UPDATEUser = "UPDATE User SET Mail = ?, Name= ?, BirthDate= ?, Phone= ?, Nationality= ?, Password= ? WHERE id= ? ";
-		final String UPDATEPlayer = "UPDATE Player SET nickname = ? WHERE id= ?";
-		final String UPDATEAdmin = "UPDATE Administrator SET additions = ? WHERE id=? ";
-		// To check that the modification has been carried out correctly
-		boolean correct1 = false, correct2 = false;
+	public boolean modifyUser(User user) throws PersonalizedException {
+		try {
+			connection = new ConnectionOpenClose(2);
+			// Creation of the three statements needed to make the modification
+			final String UPDATEUser = "UPDATE User SET Mail = ?, Name= ?, BirthDate= ?, Phone= ?, Nationality= ?, Password= ? WHERE id= ? ";
+			final String UPDATEPlayer = "UPDATE Player SET nickname = ? WHERE id= ?";
+			final String UPDATEAdmin = "UPDATE Administrator SET additions = ? WHERE id=? ";
+			// To check that the modification has been carried out correctly
+			boolean correct1 = false, correct2 = false;
 
-		// Open connection with DB.
-		try {
+			// Open connection with DB.
+
 			con = connection.openConnection();
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		try {
+
 			// Prepare the first statement
 			stmt = con.prepareStatement(UPDATEUser);
 
@@ -350,43 +289,35 @@ public class UserControllableDBImplementation implements UserControllable {
 				correct2 = true;
 			}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+			// Close the connection
 
-		// Close the connection
-
-		try {
 			connection.closeConnection(stmt, con);
-		} catch (SQLException e) {
+
+			return correct2;
+		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new PersonalizedException(e1.getMessage());
 		}
-		return correct2;
 	}
 
 	@Override
-	public Set<User> listPlayers()  throws PersonalizedException{
-		connection = new ConnectionOpenClose(0);
-		ResultSet rs = null;
-		User usr = null;
-		Set<User> users = new HashSet<User>();
-		String SELECTplayer = "select u.Id, Mail, Name, BirthDate, Phone, Nationality, Password, nickname from user u, player p where u.id = p.id; ";
-		
-		// Open connection with DB.
+	public Set<User> listPlayers() throws PersonalizedException {
 		try {
-			con= connection.openConnection();
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		try {
+			connection = new ConnectionOpenClose(0);
+			ResultSet rs = null;
+			User usr = null;
+			Set<User> users = new HashSet<User>();
+			String SELECTplayer = "select u.Id, Mail, Name, BirthDate, Phone, Nationality, Password, nickname from user u, player p where u.id = p.id; ";
+
+			// Open connection with DB.
+
+			con = connection.openConnection();
+
 			stmt = con.prepareStatement(SELECTplayer);
-			
+
 			rs = stmt.executeQuery();
-			
-			while(rs.next()) {
+
+			while (rs.next()) {
 				usr = new Player();
 				usr.setId(rs.getString("Id"));
 				usr.setEmail(rs.getString("Mail"));
@@ -398,23 +329,16 @@ public class UserControllableDBImplementation implements UserControllable {
 				((Player) usr).setNickname(rs.getString("Nickname"));
 				users.add(usr);
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		try {
+
 			connection.closeConnection(stmt, con);
+
+			if (rs != null) {
+				rs.close();
+			}
+			return users;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new PersonalizedException(e.getMessage());
 		}
-		if(rs != null) {
-			try {
-				rs.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		return users;
 	}
 }

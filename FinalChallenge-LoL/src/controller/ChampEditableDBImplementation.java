@@ -15,28 +15,23 @@ import model.ConnectionOpenClose;
 
 public class ChampEditableDBImplementation implements ChampEditable {
 
-	private Connection	con;
-	private	PreparedStatement	stmt;
+	private Connection con;
+	private PreparedStatement stmt;
 	private ConnectionOpenClose connection;
-	private ResultSet	rs;
+	private ResultSet rs;
 
 	@Override
-	public boolean addChamp(Champ champ) throws PersonalizedException{
-		connection = new ConnectionOpenClose(0);
-		boolean added = false;
-		int i = 0;
-
-		// SQL query
-		final String INSERTchamp = "INSERT INTO Champ (Name, Position, Region, Passive, Q, W, E, R) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-		
+	public boolean addChamp(Champ champ) throws PersonalizedException {
 		try {
+			connection = new ConnectionOpenClose(0);
+			boolean added = false;
+			int i = 0;
+
+			// SQL query
+			final String INSERTchamp = "INSERT INTO Champ (Name, Position, Region, Passive, Q, W, E, R) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
 			con = connection.openConnection();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-
-		try {
-			//	Prepare the query
+			// Prepare the query
 			stmt = con.prepareStatement(INSERTchamp);
 
 			stmt.setString(1, champ.getName());
@@ -48,39 +43,30 @@ public class ChampEditableDBImplementation implements ChampEditable {
 			stmt.setString(7, champ.getE());
 			stmt.setString(8, champ.getR());
 
-			//	Execute the query
+			// Execute the query
 			i = stmt.executeUpdate();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		try {
 			connection.closeConnection(stmt, con);
+
+			if (i == 1)
+				added = true;
+			return added;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new PersonalizedException(e.getMessage());
 		}
-		if (i == 1) 
-			added = true;
-		return added;
 	}
 
 	@Override
-	public boolean modifyChamp(Champ champ) throws PersonalizedException{
-		connection = new ConnectionOpenClose(0);
-		// SQL query
-		final String UPDATEchamp = "UPDATE Champ SET Name = ?, Position = ?, Region = ?, Passive = ?, Q = ?, W = ?, E = ?, R = ? WHERE Name = ?";
-		
-		boolean modified = false;
-
+	public boolean modifyChamp(Champ champ) throws PersonalizedException {
 		try {
+			connection = new ConnectionOpenClose(0);
+			// SQL query
+			final String UPDATEchamp = "UPDATE Champ SET Name = ?, Position = ?, Region = ?, Passive = ?, Q = ?, W = ?, E = ?, R = ? WHERE Name = ?";
+
+			boolean modified = false;
+
 			con = connection.openConnection();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
 
-		try {
-			//	Prepare the query
+			// Prepare the query
 			stmt = con.prepareStatement(UPDATEchamp);
 
 			stmt.setString(1, champ.getName());
@@ -91,44 +77,35 @@ public class ChampEditableDBImplementation implements ChampEditable {
 			stmt.setString(6, champ.getW());
 			stmt.setString(7, champ.getE());
 			stmt.setString(8, champ.getR());
-			//	We use the name of the champ to find it as it is the primary key
+			// We use the name of the champ to find it as it is the primary key
 			stmt.setString(9, champ.getName());
 
-			//	Execute the query
+			// Execute the query
 			if (stmt.executeUpdate() > 0)
 				modified = true;
+			connection.closeConnection(stmt, con);
+			return modified;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally{
-			try {
-				connection.closeConnection(stmt, con);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			throw new PersonalizedException(e.getMessage());
 		}
-		return modified;
 	}
 
 	@Override
-	public List<Champ> listChamp() throws PersonalizedException{
-		Champ champ;
-		ArrayList<Champ> list = new ArrayList<Champ>();
-		connection = new ConnectionOpenClose(2);
-		// SQL query
-		final String SELECTchamp = "SELECT * FROM Champ";
-
+	public List<Champ> listChamp() throws PersonalizedException {
 		try {
+			Champ champ;
+			ArrayList<Champ> list = new ArrayList<Champ>();
+			connection = new ConnectionOpenClose(2);
+			// SQL query
+			final String SELECTchamp = "SELECT * FROM Champ";
+
 			con = connection.openConnection();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
 
-		try {
-			//	Prepare the query
+			// Prepare the query
 			stmt = con.prepareStatement(SELECTchamp);
 
-			//	Execute the query
+			// Execute the query
 			rs = stmt.executeQuery();
 
 			while (rs.next()) {
@@ -142,36 +119,27 @@ public class ChampEditableDBImplementation implements ChampEditable {
 				champ.setE(rs.getString("E"));
 				champ.setR(rs.getString("R"));
 
-				//	We add the champ to the list
+				// We add the champ to the list
 				list.add(champ);
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} 
-		try {
 			connection.closeConnection(stmt, con);
+			return list;
 		} catch (SQLException e) {
-				e.printStackTrace();
+			throw new PersonalizedException(e.getMessage());
 		}
-		return list;
 	}
 
 	@Override
-	public List<Champ> listChamp(String filterPosition, String filterRegion) throws PersonalizedException{
-		Champ champ;
-		ArrayList<Champ> listFiltered = new ArrayList<Champ>();
-		connection = new ConnectionOpenClose(2);
-		// SQL query
-		String SELECTchampFiltered = "SELECT * FROM Champ";
-
+	public List<Champ> listChamp(String filterPosition, String filterRegion) throws PersonalizedException {
 		try {
+			Champ champ;
+			ArrayList<Champ> listFiltered = new ArrayList<Champ>();
+			connection = new ConnectionOpenClose(2);
+			// SQL query
+			String SELECTchampFiltered = "SELECT * FROM Champ";
+
 			con = connection.openConnection();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-
-		try {
-			//	Prepare the query
+			// Prepare the query
 			if (filterPosition != null)
 				SELECTchampFiltered += " WHERE Position = '" + filterPosition + "'";
 			if (filterRegion != null) {
@@ -196,39 +164,33 @@ public class ChampEditableDBImplementation implements ChampEditable {
 				champ.setE(rs.getString("E"));
 				champ.setR(rs.getString("R"));
 
-				//	We add the champ to the list
+				// We add the champ to the list
 				listFiltered.add(champ);
-			}				
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} 
-		try {
+			}
+
 			connection.closeConnection(stmt, con);
+			return listFiltered;
 		} catch (SQLException e) {
-				e.printStackTrace();
+			throw new PersonalizedException(e.getMessage());
 		}
-		return listFiltered;
+
 	}
 
 	@Override
-	public Champ checkChampName(String name) throws PersonalizedException{
-		Champ champ = new Champ();
-		connection = new ConnectionOpenClose(0);
-		
-		// SQL query
-		final String SELECTChampName = "SELECT * FROM  CHAMP WHERE NAME = '" + name + "'";
-	
+	public Champ checkChampName(String name) throws PersonalizedException {
 		try {
+			Champ champ = new Champ();
+			connection = new ConnectionOpenClose(0);
+
+			// SQL query
+			final String SELECTChampName = "SELECT * FROM  CHAMP WHERE NAME = '" + name + "'";
+
 			con = connection.openConnection();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-	
-		try {
-			//	Prepare the query
+
+			// Prepare the query
 			stmt = con.prepareStatement(SELECTChampName);
 
-			//	Execute the query
+			// Execute the query
 			rs = stmt.executeQuery();
 
 			if (rs.next()) {
@@ -241,16 +203,12 @@ public class ChampEditableDBImplementation implements ChampEditable {
 				champ.setE(rs.getString("E"));
 				champ.setR(rs.getString("R"));
 			}
-	
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	
-		try {
+
 			connection.closeConnection(stmt, con);
+			return champ;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new PersonalizedException(e.getMessage());
 		}
-		return champ;
+
 	}
 }

@@ -161,6 +161,7 @@ public class SignIn extends JDialog implements ActionListener, FocusListener, Mo
 		lblSend.setBounds(206, 602, 63, 45);
 		secondPanel.add(lblSend);
 		lblSend.addMouseListener(this);
+		
 
 		JCalendar calendar = new JCalendar();
 		calendar.setBounds(245, 335, 212, 152);
@@ -292,7 +293,8 @@ public class SignIn extends JDialog implements ActionListener, FocusListener, Mo
 				checkUser();
 			} catch (PersonalizedException e1) {
 				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				JOptionPane.showMessageDialog(null, e1.getMessage(), "An unexpected error has occured!",
+						JOptionPane.ERROR_MESSAGE);
 			}
 
 		}
@@ -360,7 +362,7 @@ public class SignIn extends JDialog implements ActionListener, FocusListener, Mo
 	 * Method to validate that the phone only consists of 9 numbers
 	 */
 	public void checkPhone() {
-		if (textFieldPhone.getText().length()!= 9 ||control.validateInteger(textFieldPhone.getText()) && !textFieldPhone.getText().isBlank()) {
+		if((textFieldPhone.getText().length() != 9 || !control.validateInteger(textFieldPhone.getText())) && !textFieldPhone.getText().isEmpty()){
 			JOptionPane.showMessageDialog(this, "The telephone must have a lenght of 9 numbers", "League of legends",
 					JOptionPane.ERROR_MESSAGE);
 			textFieldPhone.setText("");
