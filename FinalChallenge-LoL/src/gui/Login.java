@@ -36,7 +36,6 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 	private JPasswordField passwordField;
 	private JTextField username_1;
 	private JLabel signIn, acceder;
-	private User user;
 	private UserControllable controller;
 	private MainWindow parent;
 

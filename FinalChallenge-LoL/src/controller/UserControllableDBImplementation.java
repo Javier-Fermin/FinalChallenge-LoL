@@ -112,6 +112,7 @@ public class UserControllableDBImplementation implements UserControllable {
 			connection.closeConnection(stmt, con);
 			return correct;
 		} catch (SQLException e) {
+
 			// TODO Auto-generated catch block
 			throw new PersonalizedException(e.getMessage());
 		}
@@ -145,24 +146,22 @@ public class UserControllableDBImplementation implements UserControllable {
 				// rest of information.
 				user = new Player();
 				((Player) user).setNickname(rs.getString("nickname"));
-
-				// Set player id as parameter for next query.
-				// stmt.setString(1, rs.getString("id"));
 			} else {
-				stmt = con.prepareStatement(SELECTadmin);
-				stmt.setString(1, usr);
-				// Execute third query.
-				rs = stmt.executeQuery();
-				if (rs.next()) {
-					// If no player was received the user is Administrator type.
-					user = new Administrator();
-					// Set the original usr String as parameter again.
+				if (chooseConnection != 2) {
+					stmt = con.prepareStatement(SELECTadmin);
 					stmt.setString(1, usr);
-					((Administrator) user).setStartDate(rs.getDate("StartDate").toLocalDate());
-					((Administrator) user).setAddtions(rs.getInt("Additions"));
+					// Execute third query.
+					rs = stmt.executeQuery();
+					if (rs.next()) {
+						// If no player was received the user is Administrator type.
+						user = new Administrator();
+						// Set the original usr String as parameter again.
+						stmt.setString(1, usr);
+						((Administrator) user).setStartDate(rs.getDate("StartDate").toLocalDate());
+						((Administrator) user).setAddtions(rs.getInt("Additions"));
 
+					}
 				}
-
 			}
 
 			// If the user isn't null we execute the query
@@ -195,6 +194,7 @@ public class UserControllableDBImplementation implements UserControllable {
 			// null means there was no user in DB with received usr String.
 			return user;
 		} catch (SQLException e1) {
+			e1.printStackTrace();
 			// TODO Auto-generated catch block
 			throw new PersonalizedException(e1.getMessage());
 		}
@@ -239,9 +239,9 @@ public class UserControllableDBImplementation implements UserControllable {
 	}
 
 	@Override
-	public boolean modifyUser(User user) throws PersonalizedException {
+	public boolean modifyUser(User user, int chooseConnection) throws PersonalizedException {
 		try {
-			connection = new ConnectionOpenClose(2);
+			connection = new ConnectionOpenClose(chooseConnection);
 			// Creation of the three statements needed to make the modification
 			final String UPDATEUser = "UPDATE User SET Mail = ?, Name= ?, BirthDate= ?, Phone= ?, Nationality= ?, Password= ? WHERE id= ? ";
 			final String UPDATEPlayer = "UPDATE Player SET nickname = ? WHERE id= ?";
@@ -269,24 +269,25 @@ public class UserControllableDBImplementation implements UserControllable {
 			if (stmt.executeUpdate() != 0) {
 				correct1 = true;
 			}
+			if (correct1) {
+				if (user instanceof Player) {
+					// Prepare the second statement
+					stmt = con.prepareStatement(UPDATEPlayer);
 
-			if (user instanceof Player) {
-				// Prepare the second statement
-				stmt = con.prepareStatement(UPDATEPlayer);
+					// Establish the parameters for the second statement --> UPDATEPlayer
+					stmt.setString(1, ((Player) user).getNickname());
+					stmt.setString(2, user.getId());
+				} else {
+					stmt = con.prepareStatement(UPDATEAdmin);
 
-				// Establish the parameters for the second statement --> UPDATEPlayer
-				stmt.setString(1, ((Player) user).getNickname());
-				stmt.setString(2, user.getId());
-			} else {
-				stmt = con.prepareStatement(UPDATEAdmin);
+					stmt.setInt(1, ((Administrator) user).getAddtions());
+					stmt.setString(2, user.getId());
+				}
 
-				stmt.setInt(1, ((Administrator) user).getAddtions());
-				stmt.setString(2, user.getId());
-			}
-
-			// Execute the second statement and check it
-			if (stmt.executeUpdate() != 0 && correct1 == true) {
-				correct2 = true;
+				// Execute the second statement and check it
+				if (stmt.executeUpdate() != 0) {
+					correct2 = true;
+				}
 			}
 
 			// Close the connection
@@ -296,6 +297,7 @@ public class UserControllableDBImplementation implements UserControllable {
 			return correct2;
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
+			e1.printStackTrace();
 			throw new PersonalizedException(e1.getMessage());
 		}
 	}

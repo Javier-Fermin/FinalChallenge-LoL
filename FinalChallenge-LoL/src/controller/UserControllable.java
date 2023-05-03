@@ -11,7 +11,6 @@ import model.User;
  * 
  * @author Irati Garzón
  * @author Alex Salinero
- * @version 1.0
  *
  */
 public interface UserControllable {
@@ -61,7 +60,7 @@ public interface UserControllable {
 	 * @return
 	 * @throws PersonalizedException
 	 */
-	public boolean modifyUser(User user) throws PersonalizedException;
+	public boolean modifyUser(User user, int chooseConnection) throws PersonalizedException;
 
 	/**
 	 * Method that lists the existing Players

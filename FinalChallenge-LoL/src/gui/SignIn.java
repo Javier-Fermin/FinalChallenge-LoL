@@ -245,11 +245,7 @@ public class SignIn extends JDialog implements ActionListener, FocusListener, Mo
 		} else {
 			User user = setInformation();
 			//if user is instace of player
-			if (user instanceof Player)
-				chooseConnection = 2;
-			else 
-				chooseConnection = 0;
-			controller.addUser(user, chooseConnection);
+			controller.addUser(user, 2);
 			parent.setUser(user);
             parent.setVisible(true);
             this.dispose();
