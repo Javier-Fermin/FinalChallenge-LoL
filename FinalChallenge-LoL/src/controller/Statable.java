@@ -5,6 +5,7 @@ import java.util.Set;
 
 import exceptions.PersonalizedException;
 import model.Played;
+import model.TopPlayers;
 /**
  * This interface is the responsible of getting all the Played that are related
  * to a certain Player by searching its Nickname
@@ -23,4 +24,10 @@ public interface Statable {
 	 * @throws PersonalizedException
 	 */
 	public Set<Played> stadistics(String nickname) throws PersonalizedException;
+	/**
+	 * This method gets the  top 5 players with the highest winrate
+	 * @return Set<Played> Players with the highest winrate
+	 * @throws PersonalizedException
+	 */
+	public Set<TopPlayers> topPlayers() throws PersonalizedException;
 }

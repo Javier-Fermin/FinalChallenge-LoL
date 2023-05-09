@@ -63,9 +63,14 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 
 	private JTable stats;
 	private DefaultTableModel modelStats;
+	private JScrollPane scrollPaneStats;
 	private JTable games;
 	private DefaultTableModel modelGame;
 	private JCalendar calendar;
+
+	private JTable statsTopPlayers;
+	private DefaultTableModel modelTopPlayers;
+	private JScrollPane scrollPaneTopPlayers;
 
 	private JPanel champAdmin = new JPanel();
 	private JLabel labeChampAdmin = new JLabel();
@@ -97,6 +102,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 	private JTextField textFieldMailAddAdmin;
 	private JTextField textFieldNameAddAdmin;
 	private JButton btnUpdateStats;
+	private JButton btnShowTopPlayers;
 	private JTextField textFieldRegionChamp;
 	private JTextField textFieldPassiveChamp;
 	private JTextField textFieldQChamp;
@@ -860,9 +866,22 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		btnUpdateStats.addActionListener(this);
 		panelStadistics.add(btnUpdateStats);
 
-		JScrollPane scrollPaneStats = new JScrollPane();
+		btnShowTopPlayers = new JButton("TOP 5 PLAYERS");
+		btnShowTopPlayers.setForeground(new Color(255, 255, 255));
+		btnShowTopPlayers.setBackground(new Color(0, 128, 128));
+		btnShowTopPlayers.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		btnShowTopPlayers.setBounds(360, 326, 105, 30);
+		btnShowTopPlayers.addActionListener(this);
+		panelStadistics.add(btnShowTopPlayers);
+
+		scrollPaneStats = new JScrollPane();
 		scrollPaneStats.setBounds(528, 85, 501, 421);
 		panelStadistics.add(scrollPaneStats);
+
+		scrollPaneTopPlayers = new JScrollPane();
+		scrollPaneTopPlayers.setBounds(528, 85, 501, 421);
+		panelStadistics.add(scrollPaneTopPlayers);
+		scrollPaneTopPlayers.setVisible(false);
 
 		modelStats = new DefaultTableModel();
 		modelStats.addColumn("ID");
@@ -873,6 +892,17 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		stats = new JTable();
 		stats.setModel(modelStats);
 		scrollPaneStats.setViewportView(stats);
+
+		modelTopPlayers = new DefaultTableModel();
+		modelTopPlayers.addColumn("Nickname");
+		modelTopPlayers.addColumn("Total");
+		modelTopPlayers.addColumn("Wins");
+		modelTopPlayers.addColumn("Winrate");
+		modelTopPlayers.addColumn("Fav Champ");
+		modelTopPlayers.addColumn("Fav Position");
+		statsTopPlayers = new JTable();
+		statsTopPlayers.setModel(modelTopPlayers);
+		scrollPaneTopPlayers.setViewportView(statsTopPlayers);
 
 		JLabel lblNewLabel_5 = new JLabel("");
 		lblNewLabel_5.setIcon(new ImageIcon(MainWindow.class.getResource("/img/lolLogo (2).png")));
@@ -1446,6 +1476,28 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		}
 	}
 
+	public void showTopPlayers() throws  PersonalizedException {
+		try {
+				modelTopPlayers.setRowCount(0);
+				Set<TopPlayers> listStats;
+				listStats = statable.topPlayers();
+				for (TopPlayers topPlayers : listStats) {
+					Object[] row = new Object[6];
+					row[0] = topPlayers.getNickname();
+					row[1] = topPlayers.getTotalPlays();
+					row[2] = topPlayers.getWins();
+					row[3] = topPlayers.getWinRate();
+					row[4] = topPlayers.getName();
+					row[5] = topPlayers.getPosition();
+					modelTopPlayers.addRow(row);
+				}
+			}
+		catch (PersonalizedException e) {
+			JOptionPane.showMessageDialog(this, e.getMessage());
+		}
+	}
+	
+
 	// -----------------------Methods for tab Management----------------------------
 	// This method is to load the user that will be added
 	private void sendAddAdmin() throws PersonalizedException {
@@ -1683,7 +1735,16 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 			}
 			// If btnUpdateStats is pressed, updateStats is called
 			if (e.getSource() == btnUpdateStats) {
+				scrollPaneTopPlayers.setVisible(false);
+				scrollPaneStats.setVisible(true);
 				updateStats();
+			}
+			//
+			if (e.getSource() == btnShowTopPlayers) {
+				scrollPaneTopPlayers.setVisible(true);
+				scrollPaneStats.setVisible(false);
+				textNicknameStats.setText("");
+				showTopPlayers();
 			}
 			// If btnUpdateGame is pressed, updateGame is called
 			if (e.getSource() == btnUpdateGame) {
