@@ -862,7 +862,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		btnUpdateStats.setForeground(new Color(255, 255, 255));
 		btnUpdateStats.setBackground(new Color(0, 128, 128));
 		btnUpdateStats.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
-		btnUpdateStats.setBounds(182, 326, 105, 30);
+		btnUpdateStats.setBounds(102, 326, 105, 30);
 		btnUpdateStats.addActionListener(this);
 		panelStadistics.add(btnUpdateStats);
 
@@ -870,7 +870,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		btnShowTopPlayers.setForeground(new Color(255, 255, 255));
 		btnShowTopPlayers.setBackground(new Color(0, 128, 128));
 		btnShowTopPlayers.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
-		btnShowTopPlayers.setBounds(360, 326, 105, 30);
+		btnShowTopPlayers.setBounds(260, 326, 155, 30);
 		btnShowTopPlayers.addActionListener(this);
 		panelStadistics.add(btnShowTopPlayers);
 
@@ -878,10 +878,6 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		scrollPaneStats.setBounds(528, 85, 501, 421);
 		panelStadistics.add(scrollPaneStats);
 
-		scrollPaneTopPlayers = new JScrollPane();
-		scrollPaneTopPlayers.setBounds(528, 85, 501, 421);
-		panelStadistics.add(scrollPaneTopPlayers);
-		scrollPaneTopPlayers.setVisible(false);
 
 		modelStats = new DefaultTableModel();
 		modelStats.addColumn("ID");
@@ -901,8 +897,10 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		modelTopPlayers.addColumn("Fav Champ");
 		modelTopPlayers.addColumn("Fav Position");
 		statsTopPlayers = new JTable();
+		statsTopPlayers.setBounds(528, 85, 501, 421);
+		statsTopPlayers.getTableHeader().setBackground(new Color(212, 175, 55));
 		statsTopPlayers.setModel(modelTopPlayers);
-		scrollPaneTopPlayers.setViewportView(statsTopPlayers);
+
 
 		JLabel lblNewLabel_5 = new JLabel("");
 		lblNewLabel_5.setIcon(new ImageIcon(MainWindow.class.getResource("/img/lolLogo (2).png")));
@@ -1476,27 +1474,25 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		}
 	}
 
-	public void showTopPlayers() throws  PersonalizedException {
+	public void showTopPlayers() throws PersonalizedException {
 		try {
-				modelTopPlayers.setRowCount(0);
-				Set<TopPlayers> listStats;
-				listStats = statable.topPlayers();
-				for (TopPlayers topPlayers : listStats) {
-					Object[] row = new Object[6];
-					row[0] = topPlayers.getNickname();
-					row[1] = topPlayers.getTotalPlays();
-					row[2] = topPlayers.getWins();
-					row[3] = topPlayers.getWinRate();
-					row[4] = topPlayers.getName();
-					row[5] = topPlayers.getPosition();
-					modelTopPlayers.addRow(row);
-				}
+			modelTopPlayers.setRowCount(0);
+			Set<TopPlayers> listStats;
+			listStats = statable.topPlayers();
+			for (TopPlayers topPlayers : listStats) {
+				Object[] row = new Object[6];
+				row[0] = topPlayers.getNickname();
+				row[1] = topPlayers.getTotalPlays();
+				row[2] = topPlayers.getWins();
+				row[3] = topPlayers.getWinRate();
+				row[4] = topPlayers.getName();
+				row[5] = topPlayers.getPosition();
+				modelTopPlayers.addRow(row);
 			}
-		catch (PersonalizedException e) {
+		} catch (PersonalizedException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage());
 		}
 	}
-	
 
 	// -----------------------Methods for tab Management----------------------------
 	// This method is to load the user that will be added
@@ -1735,14 +1731,12 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 			}
 			// If btnUpdateStats is pressed, updateStats is called
 			if (e.getSource() == btnUpdateStats) {
-				scrollPaneTopPlayers.setVisible(false);
-				scrollPaneStats.setVisible(true);
+				scrollPaneStats.setViewportView(stats);
 				updateStats();
 			}
 			//
 			if (e.getSource() == btnShowTopPlayers) {
-				scrollPaneTopPlayers.setVisible(true);
-				scrollPaneStats.setVisible(false);
+				scrollPaneStats.setViewportView(statsTopPlayers);
 				textNicknameStats.setText("");
 				showTopPlayers();
 			}
