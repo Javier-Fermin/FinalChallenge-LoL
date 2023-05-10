@@ -58,6 +58,9 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 	private JCheckBox checkBoxChampsPlayer_Filtered = new JCheckBox("");
 	private ButtonGroup buttonGroup = new ButtonGroup();
 	private JComboBox comboBoxSelectUser;
+	
+	private JPanel reportPanel;
+	JButton btnReport;
 
 	private JTextField textNicknameStats;
 
@@ -304,7 +307,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		profile.add(jCalendarProfile);
 
 		panelAdmin = new JPanel();
-		panelAdmin.setBounds(551, 153, 297, 309);
+		panelAdmin.setBounds(551, 193, 297, 309);
 		panelAdmin.setBackground(new Color(0, 0, 0, 180));
 		panelAdmin.setForeground(new Color(0, 0, 0));
 		panelAdmin.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(218, 165, 32), null));
@@ -356,7 +359,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		JPanel panelTransparenteProfile = new JPanel();
 		panelTransparenteProfile.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(184, 134, 11), null));
 		panelTransparenteProfile.setBackground(new Color(0, 0, 0, 180));
-		panelTransparenteProfile.setBounds(49, 34, 1059, 553);
+		panelTransparenteProfile.setBounds(49, 34, 1059, 563);
 		profile.add(panelTransparenteProfile);
 		panelTransparenteProfile.setLayout(null);
 
@@ -364,19 +367,19 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		btnLogOut.setForeground(Color.WHITE);
 		btnLogOut.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
 		btnLogOut.setBackground(new Color(0, 128, 128));
-		btnLogOut.setBounds(455, 490, 92, 26);
+		btnLogOut.setBounds(81, 526, 92, 26);
 		panelTransparenteProfile.add(btnLogOut);
 		btnLogOut.addActionListener(this);
 
 		btnModifyPlayer = new JButton("MODIFY ");
-		btnModifyPlayer.setBounds(565, 490, 92, 26);
+		btnModifyPlayer.setBounds(197, 526, 92, 26);
 		panelTransparenteProfile.add(btnModifyPlayer);
 		btnModifyPlayer.setForeground(new Color(255, 255, 255));
 		btnModifyPlayer.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
 		btnModifyPlayer.setBackground(new Color(0, 128, 128));
 
 		btnDeletePlayer = new JButton("DELETE");
-		btnDeletePlayer.setBounds(677, 490, 95, 26);
+		btnDeletePlayer.setBounds(308, 526, 95, 26);
 		panelTransparenteProfile.add(btnDeletePlayer);
 		btnDeletePlayer.setForeground(new Color(255, 255, 255));
 		btnDeletePlayer.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
@@ -1150,6 +1153,57 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		pictureFondoManagement.setIcon(new ImageIcon(MainWindow.class.getResource("/img/LOL_PROMOART_14.jpg")));
 		management.add(pictureFondoManagement);
 
+		reportPanel = new JPanel();
+		reportPanel.setBounds(464, 127, 357, 396);
+		panelTransparenteProfile.add(reportPanel);
+		reportPanel.setLayout(null);
+		reportPanel.setForeground(Color.BLACK);
+		reportPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(218, 165, 32), null));
+		reportPanel.setBackground(new Color(0, 0, 0, 180));
+		
+		JLabel reportUserLabel = new JLabel("REPORT A USER");
+		reportUserLabel.setForeground(new Color(0, 139, 139));
+		reportUserLabel.setFont(new Font("Bahnschrift", Font.BOLD, 34));
+		reportUserLabel.setBounds(47, 0, 267, 83);
+		reportPanel.add(reportUserLabel);
+		
+		JLabel reportNicknameLabel = new JLabel("Nickname :");
+		reportNicknameLabel.setForeground(Color.WHITE);
+		reportNicknameLabel.setFont(new Font("Bahnschrift", Font.BOLD, 20));
+		reportNicknameLabel.setBounds(23, 87, 133, 21);
+		reportPanel.add(reportNicknameLabel);
+		
+		JLabel categoryLabel = new JLabel("Category :");
+		categoryLabel.setForeground(Color.WHITE);
+		categoryLabel.setFont(new Font("Bahnschrift", Font.BOLD, 20));
+		categoryLabel.setBounds(23, 141, 126, 21);
+		reportPanel.add(categoryLabel);
+		
+		JComboBox comboBoxReport = new JComboBox();
+		comboBoxReport.setBounds(166, 86, 148, 22);
+		reportPanel.add(comboBoxReport);
+		
+		JComboBox comboBoxReport_1 = new JComboBox();
+		comboBoxReport_1.setBounds(166, 140, 148, 22);
+		reportPanel.add(comboBoxReport_1);
+		
+		JLabel lblDescription = new JLabel("Description :");
+		lblDescription.setForeground(Color.WHITE);
+		lblDescription.setFont(new Font("Bahnschrift", Font.BOLD, 20));
+		lblDescription.setBounds(109, 181, 126, 21);
+		reportPanel.add(lblDescription);
+		
+		btnReport = new JButton("Report");
+		btnReport.setForeground(Color.WHITE);
+		btnReport.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
+		btnReport.setBackground(new Color(0, 128, 128));
+		btnReport.setBounds(130, 355, 92, 26);
+		reportPanel.add(btnReport);
+		
+		JTextArea textArea = new JTextArea();
+		textArea.setBounds(68, 213, 244, 131);
+		reportPanel.add(textArea);
+
 		try {
 			cargarUsers();
 		} catch (PersonalizedException e) {
@@ -1218,7 +1272,9 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 			// Panel with the admin information isn't visible
 			panelAdmin.setVisible(false);
 			btnDeletePlayer.setVisible(true);
+			reportPanel.setVisible(true);
 		} else {
+			reportPanel.setVisible(false);
 			textFieldNicknameProfile.setVisible(false);
 			btnDeletePlayer.setVisible(false);
 			nicknameProfile.setVisible(false);
