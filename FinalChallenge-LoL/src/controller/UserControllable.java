@@ -6,6 +6,7 @@ import exceptions.PersonalizedException;
 import model.Administrator;
 import model.Player;
 import model.User;
+import model.Report;
 
 /**
  * 
@@ -69,4 +70,10 @@ public interface UserControllable {
 	 * @throws PersonalizedException
 	 */
 	public Set<User> listPlayers() throws PersonalizedException;
+
+	public boolean insertReport(Report report) throws PersonalizedException;
+
+	public Set<Report> listReports() throws PersonalizedException;
+
+	public boolean resolveReport(Report report) throws PersonalizedException;
 }

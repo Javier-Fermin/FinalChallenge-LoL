@@ -6,8 +6,6 @@ public class TopPlayers {
     private int totalPlays, wins;
 	private float winRate;
 
-	//private final String[] postions = {"TOP","JNG","MID","ADC","SUP"};
-	
 	public int getWins() {
 		return wins;
 	}
@@ -26,9 +24,6 @@ public class TopPlayers {
 	public void setTotalPlays(int totalPlays) {
 		this.totalPlays = totalPlays;
 	}
-	//	public String[] getPostions() {
-//		return postions;
-//	}
 	public String getPosition() {
 		return position;
 	}

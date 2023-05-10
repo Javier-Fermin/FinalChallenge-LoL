@@ -10,10 +10,12 @@ import java.util.Set;
 import exceptions.PersonalizedException;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 import model.Administrator;
 import model.ConnectionOpenClose;
 import model.Player;
+import model.Report;
 import model.User;
 
 public class UserControllableDBImplementation implements UserControllable {
@@ -338,6 +340,109 @@ public class UserControllableDBImplementation implements UserControllable {
 				rs.close();
 			}
 			return users;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			throw new PersonalizedException(e.getMessage());
+		}
+	}
+
+	@Override
+	public boolean insertReport(Report report) throws PersonalizedException {
+		try {
+			connection = new ConnectionOpenClose(2);
+			String INSERTreport = "INSERT INTO Report VALUES (NULL, ?, ?, ?, 'Unsolved', ?);";
+			int i = 0;
+
+			// Open connection with DB.
+			con = connection.openConnection();
+
+			// Prepare sentence for query adding all the items to the stmt.
+			stmt = con.prepareStatement(INSERTreport);
+
+			stmt.setString(1, report.getInformentNickname());
+			stmt.setString(2, report.getComplainantNickname());
+			stmt.setString(3, report.getCategory());
+			stmt.setString(4, report.getDescription());
+
+			// Execute query.
+			i =  stmt.executeUpdate();
+			connection.closeConnection(stmt, con);
+			if (i == 0)
+				return false;
+			else
+				return true;
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			throw new PersonalizedException(e.getMessage());
+		}
+	}
+
+	@Override
+	public Set<Report> listReports() throws PersonalizedException {
+		try {
+			connection = new ConnectionOpenClose(0);
+			ResultSet rs = null;
+			Report report = null;
+			Set<Report> reports = new LinkedHashSet<Report>();
+			//select everything  from reports that are still unsolved
+			String SELECTreport = "select * from report where situation = 'Unsolved';";
+
+			// Open connection with DB.
+			con = connection.openConnection();
+
+			stmt = con.prepareStatement(SELECTreport);
+
+			rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				report = new Report();
+				report.setId(rs.getInt("Id"));
+				report.setInformentNickname(rs.getString("Nickname1"));
+				report.setComplainantNickname(rs.getString("Nickname2"));
+				report.setCategory(rs.getString("Category"));
+				report.setSituation(rs.getString("Situation"));
+				report.setDescription(rs.getString("Description"));
+				reports.add(report);
+			}
+
+			connection.closeConnection(stmt, con);
+
+			if (rs != null) {
+				rs.close();
+			}
+			return reports;
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			throw new PersonalizedException(e.getMessage());
+		}
+	}
+
+	@Override
+	public boolean resolveReport(Report report) throws PersonalizedException {
+		try {
+			connection = new ConnectionOpenClose(0);
+			String Updatereport = "UPDATE Report SET Situation = ? WHERE Id = ?;";
+			int i = 0;
+
+			// Open connection with DB.
+			con = connection.openConnection();
+
+			// Prepare sentence for query adding all the items to the stmt.
+			stmt = con.prepareStatement(Updatereport);
+
+			stmt.setString(1, report.getSituation());
+			stmt.setInt(2, report.getId());
+			
+			// Execute query.
+			i =  stmt.executeUpdate();
+			connection.closeConnection(stmt, con);
+			if (i == 0)
+				return false;
+			else
+				return true;
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			throw new PersonalizedException(e.getMessage());
