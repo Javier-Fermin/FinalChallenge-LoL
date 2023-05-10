@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import exceptions.PersonalizedException;
@@ -58,7 +59,7 @@ public class StatableDBImplementation implements Statable {
 			con = connection.openConnection();
 			stmt = con.prepareStatement("SELECT Nickname, COUNT(*) AS Total, SUM(Win) AS Wins, SUM(Win)/COUNT(*) AS Winrate, (SELECT Name FROM Play WHERE Nickname = p.Nickname GROUP BY Name ORDER BY COUNT(*) DESC LIMIT 1) AS 'Fav Champ', (SELECT Position FROM Play WHERE Nickname = p.Nickname GROUP BY Position ORDER BY COUNT(*) DESC LIMIT 1) AS 'Fav Position' FROM Play p GROUP BY Nickname ORDER BY Winrate DESC LIMIT 5");
 			rs = stmt.executeQuery();
-			stats = new HashSet<TopPlayers>();
+			stats = new LinkedHashSet<TopPlayers>();
 			while (rs.next()) {
 				TopPlayers player = new TopPlayers();
 				player.setNickname(rs.getString("Nickname"));

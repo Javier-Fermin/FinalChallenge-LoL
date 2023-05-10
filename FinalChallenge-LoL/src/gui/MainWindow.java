@@ -179,12 +179,6 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		iconProfile.setIcon(new ImageIcon(MainWindow.class.getResource("/img/lolLogo (2).png")));
 		profile.add(iconProfile);
 
-		JLabel pictureProfile = new JLabel("");
-		pictureProfile.setBounds(881, 109, 200, 478);
-		pictureProfile.setIcon(new ImageIcon(MainWindow.class.getResource(
-				"/img/Banner-Gold-keatas-Ranked-Season-LoL-Wild-Rift-700x394-PhotoRoom.png-PhotoRoom (1) (1).png")));
-		profile.add(pictureProfile);
-
 		nicknameProfilePicture = new JLabel("New label");
 		nicknameProfilePicture.setBounds(915, 378, 135, 16);
 		profile.add(nicknameProfilePicture);
@@ -387,6 +381,12 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		btnDeletePlayer.setForeground(new Color(255, 255, 255));
 		btnDeletePlayer.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
 		btnDeletePlayer.setBackground(new Color(0, 128, 128));
+		
+				JLabel pictureProfile = new JLabel("");
+				pictureProfile.setBounds(849, 75, 200, 478);
+				panelTransparenteProfile.add(pictureProfile);
+				pictureProfile.setIcon(new ImageIcon(MainWindow.class.getResource(
+						"/img/Banner-Gold-keatas-Ranked-Season-LoL-Wild-Rift-700x394-PhotoRoom.png-PhotoRoom (1) (1).png")));
 		btnDeletePlayer.addActionListener(this);
 		btnDeletePlayer.setVisible(false);
 		btnModifyPlayer.addActionListener(this);
@@ -946,7 +946,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		management.setLayout(null);
 
 		deletePlayerManagement = new JLayeredPane();
-		deletePlayerManagement.setBounds(677, 113, 389, 452);
+		deletePlayerManagement.setBounds(593, 104, 513, 491);
 		management.add(deletePlayerManagement);
 		deletePlayerManagement.setLayout(null);
 
@@ -954,7 +954,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		btnDeletePlayerManagement.setForeground(new Color(255, 255, 255));
 		btnDeletePlayerManagement.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
 		btnDeletePlayerManagement.setBackground(new Color(0, 128, 128));
-		btnDeletePlayerManagement.setBounds(144, 425, 106, 27);
+		btnDeletePlayerManagement.setBounds(190, 463, 106, 27);
 		btnDeletePlayerManagement.addActionListener(this);
 		deletePlayerManagement.add(btnDeletePlayerManagement);
 
@@ -962,13 +962,31 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		textAreaDeletePlayer.setForeground(Color.WHITE);
 		textAreaDeletePlayer.setFont(new Font("Bahnschrift", Font.PLAIN, 17));
 		textAreaDeletePlayer.setBackground(Color.BLACK);
-		textAreaDeletePlayer.setBounds(43, 116, 311, 291);
+		textAreaDeletePlayer.setBounds(85, 363, 313, 94);
 		deletePlayerManagement.add(textAreaDeletePlayer);
 		textAreaDeletePlayer.setVisible(false);
 
 		comboBoxSelectUser = new JComboBox();
-		comboBoxSelectUser.setBounds(98, 75, 199, 21);
+		comboBoxSelectUser.setBounds(140, 332, 199, 21);
 		deletePlayerManagement.add(comboBoxSelectUser);
+		
+		JButton btnR = new JButton("REPORTS");
+		btnR.setForeground(Color.WHITE);
+		btnR.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		btnR.setBackground(new Color(0, 128, 128));
+		btnR.setBounds(36, 463, 106, 27);
+		deletePlayerManagement.add(btnR);
+		
+		JButton btnResolve = new JButton("RESOLVE");
+		btnResolve.setForeground(Color.WHITE);
+		btnResolve.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
+		btnResolve.setBackground(new Color(0, 128, 128));
+		btnResolve.setBounds(350, 463, 106, 27);
+		deletePlayerManagement.add(btnResolve);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(15, 41, 481, 281);
+		deletePlayerManagement.add(scrollPane);
 		management.add(lblPassEyeAddAdmin);
 
 		JLabel passwordAddAmin = new JLabel("PASSWORD");
@@ -1044,13 +1062,13 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		management.add(textFieldNameAddAdmin);
 
 		JLabel titleBlueAdmin = new JLabel("MANAGEMENT");
-		titleBlueAdmin.setBounds(386, 41, 531, 89);
+		titleBlueAdmin.setBounds(346, 41, 531, 89);
 		titleBlueAdmin.setForeground(new Color(0, 139, 139));
 		titleBlueAdmin.setFont(new Font("Bahnschrift", Font.BOLD, 70));
 		management.add(titleBlueAdmin);
 
 		JLabel titleYellowAdmin = new JLabel("MANAGEMENT");
-		titleYellowAdmin.setBounds(383, 41, 513, 89);
+		titleYellowAdmin.setBounds(343, 41, 513, 89);
 		titleYellowAdmin.setForeground(new Color(218, 165, 32));
 		titleYellowAdmin.setFont(new Font("Bahnschrift", Font.BOLD, 70));
 		management.add(titleYellowAdmin);
@@ -1067,7 +1085,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		management.add(personalDataProfile_1_2_2);
 
 		JSeparator separator = new JSeparator();
-		separator.setBounds(599, 125, 12, 418);
+		separator.setBounds(559, 125, 12, 418);
 		separator.setBackground(new Color(218, 165, 32));
 		separator.setOrientation(SwingConstants.VERTICAL);
 		management.add(separator);
@@ -1107,8 +1125,8 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		comboBoxAddAdmin.setSelectedIndex(-1);
 		management.add(comboBoxAddAdmin);
 
-		JLabel personalDataProfile_1_2_2_1 = new JLabel("DELETE PLAYER");
-		personalDataProfile_1_2_2_1.setBounds(755, 98, 244, 89);
+		JLabel personalDataProfile_1_2_2_1 = new JLabel("MANAGE PLAYERS");
+		personalDataProfile_1_2_2_1.setBounds(735, 83, 274, 89);
 		personalDataProfile_1_2_2_1.setForeground(new Color(0, 139, 139));
 		personalDataProfile_1_2_2_1.setFont(new Font("Bahnschrift", Font.BOLD, 28));
 		management.add(personalDataProfile_1_2_2_1);
@@ -1124,7 +1142,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		JPanel panelTransparenteManagement = new JPanel();
 		panelTransparenteManagement.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(184, 134, 11), null));
 		panelTransparenteManagement.setBackground(new Color(0, 0, 0, 180));
-		panelTransparenteManagement.setBounds(50, 24, 1059, 553);
+		panelTransparenteManagement.setBounds(44, 25, 1071, 581);
 		management.add(panelTransparenteManagement);
 
 		JLabel pictureFondoManagement = new JLabel("");
