@@ -88,6 +88,9 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 	private JLabel nicknameProfilePicture;
 	private JButton btnDeletePlayerManagement;
 
+	private JButton btnR;
+	private JButton btnResolve;
+
 	private JButton btnAddGame;
 	private ChampEditable champEditable;
 	private Statable statable;
@@ -973,23 +976,23 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		comboBoxSelectUser.setBounds(140, 332, 199, 21);
 		deletePlayerManagement.add(comboBoxSelectUser);
 		
-		JButton btnR = new JButton("REPORTS");
+		btnR = new JButton("REPORTS");
 		btnR.setForeground(Color.WHITE);
 		btnR.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
 		btnR.setBackground(new Color(0, 128, 128));
 		btnR.setBounds(36, 463, 106, 27);
 		deletePlayerManagement.add(btnR);
 		
-		JButton btnResolve = new JButton("RESOLVE");
+		btnResolve = new JButton("RESOLVE");
 		btnResolve.setForeground(Color.WHITE);
 		btnResolve.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
 		btnResolve.setBackground(new Color(0, 128, 128));
 		btnResolve.setBounds(350, 463, 106, 27);
 		deletePlayerManagement.add(btnResolve);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(15, 41, 481, 281);
-		deletePlayerManagement.add(scrollPane);
+		JScrollPane scrollPaneReports = new JScrollPane();
+		scrollPaneReports.setBounds(15, 41, 481, 281);
+		deletePlayerManagement.add(scrollPaneReports);
 		management.add(lblPassEyeAddAdmin);
 
 		JLabel passwordAddAmin = new JLabel("PASSWORD");
@@ -1201,6 +1204,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		reportPanel.add(btnReport);
 		
 		JTextArea textArea = new JTextArea();
+		textArea.setLineWrap(true);
 		textArea.setBounds(68, 213, 244, 131);
 		reportPanel.add(textArea);
 
@@ -1646,6 +1650,10 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		comboBoxSelectUser.setSelectedIndex(-1);
 	}
 
+	private void showReports() {
+
+	}
+
 	// ---------------------Methods to validate information-------------------------
 	// This method checks if all fields on Admin Champs tab are filled correctly
 	public boolean checkFieldsChampAdmin() {
@@ -1862,6 +1870,9 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 			// called
 			if (e.getSource().equals(btnModifyChamp)) {
 				executeModificationChampAdmin();
+			}
+			if (e.getSource().equals(btnReport)) {
+				showReports();
 			}
 		} catch (PersonalizedException e1) {
 			// TODO Auto-generated catch block
