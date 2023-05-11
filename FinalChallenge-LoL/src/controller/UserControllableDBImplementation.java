@@ -359,7 +359,7 @@ public class UserControllableDBImplementation implements UserControllable {
 			// Prepare sentence for query adding all the items to the stmt.
 			stmt = con.prepareStatement(INSERTreport);
 
-			stmt.setString(1, report.getInformentNickname());
+			stmt.setString(1, report.getReportedNickname());
 			stmt.setString(2, report.getComplainantNickname());
 			stmt.setString(3, report.getCategory());
 			stmt.setString(4, report.getDescription());
@@ -398,7 +398,7 @@ public class UserControllableDBImplementation implements UserControllable {
 			while (rs.next()) {
 				report = new Report();
 				report.setId(rs.getInt("Id"));
-				report.setInformentNickname(rs.getString("Nickname1"));
+				report.setReportedNickname(rs.getString("Nickname1"));
 				report.setComplainantNickname(rs.getString("Nickname2"));
 				report.setCategory(rs.getString("Category"));
 				report.setSituation(rs.getString("Situation"));

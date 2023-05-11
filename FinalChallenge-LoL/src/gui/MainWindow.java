@@ -11,6 +11,8 @@ import java.awt.event.*;
 
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
+import javax.swing.text.html.HTMLDocument.Iterator;
 
 import controller.*;
 import exceptions.PersonalizedException;
@@ -35,6 +37,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Set;
+import java.util.LinkedHashSet;
 
 import javax.swing.border.EtchedBorder;
 
@@ -60,7 +63,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 	private JComboBox comboBoxSelectUser;
 	
 	private JPanel reportPanel;
-	JButton btnReport;
+	private JButton btnReport;
 
 	private JTextField textNicknameStats;
 
@@ -90,6 +93,8 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 
 	private JButton btnR;
 	private JButton btnResolve;
+	private JTable tableReports;
+	private JScrollPane scrollPaneReports;
 
 	private JButton btnAddGame;
 	private ChampEditable champEditable;
@@ -981,6 +986,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		btnR.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
 		btnR.setBackground(new Color(0, 128, 128));
 		btnR.setBounds(36, 463, 106, 27);
+		btnR.addActionListener(this);
 		deletePlayerManagement.add(btnR);
 		
 		btnResolve = new JButton("RESOLVE");
@@ -988,9 +994,11 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		btnResolve.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
 		btnResolve.setBackground(new Color(0, 128, 128));
 		btnResolve.setBounds(350, 463, 106, 27);
+		btnResolve.addActionListener(this);
 		deletePlayerManagement.add(btnResolve);
+		btnResolve.setEnabled(false);
 		
-		JScrollPane scrollPaneReports = new JScrollPane();
+		scrollPaneReports = new JScrollPane();
 		scrollPaneReports.setBounds(15, 41, 481, 281);
 		deletePlayerManagement.add(scrollPaneReports);
 		management.add(lblPassEyeAddAdmin);
@@ -1201,6 +1209,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		btnReport.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
 		btnReport.setBackground(new Color(0, 128, 128));
 		btnReport.setBounds(130, 355, 92, 26);
+		btnReport.addActionListener(this);
 		reportPanel.add(btnReport);
 		
 		JTextArea textArea = new JTextArea();
@@ -1650,8 +1659,73 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		comboBoxSelectUser.setSelectedIndex(-1);
 	}
 
-	private void showReports() {
+	private void listReports() throws PersonalizedException {
+		try {
+			Set<Report> reports = userControllable.listReports();
+			String[][] data = null;
+			data = new String[reports.size()][];
+			int i = 0;
+			for (Report report : reports) {
+				data[i] = new String[] {String.valueOf(report.getId()), report.getReportedNickname(), report.getCategory(), report.getDescription(),
+						report.getComplainantNickname()};
+				i++;
+			}
+			String[] columnNames = { "Id", "Reported", "Category", "Description", "Complainant" };
+			tableReports = new JTable(data, columnNames);
+	
+			TableColumn column = tableReports.getColumnModel().getColumn(3);
+			column.setPreferredWidth(300); 
+			column = tableReports.getColumnModel().getColumn(4);
+			column.setPreferredWidth(90);
+			column = tableReports.getColumnModel().getColumn(2);
+			column.setPreferredWidth(90);
+			column = tableReports.getColumnModel().getColumn(0);
+			column.setPreferredWidth(45);
+	
+			scrollPaneReports.setViewportView(tableReports);
+	
+			JTableHeader tableHeaderReports = tableReports.getTableHeader();
+			tableHeaderReports.setBackground(new Color(212, 175, 55));
+		} catch (Exception e) {
+			// TODO: handle exception
+			JOptionPane.showMessageDialog(this, e.getMessage());
+		}
+	}
 
+	private void resolveReport() throws PersonalizedException {
+		try {
+			Boolean correct = false;
+			if (tableReports.getSelectedRow() != -1) {
+				//Ask i a message dialog if it wants to archive it or eliminate the user
+				int i = JOptionPane.showOptionDialog(this, "Do you want to eliminate the user or archive the report?", "Resolve report", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[] {"Cancel", "Eliminate user", "Archive report"}, null);	
+				if (i == 1) {
+					//Eliminate the user
+					correct = userControllable.delete(userControllable.findUser(tableReports.getValueAt(tableReports.getSelectedRow(), 1).toString(), 0), 0);
+					if (correct) {
+						JOptionPane.showMessageDialog(this, "User eliminated successfully.");
+					} else {
+						JOptionPane.showMessageDialog(this, "Error eliminating user.");
+					}
+				}
+				else if (i == 2) {
+					//Archive the report
+					Report report = new Report();
+					report.setId(Integer.parseInt(tableReports.getValueAt(tableReports.getSelectedRow(), 0).toString()));
+					report.setSituation("Archived");
+					correct = userControllable.resolveReport(report);
+					if (correct) {
+						JOptionPane.showMessageDialog(this, "Report resolved successfully.");
+					} else {
+						JOptionPane.showMessageDialog(this, "Error resolving report.");
+					}
+				}
+				listReports();
+			} else {
+				JOptionPane.showMessageDialog(this, "Select a report.");
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage());
+		}
 	}
 
 	// ---------------------Methods to validate information-------------------------
@@ -1871,9 +1945,14 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 			if (e.getSource().equals(btnModifyChamp)) {
 				executeModificationChampAdmin();
 			}
-			if (e.getSource().equals(btnReport)) {
-				showReports();
+			if (e.getSource().equals(btnR)) {
+				btnResolve.setEnabled(true);
+				listReports();
 			}
+			if (e.getSource().equals(btnResolve)) {
+				resolveReport();
+			}
+			
 		} catch (PersonalizedException e1) {
 			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, e1.getMessage(), "An unexpected error has occured!",

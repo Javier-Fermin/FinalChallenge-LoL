@@ -2,7 +2,7 @@ package model;
 
 // This is the Top Players class
 public class Report {
-	private String complainantNickname,informentNickname,description,category,situation;
+	private String complainantNickname,reportedNickname,description,category,situation;
 	private int id;
 
 	private final String[] categories = {"TOP","JNG","MID","ADC","SUP"};
@@ -31,12 +31,12 @@ public class Report {
 		this.description = description;
 	}
 
-	public String getInformentNickname() {
-		return informentNickname;
+	public String getReportedNickname() {
+		return reportedNickname;
 	}
 
-	public void setInformentNickname(String informentNickname) {
-		this.informentNickname = informentNickname;
+	public void setReportedNickname(String reportedNickname) {
+		this.reportedNickname = reportedNickname;
 	}
 
 	public String getComplainantNickname() {
