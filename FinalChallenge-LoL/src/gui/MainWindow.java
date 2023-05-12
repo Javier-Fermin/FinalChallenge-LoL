@@ -61,7 +61,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 	private JCheckBox checkBoxChampsPlayer_Filtered = new JCheckBox("");
 	private ButtonGroup buttonGroup = new ButtonGroup();
 	private JComboBox comboBoxSelectUser;
-	
+
 	private JPanel reportPanel;
 	private JButton btnReport;
 
@@ -95,6 +95,9 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 	private JButton btnResolve;
 	private JTable tableReports;
 	private JScrollPane scrollPaneReports;
+	private JComboBox comboBoxReport;
+	private JComboBox comboBoxReportCategory;
+	private JTextArea textAreaReport;
 
 	private JButton btnAddGame;
 	private ChampEditable champEditable;
@@ -392,12 +395,12 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		btnDeletePlayer.setForeground(new Color(255, 255, 255));
 		btnDeletePlayer.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
 		btnDeletePlayer.setBackground(new Color(0, 128, 128));
-		
-				JLabel pictureProfile = new JLabel("");
-				pictureProfile.setBounds(849, 75, 200, 478);
-				panelTransparenteProfile.add(pictureProfile);
-				pictureProfile.setIcon(new ImageIcon(MainWindow.class.getResource(
-						"/img/Banner-Gold-keatas-Ranked-Season-LoL-Wild-Rift-700x394-PhotoRoom.png-PhotoRoom (1) (1).png")));
+
+		JLabel pictureProfile = new JLabel("");
+		pictureProfile.setBounds(849, 75, 200, 478);
+		panelTransparenteProfile.add(pictureProfile);
+		pictureProfile.setIcon(new ImageIcon(MainWindow.class.getResource(
+				"/img/Banner-Gold-keatas-Ranked-Season-LoL-Wild-Rift-700x394-PhotoRoom.png-PhotoRoom (1) (1).png")));
 		btnDeletePlayer.addActionListener(this);
 		btnDeletePlayer.setVisible(false);
 		btnModifyPlayer.addActionListener(this);
@@ -889,7 +892,6 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		scrollPaneStats.setBounds(528, 85, 501, 421);
 		panelStadistics.add(scrollPaneStats);
 
-
 		modelStats = new DefaultTableModel();
 		modelStats.addColumn("ID");
 		modelStats.addColumn("Nickname");
@@ -911,7 +913,6 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		statsTopPlayers.setBounds(528, 85, 501, 421);
 		statsTopPlayers.getTableHeader().setBackground(new Color(212, 175, 55));
 		statsTopPlayers.setModel(modelTopPlayers);
-
 
 		JLabel lblNewLabel_5 = new JLabel("");
 		lblNewLabel_5.setIcon(new ImageIcon(MainWindow.class.getResource("/img/lolLogo (2).png")));
@@ -980,7 +981,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		comboBoxSelectUser = new JComboBox();
 		comboBoxSelectUser.setBounds(140, 332, 199, 21);
 		deletePlayerManagement.add(comboBoxSelectUser);
-		
+
 		btnR = new JButton("REPORTS");
 		btnR.setForeground(Color.WHITE);
 		btnR.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
@@ -988,7 +989,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		btnR.setBounds(36, 463, 106, 27);
 		btnR.addActionListener(this);
 		deletePlayerManagement.add(btnR);
-		
+
 		btnResolve = new JButton("RESOLVE");
 		btnResolve.setForeground(Color.WHITE);
 		btnResolve.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
@@ -997,7 +998,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		btnResolve.addActionListener(this);
 		deletePlayerManagement.add(btnResolve);
 		btnResolve.setEnabled(false);
-		
+
 		scrollPaneReports = new JScrollPane();
 		scrollPaneReports.setBounds(15, 41, 481, 281);
 		deletePlayerManagement.add(scrollPaneReports);
@@ -1171,39 +1172,44 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		reportPanel.setForeground(Color.BLACK);
 		reportPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(218, 165, 32), null));
 		reportPanel.setBackground(new Color(0, 0, 0, 180));
-		
+
 		JLabel reportUserLabel = new JLabel("REPORT A USER");
 		reportUserLabel.setForeground(new Color(0, 139, 139));
 		reportUserLabel.setFont(new Font("Bahnschrift", Font.BOLD, 34));
 		reportUserLabel.setBounds(47, 0, 267, 83);
 		reportPanel.add(reportUserLabel);
-		
+
 		JLabel reportNicknameLabel = new JLabel("Nickname :");
 		reportNicknameLabel.setForeground(Color.WHITE);
 		reportNicknameLabel.setFont(new Font("Bahnschrift", Font.BOLD, 20));
 		reportNicknameLabel.setBounds(23, 87, 133, 21);
 		reportPanel.add(reportNicknameLabel);
-		
+
 		JLabel categoryLabel = new JLabel("Category :");
 		categoryLabel.setForeground(Color.WHITE);
 		categoryLabel.setFont(new Font("Bahnschrift", Font.BOLD, 20));
 		categoryLabel.setBounds(23, 141, 126, 21);
 		reportPanel.add(categoryLabel);
-		
-		JComboBox comboBoxReport = new JComboBox();
+
+		comboBoxReport = new JComboBox();
 		comboBoxReport.setBounds(166, 86, 148, 22);
 		reportPanel.add(comboBoxReport);
-		
-		JComboBox comboBoxReport_1 = new JComboBox();
-		comboBoxReport_1.setBounds(166, 140, 148, 22);
-		reportPanel.add(comboBoxReport_1);
-		
+
+		comboBoxReportCategory = new JComboBox();
+		comboBoxReportCategory.setBounds(166, 140, 148, 22);
+		comboBoxReportCategory.addItem("Cheating");
+		comboBoxReportCategory.addItem("Bad Words");
+		comboBoxReportCategory.addItem("Behavior");
+		comboBoxReportCategory.addItem("Other");
+		comboBoxReportCategory.setSelectedIndex(-1);
+		reportPanel.add(comboBoxReportCategory);
+
 		JLabel lblDescription = new JLabel("Description :");
 		lblDescription.setForeground(Color.WHITE);
 		lblDescription.setFont(new Font("Bahnschrift", Font.BOLD, 20));
 		lblDescription.setBounds(109, 181, 126, 21);
 		reportPanel.add(lblDescription);
-		
+
 		btnReport = new JButton("Report");
 		btnReport.setForeground(Color.WHITE);
 		btnReport.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
@@ -1211,14 +1217,15 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		btnReport.setBounds(130, 355, 92, 26);
 		btnReport.addActionListener(this);
 		reportPanel.add(btnReport);
-		
-		JTextArea textArea = new JTextArea();
-		textArea.setLineWrap(true);
-		textArea.setBounds(68, 213, 244, 131);
-		reportPanel.add(textArea);
+
+		textAreaReport = new JTextArea();
+		textAreaReport.setLineWrap(true);
+		textAreaReport.setBounds(68, 213, 244, 131);
+		reportPanel.add(textAreaReport);
 
 		try {
 			cargarUsers();
+			cargarUsersReport();
 		} catch (PersonalizedException e) {
 			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, e.getMessage(), "An unexpected error has occured!",
@@ -1659,6 +1666,16 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		comboBoxSelectUser.setSelectedIndex(-1);
 	}
 
+	// This methods adds current Users to a comboBox so the User can choose
+	private void cargarUsersReport() throws PersonalizedException {
+		Set<User> users = userControllable.listPlayers();
+		comboBoxReport.removeAllItems();
+		for (User u : users) {
+			comboBoxReport.addItem(((Player) u).getNickname());
+		}
+		comboBoxReport.setSelectedIndex(-1);
+	}
+
 	private void listReports() throws PersonalizedException {
 		try {
 			Set<Report> reports = userControllable.listReports();
@@ -1666,26 +1683,28 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 			data = new String[reports.size()][];
 			int i = 0;
 			for (Report report : reports) {
-				data[i] = new String[] {String.valueOf(report.getId()), report.getReportedNickname(), report.getCategory(), report.getDescription(),
-						report.getComplainantNickname()};
+				data[i] = new String[] { String.valueOf(report.getId()), report.getReportedNickname(),
+						report.getCategory(), report.getDescription(),
+						report.getComplainantNickname() };
 				i++;
 			}
 			String[] columnNames = { "Id", "Reported", "Category", "Description", "Complainant" };
 			tableReports = new JTable(data, columnNames);
-	
+
 			TableColumn column = tableReports.getColumnModel().getColumn(3);
-			column.setPreferredWidth(300); 
+			column.setPreferredWidth(300);
 			column = tableReports.getColumnModel().getColumn(4);
 			column.setPreferredWidth(90);
 			column = tableReports.getColumnModel().getColumn(2);
 			column.setPreferredWidth(90);
 			column = tableReports.getColumnModel().getColumn(0);
 			column.setPreferredWidth(45);
-	
+
 			scrollPaneReports.setViewportView(tableReports);
-	
+
 			JTableHeader tableHeaderReports = tableReports.getTableHeader();
 			tableHeaderReports.setBackground(new Color(212, 175, 55));
+			btnResolve.setEnabled(true);
 		} catch (Exception e) {
 			// TODO: handle exception
 			JOptionPane.showMessageDialog(this, e.getMessage());
@@ -1696,19 +1715,21 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		try {
 			Boolean correct = false;
 			if (tableReports.getSelectedRow() != -1) {
-				//Ask i a message dialog if it wants to archive it or eliminate the user
-				int i = JOptionPane.showOptionDialog(this, "Do you want to eliminate the user or archive the report?", "Resolve report", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[] {"Cancel", "Eliminate user", "Archive report"}, null);	
+				// Ask i a message dialog if it wants to archive it or eliminate the user
+				int i = JOptionPane.showOptionDialog(this, "Do you want to eliminate the user or archive the report?",
+						"Resolve report", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+						new Object[] { "Cancel", "Eliminate user", "Archive report" }, null);
 				if (i == 1) {
-					//Eliminate the user
+					// Eliminate the user
 					correct = userControllable.delete(userControllable.findUser(tableReports.getValueAt(tableReports.getSelectedRow(), 1).toString(), 0), 0);
 					if (correct) {
 						JOptionPane.showMessageDialog(this, "User eliminated successfully.");
+						cargarUsers();
 					} else {
 						JOptionPane.showMessageDialog(this, "Error eliminating user.");
 					}
-				}
-				else if (i == 2) {
-					//Archive the report
+				} else if (i == 2) {
+					// Archive the report
 					Report report = new Report();
 					report.setId(Integer.parseInt(tableReports.getValueAt(tableReports.getSelectedRow(), 0).toString()));
 					report.setSituation("Archived");
@@ -1723,6 +1744,36 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 			} else {
 				JOptionPane.showMessageDialog(this, "Select a report.");
 			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage());
+		}
+	}
+
+	private void reportUser() throws PersonalizedException {
+		try {
+			if (comboBoxReport.getSelectedIndex() != -1 && comboBoxReportCategory.getSelectedIndex() != -1 && !textAreaReport.getText().equals("")) {
+				if (textAreaReport.getText().length() < 90) {
+					Report report = new Report();
+					report.setReportedNickname(comboBoxReport.getSelectedItem().toString());
+					report.setCategory(comboBoxReportCategory.getSelectedItem().toString());
+					report.setDescription(textAreaReport.getText());
+					report.setComplainantNickname(((Player) user).getNickname());
+					Boolean correct = userControllable.insertReport(report);
+					if (correct) {
+						comboBoxReport.setSelectedIndex(-1);
+						comboBoxReportCategory.setSelectedIndex(-1);
+						textAreaReport.setText("");
+						JOptionPane.showMessageDialog(this, "Reported successfully.");
+					} else {
+						JOptionPane.showMessageDialog(this, "Error creating report.");
+					}					
+				} else {
+					JOptionPane.showMessageDialog(this, "Description too long.");
+				}
+			} else {
+				JOptionPane.showMessageDialog(this, "Fill all the gaps.");
+			}
+			
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this, e.getMessage());
 		}
@@ -1946,13 +1997,14 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 				executeModificationChampAdmin();
 			}
 			if (e.getSource().equals(btnR)) {
-				btnResolve.setEnabled(true);
 				listReports();
 			}
 			if (e.getSource().equals(btnResolve)) {
 				resolveReport();
 			}
-			
+			if (e.getSource().equals(btnReport)) {
+				reportUser();
+			}
 		} catch (PersonalizedException e1) {
 			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, e1.getMessage(), "An unexpected error has occured!",
