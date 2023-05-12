@@ -706,14 +706,8 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		lblNewLabel_16.setBounds(109, 188, 311, 31);
 		panelAddModifyChamp.add(lblNewLabel_16);
 
-		JLabel lblChamps_2_1 = new JLabel("CHAMPS");
-		lblChamps_2_1.setBounds(231, 24, 286, 83);
-		panelAddModifyChamp.add(lblChamps_2_1);
-		lblChamps_2_1.setForeground(new Color(218, 165, 32));
-		lblChamps_2_1.setFont(new Font("Bahnschrift", Font.BOLD, 69));
-
 		JLabel lblChamps_2 = new JLabel("CHAMPS");
-		lblChamps_2.setBounds(229, 24, 328, 83);
+		lblChamps_2.setBounds(251, 24, 350, 83);
 		panelAddModifyChamp.add(lblChamps_2);
 		lblChamps_2.setForeground(new Color(0, 139, 139));
 		lblChamps_2.setFont(new Font("Bahnschrift", Font.BOLD, 69));
@@ -748,6 +742,12 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		buttonChampsAdmin_Check.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
 		buttonChampsAdmin_Check.addActionListener(this);
 		buttonChampsAdmin_Check.setEnabled(false);
+		
+				JLabel lblChamps_2_1 = new JLabel("CHAMPS");
+				lblChamps_2_1.setBounds(247, 24, 374, 83);
+				panelAddModifyChamp.add(lblChamps_2_1);
+				lblChamps_2_1.setForeground(new Color(218, 165, 32));
+				lblChamps_2_1.setFont(new Font("Bahnschrift", Font.BOLD, 69));
 
 		JLabel fondoPictureChampsAdmin = new JLabel("");
 		fondoPictureChampsAdmin.setBackground(new Color(0, 0, 0));
