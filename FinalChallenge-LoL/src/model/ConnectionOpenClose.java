@@ -1,3 +1,9 @@
+/**
+* This class handles the opening and closing of a connection to a MySQL database.
+* It gets the database connection info from a config.properties file.
+* @author Javi and Inigo
+* @version 1.0
+*/
 package model;
 
 import java.sql.Connection;
@@ -7,14 +13,28 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class ConnectionOpenClose {
+	/**
+	 * The ResourceBundle object that contains the database connection info.
+	 */
 	private ResourceBundle configFile;
+	/**
+	 * The url of the database.
+	 */
 	private String url;
+	/**
+	 * The user of the database.
+	 */
 	private String user;
+	/**
+	 * The password of the database.
+	 */
 	private String pass;
 
-	// CONSTRUCTOR
-	// Method to open connection with MySQL, gets the info from config.properties file, 
-	// receives an int to choose the user to connect with
+	/**
+	 * Constructor of the class.
+	 * 
+	 * @param chooseConection An integer to choose the type of user to connect with.
+	 */
 	public ConnectionOpenClose(int chooseConection) {
 		configFile = ResourceBundle.getBundle("model.config");
 		url = configFile.getString("URL");
@@ -27,7 +47,11 @@ public class ConnectionOpenClose {
 		pass = configFile.getString("PASSWORD");
 	}
 
-	// Method that opens the connection with MySQL
+	/**
+	 * Method that opens the connection with MySQL.
+	 * @return The connection with MySQL.
+	 * @throws SQLException If there is an error with the connection.
+	 */
 	public Connection openConnection() throws SQLException {
 		Connection con = null;
 		try {
@@ -39,7 +63,12 @@ public class ConnectionOpenClose {
 		return con;
 	}
 
-	// Method that closes the connection with MySQL
+	/**
+	 * Method that closes the connection with MySQL.
+	 * @param stmt The PreparedStatement object to close.
+	 * @param con The Connection to close.
+	 * @throws SQLException If there is an error with closing the connection.
+	 */
 	public void closeConnection(PreparedStatement stmt, Connection con) throws SQLException {
 		if (stmt != null) {
 			stmt.close();

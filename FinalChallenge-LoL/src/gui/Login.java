@@ -27,6 +27,14 @@ import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
 import java.awt.Color;
 
+/**
+ * This class is the one that creates the login window, where the user will be
+ * able to log in or create a new account.
+ * 
+ * @version 1.0
+ * @author Irati
+ * @author ALex
+ */
 public class Login extends JDialog implements ActionListener, MouseListener {
 	/**
 	 * 
@@ -40,7 +48,9 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 	private MainWindow parent;
 
 	/**
-	 * Create the dialog.
+	 * Method that creates the login window.
+	 * @param control the controller of the program.
+	 * @param main the main window of the program.
 	 */
 	public Login(UserControllable control, MainWindow main) {
 		setModal(true);
@@ -129,6 +139,10 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 	// Not needed.
 	}
 
+	/**
+	 * When user clicks on "sign in" or "log in" buttons, the program will enter here.
+	 * @param e the event that has been triggered.
+	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		//Enter when "sign in" button is pressed
@@ -149,6 +163,10 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 		}
 	}
 
+	/**
+	 * Method that checks if the credentials are correct and if so, logs the user in.
+	 * @throws PersonalizedException if there is an error
+	 */
 	private void access() throws PersonalizedException {
 		// TODO Auto-generated method stub
 		// Store the password as a String to set the user later.
@@ -185,6 +203,10 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 		// Not needed.
 	}
 
+	/**
+	 * Method that changes the font size when mouse hovers over the "signIn" label.
+	 * @param e the event that has been triggered.
+	 */
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		if (e.getSource().equals(signIn)) {
@@ -193,6 +215,10 @@ public class Login extends JDialog implements ActionListener, MouseListener {
 		}
 	}
 
+	/**
+	 * Method that changes the font size when mouse hovers over the "signIn" label.
+	 * @param e the event that has been triggered.
+	 */
 	@Override 
 	public void mouseExited(MouseEvent e) {
 		if (e.getSource().equals(signIn)) {

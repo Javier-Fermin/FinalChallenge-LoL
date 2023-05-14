@@ -47,6 +47,7 @@ import java.awt.event.MouseListener;
 
 public class SignIn extends JDialog implements ActionListener, FocusListener, MouseListener {
 	/**
+	 * This class is used to create a new user
 	 * @author Irati Garzón
 	 * @version 1.1 27/04/2023
 	 */
@@ -64,6 +65,11 @@ public class SignIn extends JDialog implements ActionListener, FocusListener, Mo
 	private JLabel lblSend;
 	private JLabel lblEye;
 
+	/**
+	 * Create the dialog
+	 * @param controller object that implements the interface UserControllable
+	 * @param main object of the MainWindow class
+	 */
 	public SignIn(UserControllable controller, MainWindow main) {
 		this.controller = controller;
 		parent = main;
@@ -228,7 +234,7 @@ public class SignIn extends JDialog implements ActionListener, FocusListener, Mo
 	/**
 	 * Method to add the new user and open the next window
 	 * 
-	 * @throws PersonalizedException
+	 * @throws PersonalizedException if there is an error
 	 */
 	public void openMainWindow() throws PersonalizedException {
 		// TODO Auto-generated method stub
@@ -255,7 +261,7 @@ public class SignIn extends JDialog implements ActionListener, FocusListener, Mo
 	/**
 	 * Method that creates the user with the information written by the user
 	 * 
-	 * @return User
+	 * @return User with the information written by the user
 	 */
 
 	public User setInformation() {
@@ -274,6 +280,7 @@ public class SignIn extends JDialog implements ActionListener, FocusListener, Mo
 
 	/**
 	 * Method to make verifications when focusLost
+	 * @param e FocusEvent to know which component has lost the focus
 	 */
 	public void focusLost(FocusEvent e) {
 		if (e.getSource().equals(textFieldNickname)) {
@@ -312,7 +319,7 @@ public class SignIn extends JDialog implements ActionListener, FocusListener, Mo
 	 * Method to check if the user exist and check that the user only inserts one
 	 * word as nickname
 	 * 
-	 * @throws PersonalizedException
+	 * @throws PersonalizedException if there is an error
 	 */
 	private void checkUser() throws PersonalizedException {
 		// TODO Auto-generated method stub
@@ -386,6 +393,7 @@ public class SignIn extends JDialog implements ActionListener, FocusListener, Mo
 
 	/**
 	 * Method to make a action when mouseClicked
+	 * @param e MouseEvent to know which component has been clicked
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -402,6 +410,7 @@ public class SignIn extends JDialog implements ActionListener, FocusListener, Mo
 
 	/**
 	 * Method to make a action during mousePressed
+	 * @param e MouseEvent to know which component has been pressed
 	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -413,6 +422,7 @@ public class SignIn extends JDialog implements ActionListener, FocusListener, Mo
 
 	/**
 	 * Method to make a action when mouseReleased
+	 * @param e MouseEvent to know which component has been released
 	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
@@ -424,8 +434,8 @@ public class SignIn extends JDialog implements ActionListener, FocusListener, Mo
 
 	/**
 	 * Method implemented by MouseListener but not used
+	 * @param e MouseEvent to know which component has been entered
 	 */
-
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// not used
@@ -434,8 +444,8 @@ public class SignIn extends JDialog implements ActionListener, FocusListener, Mo
 
 	/**
 	 * Method implemented by MouseListener but not used
+	 * @param e MouseEvent to know which component has been exited
 	 */
-
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// not used

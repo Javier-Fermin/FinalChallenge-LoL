@@ -54,6 +54,14 @@ import javax.swing.JTabbedPane;
 import java.awt.Toolkit;
 import javax.swing.JComboBox;
 
+/**
+ * Class responsible for adding a game to the database by using windows
+ * 
+ * @version 1.0 
+ * @Author Javi
+ *
+ */
+
 public class AddGame extends JDialog implements ActionListener, PropertyChangeListener {
 
 	private final JPanel contentPanel = new JPanel();
@@ -98,11 +106,13 @@ public class AddGame extends JDialog implements ActionListener, PropertyChangeLi
 	private List<String> playersSelected, champsSelected;
 
 	/**
-	 * Create the dialog.
+	 * Create the dialog
 	 * 
-	 * @param gameStorable
-	 * @param b
-	 * @param mainWindow
+	 * @param gameStorable object that implements the interface GameStorable
+	 * @param userControllable object that implements the interface UserControllable
+	 * @param champEditable object that implements the interface ChampEditable
+	 * @param b	boolean to set the window as modal or not
+	 * @param mainWindow the main window
 	 */
 	public AddGame(MainWindow mainWindow, boolean b, GameStorable gameStorable, UserControllable userControllable,
 			ChampEditable champEditable) {
@@ -398,7 +408,14 @@ public class AddGame extends JDialog implements ActionListener, PropertyChangeLi
 		}
 	}
 
-	// Loads the next comboBox 
+	/**
+	 * Method to load the comboboxes with the players and champs
+	 * @param comboBoxPlayer the combox where the players will be loaded
+	 * @param comboBoxChamp the combox where the champs will be loaded
+	 * @param playersSelected list of players already selected
+	 * @param champsSelected list of champs already selected
+	 * @throws PersonalizedException if there is an error loading the comboboxes
+	 */
 	private void loadComboBox(JComboBox comboBoxPlayer, JComboBox comboBoxChamp, List<String> playersSelected,
 			List<String> champsSelected) throws PersonalizedException {
 		// TODO Auto-generated method stub
@@ -441,7 +458,10 @@ public class AddGame extends JDialog implements ActionListener, PropertyChangeLi
 		comboBoxPlayer.addActionListener(this);
 	}
 
-	//Method to add a game getting the data from the tab
+	/**
+	 * Method to add the game to the database
+	 * @throws PersonalizedException if there is an error adding the game
+	 */
 	private void addGame() throws PersonalizedException {
 		// TODO Auto-generated method stub
 		Game aux = new Game();
@@ -505,7 +525,10 @@ public class AddGame extends JDialog implements ActionListener, PropertyChangeLi
 
 		}
 	}
-
+	/**
+	 * This method is called when an action is performed
+	 * @param e ActionEvent that is performed
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		try {
@@ -654,9 +677,9 @@ public class AddGame extends JDialog implements ActionListener, PropertyChangeLi
 	/**
 	 * Method to check if the user exists
 	 * 
-	 * @param user
-	 * @return correct
-	 * @throws PersonalizedException
+	 * @param user to check
+	 * @return correct if the user exists
+	 * @throws PersonalizedException if there is an error
 	 */
 
 	public boolean checkUser(String user) throws PersonalizedException {
@@ -674,9 +697,9 @@ public class AddGame extends JDialog implements ActionListener, PropertyChangeLi
 	/**
 	 * Method to check if the champ exits
 	 * 
-	 * @param champ
-	 * @return
-	 * @throws PersonalizedException
+	 * @param champ to check
+	 * @return correct if the champ exists
+	 * @throws PersonalizedException if there is an error
 	 */
 
 	public boolean checkChamp(String champ) throws PersonalizedException {
@@ -690,7 +713,10 @@ public class AddGame extends JDialog implements ActionListener, PropertyChangeLi
 		return correct;
 	}
 
-	// When PropertyChangeEvent changes enables text duration
+	/**
+	 * Method when a property is changed
+	 * @param evt property changed
+	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		// TODO Auto-generated method stub

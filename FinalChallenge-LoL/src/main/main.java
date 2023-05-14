@@ -1,3 +1,8 @@
+/** 
+ * The main class of the program that creates the main window of the application and starts the program.
+ * @author Irati
+ * @version 1.0
+*/
 package main;
 
 import controller.ChampEditable;
@@ -11,7 +16,10 @@ import controller.UserControllableFactory;
 import gui.MainWindow;
 
 public class main {
-
+	/**
+	 * The main method of the program that creates the main window of the application and starts the program.
+	 * @param args an array of command-line arguments for the program (not used)
+	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		ChampEditable champEditable = ChampEditableFactory.getChampEditable();
