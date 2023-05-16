@@ -135,7 +135,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 	private JLayeredPane panelHabilidades;
 	private JComboBox comboBoxPosition;
 	private JTextField textFieldChampPlayer_Region;
-	private JTextField textFieldChampPlayer_Position;
+	private JComboBox comboBoxChampPlayer_Position;
 	private JButton btnUpdateGame;
 	private JTextField textNicknameGame;
 
@@ -204,10 +204,6 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		iconProfile.setBounds(109, 49, 64, 64);
 		iconProfile.setIcon(new ImageIcon(MainWindow.class.getResource("/img/lolLogo (2).png")));
 		profile.add(iconProfile);
-
-		nicknameProfilePicture = new JLabel("New label");
-		nicknameProfilePicture.setBounds(915, 378, 135, 16);
-		profile.add(nicknameProfilePicture);
 
 		JLabel passwordProfile = new JLabel("PASSWORD");
 		passwordProfile.setBounds(119, 274, 121, 21);
@@ -543,17 +539,18 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		labelChampsPlayer_Position.setForeground(new Color(255, 255, 255));
 		labelChampsPlayer_Position.setFont(new Font("Bahnschrift", Font.PLAIN, 20));
 
-		textFieldChampPlayer_Position = new JTextField();
-		textFieldChampPlayer_Position.setEnabled(false);
-		textFieldChampPlayer_Position.setEditable(false);
-		textFieldChampPlayer_Position.setToolTipText("Leave it in blank for no filter");
-		textFieldChampPlayer_Position.setForeground(Color.WHITE);
-		textFieldChampPlayer_Position.setFont(new Font("Bahnschrift", Font.PLAIN, 15));
-		textFieldChampPlayer_Position.setColumns(10);
-		textFieldChampPlayer_Position.setBackground(Color.BLACK);
-		textFieldChampPlayer_Position.setBounds(190, 107, 202, 26);
-		selectRegionPosition.add(textFieldChampPlayer_Position);
-		textFieldChampPlayer_Position.addActionListener(this);
+		comboBoxChampPlayer_Position = new JComboBox();
+		comboBoxChampPlayer_Position.setEnabled(false);
+		comboBoxChampPlayer_Position.setToolTipText("Choose blank for no filter");
+		comboBoxChampPlayer_Position.setBounds(190, 107, 202, 26);
+		comboBoxChampPlayer_Position.addItem("");
+		Champ champ = new Champ();
+		String[] positions = champ.getPositions();
+		for (int i = 0; i < positions.length; i++) {
+			comboBoxChampPlayer_Position.addItem(positions[i]);
+		}
+		selectRegionPosition.add(comboBoxChampPlayer_Position);
+		comboBoxChampPlayer_Position.addActionListener(this);
 
 		buttonChampsPlayer_Enter.addActionListener(this);
 
@@ -755,11 +752,11 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		buttonChampsAdmin_Check.addActionListener(this);
 		buttonChampsAdmin_Check.setEnabled(false);
 		
-				JLabel lblChamps_2_1 = new JLabel("CHAMPS");
-				lblChamps_2_1.setBounds(247, 24, 374, 83);
-				panelAddModifyChamp.add(lblChamps_2_1);
-				lblChamps_2_1.setForeground(new Color(218, 165, 32));
-				lblChamps_2_1.setFont(new Font("Bahnschrift", Font.BOLD, 69));
+		JLabel lblChamps_2_1 = new JLabel("CHAMPS");
+		lblChamps_2_1.setBounds(247, 24, 374, 83);
+		panelAddModifyChamp.add(lblChamps_2_1);
+		lblChamps_2_1.setForeground(new Color(218, 165, 32));
+		lblChamps_2_1.setFont(new Font("Bahnschrift", Font.BOLD, 69));
 
 		JLabel fondoPictureChampsAdmin = new JLabel("");
 		fondoPictureChampsAdmin.setBackground(new Color(0, 0, 0));
@@ -1237,7 +1234,9 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 
 		try {
 			cargarUsers();
-			cargarUsersReport();
+			if (user instanceof Player) {
+				cargarUsersReport();
+			}
 		} catch (PersonalizedException e) {
 			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, e.getMessage(), "An unexpected error has occured!",
@@ -1414,7 +1413,8 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 		Set<User> users = userControllable.listPlayers();
 		comboBoxReport.removeAllItems();
 		for (User u : users) {
-			comboBoxReport.addItem(((Player) u).getNickname());
+			if (!((Player) u).getNickname().equals(((Player) user).getNickname()))
+				comboBoxReport.addItem(((Player) u).getNickname());
 		}
 		comboBoxReport.setSelectedIndex(-1);
 	}
@@ -1467,14 +1467,14 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 				// Get an array of all champs
 				list = champEditable.listChamp();
 				textFieldChampPlayer_Region.setText("");
-				textFieldChampPlayer_Position.setText("");
+				comboBoxChampPlayer_Position.setSelectedIndex(0);
 			} else if (checkBoxChampsPlayer_Filtered.isSelected()) {
 				// Show champs by filter
 				String region = textFieldChampPlayer_Region.getText();
 				if (region.equals("")) {
 					region = null;
 				}
-				String position = textFieldChampPlayer_Position.getText();
+				String position = comboBoxChampPlayer_Position.getSelectedItem().toString();
 				if (position.equals("")) {
 					position = null;
 				}
@@ -2018,9 +2018,9 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 			// If textFieldChampPlayer_Region or textFieldChampPlayer_Position is pressed,
 			// buttonChampsPlayer_Enter is enabled if any of both is not blank
 			if (e.getSource().equals(textFieldChampPlayer_Region)
-					|| e.getSource().equals(textFieldChampPlayer_Position)) {
+					|| e.getSource().equals(comboBoxChampPlayer_Position)) {
 				if (!(textFieldChampPlayer_Region.getText().isBlank()
-						&& textFieldChampPlayer_Position.getText().isBlank())) {
+						&& comboBoxChampPlayer_Position.getSelectedItem().toString().isBlank())) {
 					buttonChampsPlayer_Enter.setEnabled(true);
 				}
 			}
@@ -2040,19 +2040,17 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 			if (e.getSource().equals(checkBoxChampsPlayer_Filtered)) {
 				textFieldChampPlayer_Region.setEnabled(true);
 				textFieldChampPlayer_Region.setEditable(true);
-				textFieldChampPlayer_Position.setEnabled(true);
-				textFieldChampPlayer_Position.setEditable(true);
+				comboBoxChampPlayer_Position.setEnabled(true);
 				buttonChampsPlayer_Enter.setEnabled(false);
 			}
 			// If checkBoxChampsPlayer is pressed, the textFields for filter list are
 			// disabled
 			if (e.getSource().equals(checkBoxChampsPlayer)) {
 				textFieldChampPlayer_Region.setText("");
-				textFieldChampPlayer_Position.setText("");
+				comboBoxChampPlayer_Position.setSelectedIndex(0);
 				textFieldChampPlayer_Region.setEnabled(false);
 				textFieldChampPlayer_Region.setEditable(false);
-				textFieldChampPlayer_Position.setEnabled(false);
-				textFieldChampPlayer_Position.setEditable(false);
+				comboBoxChampPlayer_Position.setEnabled(false);
 				buttonChampsPlayer_Enter.setEnabled(true);
 			}
 			// If btnCancelChamp is pressed, removeChampAdminTab is called
