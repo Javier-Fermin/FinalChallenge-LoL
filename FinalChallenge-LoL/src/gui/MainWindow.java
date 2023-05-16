@@ -474,7 +474,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener,
 
 		buttonGroupChampsPlayer.add(checkBoxChampsPlayer);
 
-		JLabel lblListChampsByFilter = new JLabel("LIST CAMPS BY FILTER");
+		JLabel lblListChampsByFilter = new JLabel("LIST CHAMPS BY FILTER");
 		lblListChampsByFilter.setForeground(new Color(255, 255, 255));
 		lblListChampsByFilter.setFont(new Font("Bahnschrift", Font.PLAIN, 20));
 		lblListChampsByFilter.setBounds(161, 142, 223, 36);
