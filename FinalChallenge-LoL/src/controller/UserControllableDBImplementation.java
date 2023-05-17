@@ -1,3 +1,9 @@
+/**
+ * This class is an implementation of the UserControllable interface that interacts with a database to perform user-related operations
+ * @author Alex
+ * @author Irati
+ * @version 1.0
+ */
 package controller;
 
 import java.sql.Connection;

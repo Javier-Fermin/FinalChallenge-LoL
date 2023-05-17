@@ -1,3 +1,9 @@
+
+/**
+* Implements the ChampEditable interface and provides methods to add and modify a champ information in the database
+* @author Iñigo
+* @version 1.0
+*/
 package controller;
 
 import java.sql.Connection;

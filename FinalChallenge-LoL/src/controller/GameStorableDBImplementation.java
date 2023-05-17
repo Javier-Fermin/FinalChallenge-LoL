@@ -1,3 +1,10 @@
+/**
+ * This class provides an implementation of the GameStorable interface to interact with a database
+ *	and perform CRUD operations on Game objects
+ * @author Javi
+ * @version 1.0
+ */
+
 package controller;
 
 import java.sql.CallableStatement;

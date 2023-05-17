@@ -1,3 +1,10 @@
+/**
+ * This class is an implementation of the Statable interface
+ * It has methods to get statistics related to a player from a database
+ * @author Javi
+ * @author Iñigo
+ * @version 1.0
+ */
 package controller;
 
 import java.sql.Connection;

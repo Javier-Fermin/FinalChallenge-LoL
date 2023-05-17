@@ -2,7 +2,6 @@
  * Interface ChampEditable to add, modify and list champs
  * @author Iñigo Blanco
  * @version 1.0
- *
  */
 
 package controller;
